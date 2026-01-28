@@ -9,3 +9,7 @@ export interface IUser {
   otpExpires?: Date;
   isVerified?: boolean;
 }
+
+export interface IUserResponse extends IUser {
+  _id: any;
+}

@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
+import authService from '../services/authService';
 
 const loginSchema = z.object({
     email: z.string().email('Invalid email address'),
@@ -25,10 +26,16 @@ export default function LoginPage() {
     const onSubmit = async (data: LoginFormData) => {
         setLoading(true);
         try {
-            toast.success('Welcome back to POISE');
+            const response = await authService.login(data);
+
+            // Store simple auth state
+            localStorage.setItem('user', JSON.stringify(response.data));
+            localStorage.setItem('token', response.data.token);
+
+            toast.success(`Welcome back, ${response.data.name}`);
             navigate(APP_ROUTES.DASHBOARD);
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Login failed');
+            toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
         } finally {
             setLoading(false);
         }

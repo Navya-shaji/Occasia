@@ -4,6 +4,7 @@ import { APP_ROUTES } from '../constants/routes';
 
 export default function DashboardPage() {
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     return (
         <div className="poise-grid">
@@ -29,10 +30,10 @@ export default function DashboardPage() {
             {/* Content Section */}
             <div className="poise-content-section">
                 <div className="poise-form-container fade-in">
-                    <h1 className="poise-title font-serif">Welcome Home</h1>
+                    <h1 className="poise-title font-serif">Welcome Home, {user.name || 'Guest'}</h1>
                     <p className="poise-subtitle">
                         Your account has been successfully verified.
-                        You are now part of the POISE collective. <br /><br />
+                        You are now part of the OCCASIA collective. <br /><br />
                         Begin your journey by exploring curated events or managing your personalized dashboard.
                     </p>
 
@@ -54,7 +55,7 @@ export default function DashboardPage() {
 
                     <div className="mt-12 pt-8 border-t border-gray-100 opacity-60">
                         <p className="text-[9px] uppercase tracking-[0.2em] leading-loose">
-                            POISE © 2026 <br />
+                            OCCASIA © 2026 <br />
                             A NEW STANDARD IN EVENT MANAGEMENT
                         </p>
                     </div>

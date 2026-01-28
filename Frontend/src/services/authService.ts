@@ -17,6 +17,11 @@ export interface ResendOtpPayload {
     email: string;
 }
 
+export interface LoginPayload {
+    email: string;
+    password: string;
+}
+
 const authService = {
     register: async (payload: RegisterPayload) => {
         const response = await apiInstance.post(API_ROUTES.REGISTER, payload);
@@ -30,6 +35,11 @@ const authService = {
 
     resendOtp: async (payload: ResendOtpPayload) => {
         const response = await apiInstance.post(API_ROUTES.RESEND_OTP, payload);
+        return response.data;
+    },
+
+    login: async (payload: LoginPayload) => {
+        const response = await apiInstance.post(API_ROUTES.LOGIN, payload);
         return response.data;
     },
 };
