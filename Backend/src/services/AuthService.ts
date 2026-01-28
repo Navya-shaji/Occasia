@@ -12,12 +12,10 @@ export class AuthService implements IAuthService {
 
     private generateOtp(): string {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log('--- GENERATED OTP:', otp);
         return otp;
     }
 
     async register(userData: IUser) {
-        console.log('Incoming registration request:', userData.email);
         const { name, email, password, role = Role.USER } = userData;
 
         if (role === Role.ADMIN) {
@@ -107,7 +105,7 @@ export class AuthService implements IAuthService {
         if (!isPasswordMatch) throw new Error('Invalid credentials');
 
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { id: user._id, name: user.name, role: user.role },
             process.env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '1d' }
         );

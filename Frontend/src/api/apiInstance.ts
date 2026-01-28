@@ -7,11 +7,30 @@ const apiInstance = axios.create({
     },
 });
 
-// Optional: Add interceptors for token handling or error mapping
+// Request interceptor: Automatically attach JWT token
+apiInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Response interceptor: Handle errors globally
 apiInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Map backend error messages or handle global errors
+        // Handle 401 Unauthorized - token expired or invalid
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
         return Promise.reject(error);
     }
 );
