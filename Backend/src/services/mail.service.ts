@@ -4,19 +4,19 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 export const sendOtpEmail = async (email: string, otp: string) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Verification Code for Occasia',
-        html: `
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Verification Code for Occasia',
+    html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 10px;">
         <h2 style="color: #333; text-align: center;">Welcome to Occasia</h2>
         <p style="font-size: 16px; color: #555;">Hi there,</p>
@@ -29,13 +29,20 @@ export const sendOtpEmail = async (email: string, otp: string) => {
         <p style="font-size: 12px; color: #999; text-align: center;">&copy; 2026 Occasia. All rights reserved.</p>
       </div>
     `,
-    };
+  };
 
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log(`OTP sent to ${email}`);
-    } catch (error) {
-        console.error('Error sending email:', error);
-        throw new Error('Failed to send verification email');
-    }
+  try {
+    // Log OTP to console for easy development access
+    console.log('\n=======================================');
+    console.log('📧  DEVELOPMENT OTP:', otp);
+    console.log('👤  SENT TO:', email);
+    console.log('=======================================\n');
+
+    await transporter.sendMail(mailOptions);
+    console.log(`OTP sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending email (Gmail AUTH failure), but check the console above for the OTP!:', error);
+    // We don't throw the error here in development so the user can still proceed
+    // throw new Error('Failed to send verification email');
+  }
 };

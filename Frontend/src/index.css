@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap');
+
+:root {
+    --primary: #000000;
+    --accent: #4f46e5;
+    /* Royal Indigo for Event Tech Energy */
+    --accent-light: #818cf8;
+    --bg-white: #ffffff;
+    --bg-light: #f8fafc;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-thin: 1px solid #000000;
+    --border-light: 1px solid #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-white);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+.serif {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Poise Minimalist Container */
+.poise-container {
+    border: none;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    position: relative;
+    z-index: 10;
+}
+
+/* Base grid adjustment for full screen */
+.poise-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.poise-image-section {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.poise-brand-overlay {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    z-index: 20;
+    color: #fff;
+}
+
+.poise-brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    letter-spacing: 0.5em;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.poise-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.poise-content-section {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+}
+
+/* Poise Form */
+.poise-form-container {
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.poise-input-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.poise-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.poise-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #000;
+    padding: 10px 0;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.poise-input:focus {
+    border-bottom-width: 2px;
+    padding-left: 10px;
+}
+
+.poise-btn {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+    padding: 20px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: 100%;
+    margin-top: 10px;
+}
+
+.poise-btn:hover {
+    background: transparent;
+    color: #000;
+}
+
+.poise-btn:disabled {
+    background: #eee;
+    color: #999;
+    border-color: #eee;
+    cursor: not-allowed;
+}
+
+/* Role Selection Specific */
+.poise-role-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: var(--border-thin);
+    margin-bottom: 30px;
+}
+
+.poise-role-option {
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-right: var(--border-thin);
+}
+
+.poise-role-option:last-child {
+    border-right: none;
+}
+
+.poise-role-option.active {
+    background: #000;
+    color: #fff;
+}
+
+.poise-role-option span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+/* Utilities */
+.poise-title {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    line-height: 1.1;
+    color: #000;
+}
+
+.poise-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.fade-in {
+    animation: poiseFadeIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes poiseFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Image Generation Helper */
+.poise-image-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 80%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+@media (max-width: 900px) {
+    .poise-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .poise-image-section {
+        min-height: 300px;
+        order: -1;
+    }
+
+    .poise-container {
+        margin: 10px;
+    }
+
+    .poise-content-section {
+        padding: 40px 20px;
+    }
+}
