@@ -2,37 +2,25 @@ import eventHero from '../assets/event-hero.png';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import authService, { RegisterPayload } from '../services/authService';
 import { APP_ROUTES } from '../constants/routes';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../constants/messages';
-
-const registerSchema = z.object({
-    name: z.string().min(1, 'Full name is required'),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    role: z.enum(['USER', 'VENDOR']),
-});
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+import { registerSchema, RegisterFormData } from '../validations/authValidation';
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
-        defaultValues: { role: 'USER' }
     });
-
-    const role = watch('role');
 
     const onSubmit = async (data: RegisterFormData) => {
         setLoading(true);
         try {
-            await authService.register(data as RegisterPayload);
+            await authService.register({ ...data, role: 'USER' } as RegisterPayload);
             toast.success(SUCCESS_MESSAGES.REGISTRATION_SUCCESS);
             navigate(APP_ROUTES.VERIFY_OTP, { state: { email: data.email } });
         } catch (error: any) {
@@ -68,17 +56,6 @@ export default function RegisterPage() {
                     </p>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="poise-role-selector">
-                            <label className={`poise-role-option ${role === 'USER' ? 'active' : ''}`}>
-                                <input type="radio" {...register('role')} value="USER" className="hidden" />
-                                <span>Attend Events</span>
-                            </label>
-                            <label className={`poise-role-option ${role === 'VENDOR' ? 'active' : ''}`}>
-                                <input type="radio" {...register('role')} value="VENDOR" className="hidden" />
-                                <span>Organize Events</span>
-                            </label>
-                        </div>
-
                         <div className="poise-input-group">
                             <label className="poise-label">Full Name</label>
                             <input {...register('name')} className="poise-input" placeholder="e.g. Julian Montgomery" />
@@ -101,11 +78,11 @@ export default function RegisterPage() {
                             {loading ? 'Setting up stage...' : 'Register for Occasia'}
                         </button>
 
-                        <div className="text-center mt-4">
+                        <div className="poise-footer-link">
                             <button
                                 type="button"
                                 onClick={() => navigate(APP_ROUTES.LOGIN)}
-                                className="text-[10px] uppercase tracking-[0.2em] hover:text-accent transition-colors"
+                                className="poise-link"
                             >
                                 Already joined? Sign in
                             </button>

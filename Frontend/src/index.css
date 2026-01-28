@@ -23,8 +23,8 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--bg-white);
     color: var(--text-main);
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
     line-height: 1.5;
 }
 
@@ -255,4 +255,31 @@ h4,
     .poise-content-section {
         padding: 40px 20px;
     }
+}
+
+.poise-link {
+    background: transparent;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    padding: 5px 0;
+    border-bottom: 1px solid transparent;
+}
+
+.poise-link:hover {
+    color: #000;
+    border-bottom-color: #000;
+}
+
+.poise-footer-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
 }

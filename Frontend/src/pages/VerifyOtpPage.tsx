@@ -9,12 +9,7 @@ import toast from 'react-hot-toast';
 import authService from '../services/authService';
 import { APP_ROUTES } from '../constants/routes';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../constants/messages';
-
-const otpSchema = z.object({
-    otp: z.string().length(6, 'OTP must be 6 digits'),
-});
-
-type OtpFormData = z.infer<typeof otpSchema>;
+import { otpSchema, OtpFormData } from '../validations/authValidation';
 
 export default function VerifyOtpPage() {
     const [loading, setLoading] = useState(false);
@@ -100,22 +95,22 @@ export default function VerifyOtpPage() {
                             {loading ? 'Verifying...' : 'Verify Account'}
                         </button>
 
-                        <div className="text-center mt-6">
+                        <div className="poise-footer-link">
                             <button
                                 type="button"
                                 onClick={resendOtp}
                                 disabled={resending}
-                                className="text-[10px] uppercase tracking-[0.2em] hover:text-accent transition-colors"
+                                className="poise-link"
                             >
                                 {resending ? 'Sending...' : "Didn't receive a code? Resend"}
                             </button>
                         </div>
 
-                        <div className="text-center mt-4">
+                        <div className="poise-footer-link mt-2">
                             <button
                                 type="button"
                                 onClick={() => navigate(APP_ROUTES.REGISTER)}
-                                className="text-[10px] uppercase tracking-[0.2em] hover:text-accent transition-colors opacity-50"
+                                className="poise-link opacity-50"
                             >
                                 Use a different email
                             </button>

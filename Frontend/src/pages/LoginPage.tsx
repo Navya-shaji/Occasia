@@ -7,13 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
 import authService from '../services/authService';
-
-const loginSchema = z.object({
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(1, 'Password is required'),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { loginSchema, LoginFormData } from '../validations/authValidation';
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -78,7 +72,7 @@ export default function LoginPage() {
                         </div>
 
                         <div className="flex justify-end mb-6">
-                            <button type="button" className="text-[10px] uppercase tracking-[0.2em] hover:text-accent transition-colors">
+                            <button type="button" className="poise-link">
                                 Forgot Password?
                             </button>
                         </div>
@@ -87,13 +81,13 @@ export default function LoginPage() {
                             {loading ? 'Authenticating...' : 'Sign In'}
                         </button>
 
-                        <div className="text-center mt-6">
+                        <div className="poise-footer-link">
                             <button
                                 type="button"
                                 onClick={() => navigate(APP_ROUTES.REGISTER)}
-                                className="text-[10px] uppercase tracking-[0.2em] hover:text-accent transition-colors"
+                                className="poise-link"
                             >
-                                Not a member? Join POISE
+                                Not a member? Join OCCASIA
                             </button>
                         </div>
                     </form>

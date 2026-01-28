@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
@@ -12,6 +14,24 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendOtpEmail = async (email: string, otp: string) => {
+  // 1. LOG TO CONSOLE IMMEDIATELY
+  console.log('\n\n\n');
+  console.log('**************************************************');
+  console.log('**********       OCCASIA OTP LOG        **********');
+  console.log('**************************************************');
+  console.log(`|  CODE:    ${otp}                          |`);
+  console.log(`|  EMAIL:   ${email}               |`);
+  console.log('**************************************************');
+  console.log('>>> CHECK ABOVE FOR THE OTP CODE <<<\n\n\n');
+
+  // 2. FAILSAFE: Write to a file in case terminal is hidden
+  try {
+    const filePath = path.join(process.cwd(), 'LATEST_OTP.txt');
+    fs.writeFileSync(filePath, `EMAIL: ${email}\nOTP: ${otp}\nTIME: ${new Date().toLocaleString()}`);
+  } catch (err) {
+    // Ignore file write errors
+  }
+
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
@@ -32,17 +52,13 @@ export const sendOtpEmail = async (email: string, otp: string) => {
   };
 
   try {
-    // Log OTP to console for easy development access
-    console.log('\n=======================================');
-    console.log('📧  DEVELOPMENT OTP:', otp);
-    console.log('👤  SENT TO:', email);
-    console.log('=======================================\n');
-
+    // 3. ATTEMPT MAIL (Might fail if App Password in .env is incorrect)
     await transporter.sendMail(mailOptions);
-    console.log(`OTP sent to ${email}`);
+    console.log(`✅ Success: OTP email sent to ${email}`);
   } catch (error) {
-    console.error('Error sending email (Gmail AUTH failure), but check the console above for the OTP!:', error);
-    // We don't throw the error here in development so the user can still proceed
-    // throw new Error('Failed to send verification email');
+    console.log(`❌ Gmail Error: The email could not be sent to ${email}.`);
+    console.log(`👉 REASON: Your Gmail App Password in .env is likely invalid or missing a character.`);
+    console.log(`👉 FIX: Generate a 16-character App Password at: https://myaccount.google.com/apppasswords`);
+    console.log(`👉 NOTE: You can still use the OTP shown in the box above to proceed!\n`);
   }
 };

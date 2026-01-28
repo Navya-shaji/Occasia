@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { IUser } from '../interface/user.interface';
+import { IUser, IUserResponse } from '../interface/user.interface';
 import { IUserRepository } from '../interface/repositories/IUserRepository';
 import { IAuthService } from '../interface/services/IAuthService';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
@@ -11,10 +11,13 @@ export class AuthService implements IAuthService {
     constructor(private userRepository: IUserRepository) { }
 
     private generateOtp(): string {
-        return Math.floor(100000 + Math.random() * 900000).toString();
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('--- GENERATED OTP:', otp);
+        return otp;
     }
 
     async register(userData: IUser) {
+        console.log('Incoming registration request:', userData.email);
         const { name, email, password, role = Role.USER } = userData;
 
         if (role === Role.ADMIN) {
