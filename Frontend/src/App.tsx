@@ -5,6 +5,8 @@ import RegisterPage from './pages/RegisterPage';
 import VerifyOtpPage from './pages/VerifyOtpPage';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
+import AdminLoginPage from './pages/AdminLoginPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import { APP_ROUTES } from './constants/routes';
 
 function AppContent() {
@@ -14,6 +16,7 @@ function AppContent() {
     const authPages = [
         APP_ROUTES.REGISTER,
         APP_ROUTES.LOGIN,
+        APP_ROUTES.ADMIN_LOGIN,
         APP_ROUTES.VERIFY_OTP
     ];
 
@@ -39,6 +42,8 @@ function AppContent() {
                     <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
                     <Route path={APP_ROUTES.VERIFY_OTP} element={<VerifyOtpPage />} />
                     <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
+                    <Route path={APP_ROUTES.ADMIN_LOGIN} element={<AdminLoginPage />} />
+                    <Route path={APP_ROUTES.ADMIN_DASHBOARD} element={<AdminDashboardPage />} />
                     <Route path={APP_ROUTES.DASHBOARD} element={<DashboardPage />} />
                     <Route path="/" element={<Navigate to={APP_ROUTES.REGISTER} replace />} />
                 </Routes>

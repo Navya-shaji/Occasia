@@ -50,4 +50,17 @@ export class AuthController {
             res.status(HTTP_STATUS.BAD_REQUEST).json({ success: false, message: error.message });
         }
     };
+
+    adminLogin = async (req: Request, res: Response) => {
+        try {
+            const result = await this.authService.adminLogin(req.body);
+            res.status(HTTP_STATUS.OK).json({
+                success: true,
+                message: 'Admin login successful',
+                data: result
+            });
+        } catch (error: any) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({ success: false, message: error.message });
+        }
+    };
 }

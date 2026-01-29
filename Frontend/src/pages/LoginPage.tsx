@@ -62,13 +62,13 @@ export default function LoginPage() {
                         <div className="poise-input-group">
                             <label className="poise-label">Email Address</label>
                             <input {...register('email')} className="poise-input" placeholder="mikayla@poise.com" />
-                            {errors.email && <p className="text-red-500 text-[10px] mt-1 uppercase tracking-widest">{errors.email.message}</p>}
+                            {errors.email && <p className="poise-error">{errors.email.message}</p>}
                         </div>
 
                         <div className="poise-input-group">
                             <label className="poise-label">Password</label>
                             <input {...register('password')} type="password" className="poise-input" placeholder="••••••••" />
-                            {errors.password && <p className="text-red-500 text-[10px] mt-1 uppercase tracking-widest">{errors.password.message}</p>}
+                            {errors.password && <p className="poise-error">{errors.password.message}</p>}
                         </div>
 
                         <div className="flex justify-end mb-6">
@@ -88,6 +88,16 @@ export default function LoginPage() {
                                 className="poise-link"
                             >
                                 Not a member? Join OCCASIA
+                            </button>
+                        </div>
+
+                        <div className="poise-footer-link" style={{ marginTop: '10px' }}>
+                            <button
+                                type="button"
+                                onClick={() => navigate(APP_ROUTES.ADMIN_LOGIN)}
+                                className="poise-link"
+                            >
+                                Admin Access
                             </button>
                         </div>
                     </form>

@@ -42,6 +42,11 @@ const authService = {
         const response = await apiInstance.post(API_ROUTES.LOGIN, payload);
         return response.data;
     },
+
+    adminLogin: async (payload: LoginPayload) => {
+        const response = await apiInstance.post(API_ROUTES.ADMIN_LOGIN, payload);
+        return response.data;
+    },
 };
 
 export default authService;

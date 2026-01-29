@@ -8,6 +8,7 @@ export const ROUTES = {
     REGISTER: '/register',
     LOGIN: '/login',
     VERIFY_OTP: '/verify-otp',
-    RESEND_OTP: '/resend-otp'
+    RESEND_OTP: '/resend-otp',
+    ADMIN_LOGIN: '/admin-login'
   }
 } as const;

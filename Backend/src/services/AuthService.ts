@@ -112,4 +112,23 @@ export class AuthService implements IAuthService {
 
         return { id: user._id, name: user.name, email: user.email, role: user.role, token };
     }
+
+    async adminLogin(loginData: any) {
+        const { email, password } = loginData;
+        const user = await this.userRepository.findByEmail(email);
+
+        if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
+        if (user.role !== Role.ADMIN) throw new Error('Access denied. Admin privileges required.');
+
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatch) throw new Error('Invalid credentials');
+
+        const token = jwt.sign(
+            { id: user._id, name: user.name, role: user.role },
+            process.env.JWT_SECRET || 'fallback_secret',
+            { expiresIn: '1d' }
+        );
+
+        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
+    }
 }

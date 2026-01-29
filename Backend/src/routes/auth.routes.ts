@@ -17,5 +17,6 @@ router.post(ROUTES.AUTH.REGISTER, validate(registerSchema), authController.regis
 router.post(ROUTES.AUTH.LOGIN, validate(loginSchema), authController.login);
 router.post(ROUTES.AUTH.VERIFY_OTP, validate(verifyOtpSchema), authController.verify);
 router.post(ROUTES.AUTH.RESEND_OTP, validate(resendOtpSchema), authController.resend);
+router.post(ROUTES.AUTH.ADMIN_LOGIN, validate(loginSchema), authController.adminLogin);
 
 export default router;
