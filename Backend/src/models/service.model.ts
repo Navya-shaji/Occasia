@@ -22,6 +22,11 @@ const ServiceSchema: Schema<IServiceDocument> = new Schema(
             required: true,
             trim: true
         },
+        location: {
+            type: String,
+            required: true,
+            trim: true
+        },
         images: {
             type: [String],
             default: []
@@ -29,6 +34,10 @@ const ServiceSchema: Schema<IServiceDocument> = new Schema(
         isAvailable: {
             type: Boolean,
             default: true
+        },
+        unavailableDates: {
+            type: [String],
+            default: []
         }
     },
     { timestamps: true }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from '../constants/routes';
+import authService from '../services/authService';
 import {
     LayoutDashboard,
     Calendar,
@@ -19,8 +20,7 @@ export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState('overview');
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+        authService.logout();
         navigate(APP_ROUTES.LOGIN);
     };
 

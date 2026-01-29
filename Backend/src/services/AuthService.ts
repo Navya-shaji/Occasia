@@ -76,7 +76,13 @@ export class AuthService implements IAuthService {
             otpExpires: undefined
         });
 
-        return { id: user._id, name: user.name, email: user.email, role: user.role };
+        const token = jwt.sign(
+            { id: user._id, name: user.name, role: user.role },
+            process.env.JWT_SECRET || 'fallback_secret',
+            { expiresIn: '1d' }
+        );
+
+        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
     }
 
     async resendOtp(email: string) {

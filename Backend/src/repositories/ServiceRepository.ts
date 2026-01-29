@@ -10,8 +10,10 @@ export class ServiceRepository {
         return await Service.findById(id);
     }
 
-    async findAll(query: any = {}): Promise<IServiceDocument[]> {
-        return await Service.find(query).sort({ createdAt: -1 });
+    async findAll(query: any = {}, sort: any = { createdAt: -1 }, skip: number = 0, limit: number = 10): Promise<{ services: IServiceDocument[], total: number }> {
+        const services = await Service.find(query).sort(sort).skip(skip).limit(limit);
+        const total = await Service.countDocuments(query);
+        return { services, total };
     }
 
     async update(id: string, serviceData: Partial<IService>): Promise<IServiceDocument | null> {

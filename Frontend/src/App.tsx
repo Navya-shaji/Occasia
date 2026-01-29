@@ -9,6 +9,7 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ServicesPage from './pages/ServicesPage';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
+import GuestRoute from './components/GuestRoute';
 import { APP_ROUTES } from './constants/routes';
 
 function AppContent() {
@@ -43,10 +44,10 @@ function AppContent() {
             {/* Main Content Sections */}
             <main className="flex-1 flex flex-col">
                 <Routes>
-                    <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
-                    <Route path={APP_ROUTES.VERIFY_OTP} element={<VerifyOtpPage />} />
-                    <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
-                    <Route path={APP_ROUTES.ADMIN_LOGIN} element={<AdminLoginPage />} />
+                    <Route path={APP_ROUTES.REGISTER} element={<GuestRoute><RegisterPage /></GuestRoute>} />
+                    <Route path={APP_ROUTES.VERIFY_OTP} element={<GuestRoute><VerifyOtpPage /></GuestRoute>} />
+                    <Route path={APP_ROUTES.LOGIN} element={<GuestRoute><LoginPage /></GuestRoute>} />
+                    <Route path={APP_ROUTES.ADMIN_LOGIN} element={<GuestRoute><AdminLoginPage /></GuestRoute>} />
 
                     <Route path={APP_ROUTES.ADMIN_DASHBOARD} element={
                         <RoleProtectedRoute allowedRoles={['ADMIN']}>

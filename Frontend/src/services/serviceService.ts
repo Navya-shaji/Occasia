@@ -7,6 +7,7 @@ export interface Service {
     description: string;
     price: number;
     category: string;
+    location: string;
     images: string[];
     isAvailable: boolean;
     createdAt: string;
@@ -19,9 +20,8 @@ const serviceService = {
         return response.data;
     },
 
-    getAllServices: async (category?: string) => {
-        const url = category ? `${API_ROUTES.SERVICES.GET_ALL}?category=${category}` : API_ROUTES.SERVICES.GET_ALL;
-        const response = await apiInstance.get(url);
+    getAllServices: async (params: any = {}) => {
+        const response = await apiInstance.get(API_ROUTES.SERVICES.GET_ALL, { params });
         return response.data;
     },
 

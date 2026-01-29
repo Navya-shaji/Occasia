@@ -15,6 +15,7 @@ export default function ServiceManagement() {
         description: '',
         price: 0,
         category: '',
+        location: '',
         isAvailable: true,
         images: [] as string[]
     });
@@ -42,6 +43,7 @@ export default function ServiceManagement() {
             description: '',
             price: 0,
             category: '',
+            location: '',
             isAvailable: true,
             images: []
         });
@@ -55,6 +57,7 @@ export default function ServiceManagement() {
             description: service.description,
             price: service.price,
             category: service.category,
+            location: service.location || '',
             isAvailable: service.isAvailable,
             images: service.images
         });
@@ -138,7 +141,7 @@ export default function ServiceManagement() {
                         <thead>
                             <tr>
                                 <th>Service Detail</th>
-                                <th>Category</th>
+                                <th>Category / Location</th>
                                 <th>Price</th>
                                 <th>Status</th>
                                 <th className="text-right">Manage Control</th>
@@ -179,7 +182,10 @@ export default function ServiceManagement() {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg uppercase tracking-wider">{service.category}</span>
+                                            <div className="flex flex-col space-y-1">
+                                                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg uppercase tracking-wider w-fit">{service.category}</span>
+                                                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-tighter pl-1">{service.location}</span>
+                                            </div>
                                         </td>
                                         <td>
                                             <div className="font-bold text-indigo-600 text-sm">${service.price}</div>
@@ -250,6 +256,17 @@ export default function ServiceManagement() {
                                         placeholder="e.g. Decoration"
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                    />
+                                </div>
+                                <div className="col-span-1">
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 block">Location</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-sm font-medium focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/5 transition-all outline-none"
+                                        placeholder="e.g. New York, NY"
+                                        value={formData.location}
+                                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                     />
                                 </div>
                                 <div className="col-span-1">

@@ -31,7 +31,12 @@ export default function VerifyOtpPage() {
     const onVerifyOtp = async (data: OtpFormData) => {
         setLoading(true);
         try {
-            await authService.verifyOtp({ email: userEmail, otp: data.otp });
+            const response = await authService.verifyOtp({ email: userEmail, otp: data.otp });
+
+            // Auto login after verification
+            localStorage.setItem('user', JSON.stringify(response.data));
+            localStorage.setItem('token', response.data.token);
+
             toast.success(SUCCESS_MESSAGES.VERIFICATION_SUCCESS);
             navigate(APP_ROUTES.DASHBOARD);
         } catch (error: any) {

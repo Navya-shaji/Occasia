@@ -23,12 +23,37 @@ export class ServiceController {
 
     getAllServices = async (req: Request, res: Response) => {
         try {
-            const { category } = req.query;
-            const services = await this.serviceService.getAllServices(category as string);
+            const {
+                category,
+                location,
+                keyword,
+                minPrice,
+                maxPrice,
+                sort,
+                page,
+                limit,
+                date
+            } = req.query;
+
+            const result = await this.serviceService.getAllServices({
+                category: category as string,
+                location: location as string,
+                keyword: keyword as string,
+                minPrice: minPrice ? Number(minPrice) : undefined,
+                maxPrice: maxPrice ? Number(maxPrice) : undefined,
+                sort: sort as string,
+                page: page ? Number(page) : undefined,
+                limit: limit ? Number(limit) : undefined,
+                date: date as string
+            });
+
             res.status(HTTP_STATUS.OK).json({
                 success: true,
                 message: 'Services fetched successfully',
-                data: services
+                data: result.services,
+                total: result.total,
+                page: Number(page) || 1,
+                limit: Number(limit) || 10
             });
         } catch (error: any) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

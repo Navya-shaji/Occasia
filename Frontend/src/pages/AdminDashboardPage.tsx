@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from '../constants/routes';
 import UserManagement from '../components/admin/UserManagement';
 import ServiceManagement from '../components/admin/ServiceManagement';
+import authService from '../services/authService';
 import {
     LayoutDashboard,
     Users,
@@ -30,8 +31,7 @@ export default function AdminDashboardPage() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+        authService.logout();
         navigate(APP_ROUTES.LOGIN);
     };
 

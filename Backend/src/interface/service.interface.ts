@@ -5,8 +5,10 @@ export interface IService {
     description: string;
     price: number;
     category: string;
+    location: string;
     images: string[];
     isAvailable: boolean;
+    unavailableDates: string[];
 }
 
 export interface IServiceDocument extends IService, Document {

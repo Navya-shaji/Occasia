@@ -47,6 +47,11 @@ const authService = {
         const response = await apiInstance.post(API_ROUTES.ADMIN_LOGIN, payload);
         return response.data;
     },
+
+    logout: () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+    }
 };
 
 export default authService;
