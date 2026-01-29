@@ -12,8 +12,8 @@ export interface User {
 }
 
 const adminService = {
-    getAllUsers: async (page: number = 1, limit: number = 10) => {
-        const response = await apiInstance.get(`${API_ROUTES.USERS.GET_ALL}?page=${page}&limit=${limit}`);
+    getAllUsers: async (page: number = 1, limit: number = 10, search: string = '', status: string = 'all') => {
+        const response = await apiInstance.get(`${API_ROUTES.USERS.GET_ALL}?page=${page}&limit=${limit}&search=${search}&status=${status}`);
         return response.data;
     },
 

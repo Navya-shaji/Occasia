@@ -5,6 +5,6 @@ export interface IUserRepository {
     findById(id: string): Promise<IUserResponse | null>;
     create(userData: Partial<IUser>): Promise<IUserResponse>;
     update(email: string, userData: Partial<IUser>): Promise<IUserResponse | null>;
-    findAll(page: number, limit: number): Promise<{ users: IUserResponse[]; total: number }>;
+    findAll(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }>;
     updateById(id: string, userData: Partial<IUser>): Promise<IUserResponse | null>;
 }

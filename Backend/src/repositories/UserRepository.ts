@@ -21,10 +21,23 @@ export class UserRepository implements IUserRepository {
 
 
 
-    async findAll(page: number, limit: number): Promise<{ users: IUserResponse[]; total: number }> {
+    async findAll(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
         const skip = (page - 1) * limit;
-        const total = await User.countDocuments();
-        const users = await User.find().select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
+        const query: any = {};
+
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        if (status && status !== 'all') {
+            query.isBlocked = status === 'blocked';
+        }
+
+        const total = await User.countDocuments(query);
+        const users = await User.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
         return { users, total };
     }
 

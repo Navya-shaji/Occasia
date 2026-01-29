@@ -17,5 +17,14 @@ export const ROUTES = {
     GET_ALL: '/',
     BLOCK: '/:userId/block',
     UNBLOCK: '/:userId/unblock'
+  },
+
+  SERVICES: {
+    BASE: '/services',
+    GET_ALL: '/',
+    GET_BY_ID: '/:id',
+    CREATE: '/',
+    UPDATE: '/:id',
+    DELETE: '/:id'
   }
 } as const;

@@ -7,6 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import ServicesPage from './pages/ServicesPage';
+import RoleProtectedRoute from './components/RoleProtectedRoute';
 import { APP_ROUTES } from './constants/routes';
 
 function AppContent() {
@@ -17,6 +19,7 @@ function AppContent() {
         APP_ROUTES.REGISTER,
         APP_ROUTES.LOGIN,
         APP_ROUTES.ADMIN_LOGIN,
+        APP_ROUTES.ADMIN_DASHBOARD,
         APP_ROUTES.VERIFY_OTP
     ];
 
@@ -31,6 +34,7 @@ function AppContent() {
                         <div className="poise-nav-item border-l-0" style={{ flex: '2', justifyContent: 'flex-start', paddingLeft: '40px' }}>
                             <div className="poise-logo font-serif p-0 leading-none">OCCASIA</div>
                         </div>
+                        <Link to={APP_ROUTES.SERVICES} className="poise-nav-item">Services</Link>
                         <Link to={APP_ROUTES.DASHBOARD} className="poise-nav-item">Dashboard</Link>
                     </nav>
                 </header>
@@ -43,8 +47,20 @@ function AppContent() {
                     <Route path={APP_ROUTES.VERIFY_OTP} element={<VerifyOtpPage />} />
                     <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
                     <Route path={APP_ROUTES.ADMIN_LOGIN} element={<AdminLoginPage />} />
-                    <Route path={APP_ROUTES.ADMIN_DASHBOARD} element={<AdminDashboardPage />} />
-                    <Route path={APP_ROUTES.DASHBOARD} element={<DashboardPage />} />
+
+                    <Route path={APP_ROUTES.ADMIN_DASHBOARD} element={
+                        <RoleProtectedRoute allowedRoles={['ADMIN']}>
+                            <AdminDashboardPage />
+                        </RoleProtectedRoute>
+                    } />
+
+                    <Route path={APP_ROUTES.DASHBOARD} element={
+                        <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
+                            <DashboardPage />
+                        </RoleProtectedRoute>
+                    } />
+
+                    <Route path={APP_ROUTES.SERVICES} element={<ServicesPage />} />
                     <Route path="/" element={<Navigate to={APP_ROUTES.REGISTER} replace />} />
                 </Routes>
             </main>

@@ -9,8 +9,10 @@ export class UserController {
         try {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
+            const search = req.query.search as string || '';
+            const status = req.query.status as string || 'all';
 
-            const result = await this.userService.getAllUsers(page, limit);
+            const result = await this.userService.getAllUsers(page, limit, search, status);
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,

@@ -8,6 +8,14 @@ export const API_ROUTES = {
         GET_ALL: '/users',
         BLOCK: '/users/:id/block',
         UNBLOCK: '/users/:id/unblock'
+    },
+    SERVICES: {
+        BASE: '/services',
+        GET_ALL: '/services',
+        GET_BY_ID: '/services/:id',
+        CREATE: '/services',
+        UPDATE: '/services/:id',
+        DELETE: '/services/:id'
     }
 };
 
@@ -17,5 +25,6 @@ export const APP_ROUTES = {
     DASHBOARD: '/dashboard',
     LOGIN: '/login',
     ADMIN_LOGIN: '/admin/login',
-    ADMIN_DASHBOARD: '/admin/dashboard',
+    ADMIN_DASHBOARD: '/admin',
+    SERVICES: '/services',
 };
