@@ -19,8 +19,13 @@ export class UserRepository implements IUserRepository {
         return await User.findOneAndUpdate({ email }, userData, { new: true });
     }
 
-    async findAll(): Promise<IUserResponse[]> {
-        return await User.find().select('-password');
+
+
+    async findAll(page: number, limit: number): Promise<{ users: IUserResponse[]; total: number }> {
+        const skip = (page - 1) * limit;
+        const total = await User.countDocuments();
+        const users = await User.find().select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
+        return { users, total };
     }
 
     async updateById(id: string, userData: Partial<IUser>): Promise<IUserResponse | null> {

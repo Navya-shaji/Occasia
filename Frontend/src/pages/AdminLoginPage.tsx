@@ -21,7 +21,6 @@ export default function AdminLoginPage() {
         try {
             const response = await authService.adminLogin(data);
 
-            // Store admin auth state
             localStorage.setItem('user', JSON.stringify(response.data));
             localStorage.setItem('token', response.data.token);
 

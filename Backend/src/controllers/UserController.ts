@@ -7,11 +7,18 @@ export class UserController {
 
     getUsers = async (req: Request, res: Response) => {
         try {
-            const users = await this.userService.getAllUsers();
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+
+            const result = await this.userService.getAllUsers(page, limit);
+
             res.status(HTTP_STATUS.OK).json({
                 success: true,
                 message: 'Users fetched successfully',
-                data: users
+                data: result.users,
+                total: result.total,
+                page,
+                limit
             });
         } catch (error: any) {
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

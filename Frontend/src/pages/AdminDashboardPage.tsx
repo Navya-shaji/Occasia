@@ -21,20 +21,26 @@ export default function AdminDashboardPage() {
     const [activeSection, setActiveSection] = useState('overview');
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const limit = 10;
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
         if (activeSection === 'users') {
-            fetchUsers();
+            fetchUsers(currentPage);
         }
-    }, [activeSection]);
+    }, [activeSection, currentPage]);
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (page: number) => {
         setLoading(true);
         try {
-            const response = await adminService.getAllUsers();
+            const response = await adminService.getAllUsers(page, limit);
             setUsers(response.data);
+            setTotalUsers(response.total);
+            setTotalPages(Math.ceil(response.total / limit));
         } catch (error) {
             toast.error('Failed to fetch users');
         } finally {
@@ -51,7 +57,7 @@ export default function AdminDashboardPage() {
                 await adminService.blockUser(user._id);
                 toast.success(`Blocked ${user.name}`);
             }
-            fetchUsers();
+            fetchUsers(currentPage);
         } catch (error) {
             toast.error('Action failed');
         }
@@ -84,7 +90,10 @@ export default function AdminDashboardPage() {
                     ].map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => setActiveSection(item.id)}
+                            onClick={() => {
+                                setActiveSection(item.id);
+                                setCurrentPage(1);
+                            }}
                             className={`poise-nav-btn ${activeSection === item.id ? 'active' : ''}`}
                         >
                             <item.icon size={18} />
@@ -177,15 +186,15 @@ export default function AdminDashboardPage() {
                     )}
 
                     {activeSection === 'users' && (
-                        <div className="bg-white border border-gray-200">
-                            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+                        <div className="bg-white border border-gray-200 shadow-sm">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-10">
                                 <h3 className="font-serif text-xl">Registered Users</h3>
-                                <div className="text-xs uppercase tracking-widest text-gray-400">Total: {users.length}</div>
+                                <div className="text-xs uppercase tracking-widest text-gray-400">Total: {totalUsers}</div>
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="poise-table w-full text-left">
                                     <thead>
-                                        <tr className="bg-gray-50 border-b border-gray-100">
+                                        <tr className="bg-gray-50/50 border-b border-gray-100">
                                             <th>User</th>
                                             <th>Role</th>
                                             <th>Verified</th>
@@ -195,15 +204,22 @@ export default function AdminDashboardPage() {
                                     </thead>
                                     <tbody className="divide-y divide-gray-50">
                                         {loading ? (
-                                            <tr><td colSpan={5} className="p-8 text-center text-sm">Loading users...</td></tr>
+                                            <tr><td colSpan={5} className="p-12 text-center text-sm">
+                                                <div className="flex flex-col items-center space-y-4">
+                                                    <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                                                    <span className="uppercase tracking-widest text-xs font-semibold">Updating Directory...</span>
+                                                </div>
+                                            </td></tr>
+                                        ) : users.length === 0 ? (
+                                            <tr><td colSpan={5} className="p-12 text-center text-gray-400 uppercase tracking-widest text-xs font-semibold">No users found</td></tr>
                                         ) : users.map((u) => (
-                                            <tr key={u._id} className="hover:bg-gray-50 transition-colors">
+                                            <tr key={u._id} className="hover:bg-gray-50/80 transition-all duration-300">
                                                 <td className="p-4">
-                                                    <div className="font-bold text-sm">{u.name}</div>
+                                                    <div className="font-bold text-sm tracking-tight">{u.name}</div>
                                                     <div className="text-xs text-gray-400">{u.email}</div>
                                                 </td>
                                                 <td className="p-4">
-                                                    <span className={`px-2 py-1 text-[9px] uppercase tracking-wider rounded-sm ${u.role === 'ADMIN' ? 'bg-black text-white' : 'bg-gray-100 text-gray-600'}`}>
+                                                    <span className={`px-2 py-1 text-[9px] uppercase tracking-wider font-bold rounded-sm ${u.role === 'ADMIN' ? 'bg-black text-white' : 'bg-gray-100 text-gray-600'}`}>
                                                         {u.role}
                                                     </span>
                                                 </td>
@@ -220,16 +236,39 @@ export default function AdminDashboardPage() {
                                                 <td className="p-4">
                                                     <button
                                                         onClick={() => handleToggleBlock(u)}
-                                                        className={`flex items-center space-x-2 text-[10px] uppercase font-bold tracking-wider px-3 py-1 border transition-all ${u.isBlocked ? 'border-green-500 text-green-600 hover:bg-green-50' : 'border-red-200 text-red-400 hover:border-red-500 hover:text-red-600'}`}
+                                                        className={`flex items-center space-x-2 text-[10px] uppercase font-bold tracking-wider px-4 py-2 border transition-all duration-300 ${u.isBlocked ? 'border-green-500 text-green-600 hover:bg-green-500 hover:text-white' : 'border-red-200 text-red-500 hover:border-red-500 hover:bg-red-500 hover:text-white'}`}
                                                     >
                                                         {u.isBlocked ? <Unlock size={12} /> : <Lock size={12} />}
-                                                        <span>{u.isBlocked ? 'Unblock' : 'Block'}</span>
+                                                        <span>{u.isBlocked ? 'Unblock' : 'Block Access'}</span>
                                                     </button>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+                            </div>
+
+                            {/* Pagination */}
+                            <div className="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50/30">
+                                <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+                                    Page {currentPage} of {totalPages}
+                                </div>
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1 || loading}
+                                        className="px-4 py-2 border border-gray-200 text-[10px] uppercase tracking-widest font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all duration-300"
+                                    >
+                                        Previous
+                                    </button>
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages || loading}
+                                        className="px-4 py-2 border border-gray-200 text-[10px] uppercase tracking-widest font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all duration-300"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

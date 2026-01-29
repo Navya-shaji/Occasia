@@ -9,8 +9,8 @@ export class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-    async getAllUsers(): Promise<IUserResponse[]> {
-        return await this.userRepository.findAll();
+    async getAllUsers(page: number, limit: number): Promise<{ users: IUserResponse[]; total: number }> {
+        return await this.userRepository.findAll(page, limit);
     }
 
     async blockUser(userId: string): Promise<IUserResponse | null> {
