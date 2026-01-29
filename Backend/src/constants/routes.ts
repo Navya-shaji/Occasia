@@ -10,5 +10,12 @@ export const ROUTES = {
     VERIFY_OTP: '/verify-otp',
     RESEND_OTP: '/resend-otp',
     ADMIN_LOGIN: '/admin-login'
+  },
+
+  USERS: {
+    base: '/users',
+    GET_ALL: '/',
+    BLOCK: '/:userId/block',
+    UNBLOCK: '/:userId/unblock'
   }
 } as const;

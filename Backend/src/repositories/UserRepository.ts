@@ -18,4 +18,12 @@ export class UserRepository implements IUserRepository {
     async update(email: string, userData: Partial<IUser>): Promise<IUserResponse | null> {
         return await User.findOneAndUpdate({ email }, userData, { new: true });
     }
+
+    async findAll(): Promise<IUserResponse[]> {
+        return await User.find().select('-password');
+    }
+
+    async updateById(id: string, userData: Partial<IUser>): Promise<IUserResponse | null> {
+        return await User.findByIdAndUpdate(id, userData, { new: true });
+    }
 }

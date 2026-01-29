@@ -4,6 +4,11 @@ export const API_ROUTES = {
     RESEND_OTP: '/auth/resend-otp',
     LOGIN: '/auth/login',
     ADMIN_LOGIN: '/auth/admin-login',
+    USERS: {
+        GET_ALL: '/users',
+        BLOCK: '/users/:id/block',
+        UNBLOCK: '/users/:id/unblock'
+    }
 };
 
 export const APP_ROUTES = {
