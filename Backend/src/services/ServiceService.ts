@@ -31,9 +31,9 @@ export class ServiceService {
             ];
         }
         if (minPrice !== undefined || maxPrice !== undefined) {
-            query.price = {};
-            if (minPrice !== undefined) query.price.$gte = minPrice;
-            if (maxPrice !== undefined) query.price.$lte = maxPrice;
+            query.pricePerDay = {};
+            if (minPrice !== undefined) query.pricePerDay.$gte = minPrice;
+            if (maxPrice !== undefined) query.pricePerDay.$lte = maxPrice;
         }
 
         if (date) {
@@ -44,8 +44,8 @@ export class ServiceService {
 
         // Handle sorting
         let sortObj: any = {};
-        if (sort === 'priceLow') sortObj = { price: 1 };
-        else if (sort === 'priceHigh') sortObj = { price: -1 };
+        if (sort === 'priceLow') sortObj = { pricePerDay: 1 };
+        else if (sort === 'priceHigh') sortObj = { pricePerDay: -1 };
         else if (sort === 'newest') sortObj = { createdAt: -1 };
         else sortObj = { createdAt: -1 };
 

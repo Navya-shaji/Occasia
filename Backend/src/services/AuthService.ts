@@ -106,6 +106,11 @@ export class AuthService implements IAuthService {
 
         if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
 
+        // Prevent admin from logging in via user portal
+        if (user.role === Role.ADMIN) {
+            throw new Error('Admins must use the Admin Login portal');
+        }
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) throw new Error('Invalid credentials');
 

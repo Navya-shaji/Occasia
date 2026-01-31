@@ -17,6 +17,11 @@ const ServiceSchema: Schema<IServiceDocument> = new Schema(
             required: true,
             min: 0
         },
+        pricePerDay: {
+            type: Number,
+            required: true,
+            min: 0
+        },
         category: {
             type: String,
             required: true,
@@ -38,6 +43,11 @@ const ServiceSchema: Schema<IServiceDocument> = new Schema(
         unavailableDates: {
             type: [String],
             default: []
+        },
+        contactDetails: {
+            phone: { type: String, required: true },
+            email: { type: String, required: true },
+            address: { type: String }
         }
     },
     { timestamps: true }

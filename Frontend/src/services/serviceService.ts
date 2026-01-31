@@ -6,17 +6,28 @@ export interface Service {
     name: string;
     description: string;
     price: number;
+    pricePerDay: number;
     category: string;
     location: string;
     images: string[];
     isAvailable: boolean;
+    unavailableDates: string[];
+    contactDetails?: {
+        phone: string;
+        email: string;
+        address?: string;
+    };
     createdAt: string;
     updatedAt: string;
 }
 
 const serviceService = {
     createService: async (serviceData: any) => {
-        const response = await apiInstance.post(API_ROUTES.SERVICES.CREATE, serviceData);
+        const response = await apiInstance.post(API_ROUTES.SERVICES.CREATE, serviceData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     },
 
@@ -33,7 +44,11 @@ const serviceService = {
 
     updateService: async (id: string, serviceData: any) => {
         const url = API_ROUTES.SERVICES.UPDATE.replace(':id', id);
-        const response = await apiInstance.put(url, serviceData);
+        const response = await apiInstance.put(url, serviceData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     },
 

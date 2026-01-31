@@ -7,7 +7,16 @@ export class ServiceController {
 
     createService = async (req: Request, res: Response) => {
         try {
-            const service = await this.serviceService.createService(req.body);
+            const serviceData = req.body;
+
+            // Handle uploaded images
+            if (req.files && Array.isArray(req.files)) {
+                console.log('Uploaded files:', req.files);
+                serviceData.images = req.files.map((file: any) => file.path);
+                console.log('Mapped image paths:', serviceData.images);
+            }
+
+            const service = await this.serviceService.createService(serviceData);
             res.status(HTTP_STATUS.CREATED).json({
                 success: true,
                 message: 'Service created successfully',
@@ -89,7 +98,14 @@ export class ServiceController {
     updateService = async (req: Request, res: Response) => {
         try {
             const id = req.params.id as string;
-            const service = await this.serviceService.updateService(id, req.body);
+            const serviceData = req.body;
+
+            // Handle uploaded images
+            if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+                serviceData.images = req.files.map((file: any) => file.path);
+            }
+
+            const service = await this.serviceService.updateService(id, serviceData);
             if (!service) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({
                     success: false,

@@ -26,5 +26,13 @@ export const ROUTES = {
     CREATE: '/',
     UPDATE: '/:id',
     DELETE: '/:id'
+  },
+  BOOKINGS: {
+    BASE: '/bookings',
+    CREATE: '/',
+    GET_MY: '/my',
+    GET_ALL: '/all',
+    CANCEL: '/:id/cancel',
+    UPDATE_STATUS: '/:id/status'
   }
 } as const;
