@@ -56,7 +56,10 @@ export const sendOtpEmail = async (email: string, otp: string) => {
     await transporter.sendMail(mailOptions);
     console.log(`✅ Success: OTP email sent to ${email}`);
   } catch (error) {
-    console.log(`❌ Gmail Error: The email could not be sent to ${email}.`);
+    console.error(`❌ Gmail Error: The email could not be sent to ${email}.`);
+    console.error(`   Reason: ${(error as any).message}`);
+    console.log('   (If you are in development, you can use the OTP logged above)');
+    console.log('   (To fix email sending, update EMAIL_USER and EMAIL_PASS in backend/.env with valid Gmail App Password credentials)');
   }
 };
 
