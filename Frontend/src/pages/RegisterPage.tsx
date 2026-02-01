@@ -2,7 +2,7 @@ import eventHero from '../assets/event-hero.png';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import authService, { RegisterPayload } from '../services/authService';
 import { APP_ROUTES } from '../constants/routes';
@@ -31,63 +31,96 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="poise-grid">
-            {/* Image Section */}
-            <div
-                className="poise-image-section"
-                style={{ backgroundImage: `url(${eventHero})` }}
-            >
-                <div className="poise-brand-overlay fade-in">
-                    <div className="poise-brand-text">OCCASIA</div>
-                    <div className="text-[10px] uppercase tracking-[0.8em] mt-2 opacity-80 text-white pl-1">
-                        Premium Event Management
+        <div className="min-h-screen flex bg-white">
+            {/* Content Section - Clean Form */}
+            <div className="flex-1 flex flex-col justify-center px-4 sm:px-12 lg:px-24 bg-white">
+                <div className="max-w-md w-full mx-auto space-y-8">
+                    <div>
+                        <h2 className="text-3xl font-bold text-gray-900">Create an account</h2>
+                        <p className="mt-2 text-sm text-gray-600">
+                            Already have an account? <Link to={APP_ROUTES.LOGIN} className="font-medium text-blue-600 hover:text-blue-500">Sign in</Link>
+                        </p>
                     </div>
-                </div>
-                <div className="poise-image-overlay" style={{ background: 'rgba(0,0,0,0.4)' }} />
-            </div>
 
-            {/* Content Section */}
-            <div className="poise-content-section">
-                <div className="poise-form-container fade-in">
-                    <h1 className="poise-title font-serif">Host or Attend</h1>
-                    <p className="poise-subtitle">
-                        From grand galas to intimate gatherings.
-                        Occasia provides the tools to manage, discover, and experience extraordinary events.
-                    </p>
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                    Full Name
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('name')}
+                                        id="name"
+                                        type="text"
+                                        autoComplete="name"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+                                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+                            </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="poise-input-group">
-                            <label className="poise-label">Full Name</label>
-                            <input {...register('name')} className="poise-input" placeholder="e.g. Julian Montgomery" />
-                            {errors.name && <p className="poise-error">{errors.name.message}</p>}
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    Email address
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('email')}
+                                        id="email"
+                                        type="email"
+                                        autoComplete="email"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
+                                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+                            </div>
+
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('password')}
+                                        id="password"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+                                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+                            </div>
                         </div>
 
-                        <div className="poise-input-group">
-                            <label className="poise-label">Email Address</label>
-                            <input {...register('email')} className="poise-input" placeholder="julian@ocasia-events.com" />
-                            {errors.email && <p className="poise-error">{errors.email.message}</p>}
-                        </div>
-
-                        <div className="poise-input-group">
-                            <label className="poise-label">Password</label>
-                            <input {...register('password')} type="password" className="poise-input" placeholder="••••••••" />
-                            {errors.password && <p className="poise-error">{errors.password.message}</p>}
-                        </div>
-
-                        <button disabled={loading} type="submit" className="poise-btn">
-                            {loading ? 'Setting up stage...' : 'Register for Occasia'}
-                        </button>
-
-                        <div className="poise-footer-link">
+                        <div>
                             <button
-                                type="button"
-                                onClick={() => navigate(APP_ROUTES.LOGIN)}
-                                className="poise-link"
+                                type="submit"
+                                disabled={loading}
+                                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                Already joined? Sign in
+                                {loading ? 'Creating account...' : 'Create Account'}
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            {/* Image Section - Simplified */}
+            <div className="hidden lg:flex lg:w-1/2 relative bg-blue-600">
+                <img
+                    src={eventHero}
+                    alt="Register Cover"
+                    className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50"
+                />
+                <div className="relative z-10 flex flex-col justify-center px-12 text-white">
+                    <h2 className="text-4xl font-bold mb-6">Join Occasia</h2>
+                    <p className="text-lg text-blue-100 max-w-md">
+                        Start your journey with the world's most premium event management platform.
+                    </p>
                 </div>
             </div>
         </div>

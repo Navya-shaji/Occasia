@@ -76,7 +76,13 @@ export class AuthService implements IAuthService {
             otpExpires: undefined
         });
 
-        return { id: user._id, name: user.name, email: user.email, role: user.role };
+        const token = jwt.sign(
+            { id: user._id, name: user.name, role: user.role },
+            process.env.JWT_SECRET || 'fallback_secret',
+            { expiresIn: '1d' }
+        );
+
+        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
     }
 
     async resendOtp(email: string) {
@@ -99,7 +105,11 @@ export class AuthService implements IAuthService {
         const user = await this.userRepository.findByEmail(email);
 
         if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
-        if (!user.isVerified) throw new Error('Please verify your email before logging in');
+
+        // Prevent admin from logging in via user portal
+        if (user.role === Role.ADMIN) {
+            throw new Error('Admins must use the Admin Login portal');
+        }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) throw new Error('Invalid credentials');

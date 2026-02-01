@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
 import authService from '../services/authService';
@@ -27,7 +27,7 @@ export default function LoginPage() {
             localStorage.setItem('token', response.data.token);
 
             toast.success(`Welcome back, ${response.data.name}`);
-            navigate(APP_ROUTES.DASHBOARD);
+            navigate('/');
         } catch (error: any) {
             toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
         } finally {
@@ -36,71 +36,95 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="poise-grid">
-            <div
-                className="poise-image-section"
-                style={{ backgroundImage: `url(${eventHero})` }}
-            >
-                <div className="poise-brand-overlay fade-in">
-                    <div className="poise-brand-text">OCCASIA</div>
-                    <div className="text-[10px] uppercase tracking-[0.8em] mt-2 opacity-80 text-white pl-1">
-                        Premium Event Management
-                    </div>
+        <div className="min-h-screen flex bg-white">
+            {/* Image Section - Simplified */}
+            <div className="hidden lg:flex lg:w-1/2 relative bg-blue-600">
+                <img
+                    src={eventHero}
+                    alt="Login Cover"
+                    className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50"
+                />
+                <div className="relative z-10 flex flex-col justify-center px-12 text-white">
+                    <h2 className="text-4xl font-bold mb-6">Welcome Back to Occasia</h2>
+                    <p className="text-lg text-blue-100 max-w-md">
+                        Log in to manage your events, view your bookings, and explore premium services.
+                    </p>
                 </div>
-                <div className="poise-image-overlay" style={{ background: 'rgba(0,0,0,0.4)' }} />
             </div>
 
-            <div className="poise-content-section">
-                <div className="poise-form-container fade-in">
-                    <h1 className="poise-title font-serif">Welcome Back</h1>
-                    <p className="poise-subtitle">
-                        Sign in to continue your curated event management journey.
-                        Your aesthetic, perfectly preserved.
-                    </p>
+            {/* Content Section - Clean Form */}
+            <div className="flex-1 flex flex-col justify-center px-4 sm:px-12 lg:px-24 bg-white">
+                <div className="max-w-md w-full mx-auto space-y-8">
+                    <div>
+                        <h2 className="text-3xl font-bold text-gray-900">Sign in to your account</h2>
+                        <p className="mt-2 text-sm text-gray-600">
+                            Or <Link to={APP_ROUTES.REGISTER} className="font-medium text-blue-600 hover:text-blue-500">create a new account</Link>
+                        </p>
+                    </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="poise-input-group">
-                            <label className="poise-label">Email Address</label>
-                            <input {...register('email')} className="poise-input" placeholder="mikayla@poise.com" />
-                            {errors.email && <p className="poise-error">{errors.email.message}</p>}
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    Email address
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('email')}
+                                        id="email"
+                                        type="email"
+                                        autoComplete="email"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
+                                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+                            </div>
+
+                            <div>
+                                <div className="flex justify-between items-center">
+                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                        Password
+                                    </label>
+                                    <div className="text-sm">
+                                        <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                                            Forgot your password?
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('password')}
+                                        id="password"
+                                        type="password"
+                                        autoComplete="current-password"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+                                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+                            </div>
                         </div>
 
-                        <div className="poise-input-group">
-                            <label className="poise-label">Password</label>
-                            <input {...register('password')} type="password" className="poise-input" placeholder="••••••••" />
-                            {errors.password && <p className="poise-error">{errors.password.message}</p>}
-                        </div>
-
-                        <div className="flex justify-end mb-6">
-                            <button type="button" className="poise-link">
-                                Forgot Password?
-                            </button>
-                        </div>
-
-                        <button disabled={loading} type="submit" className="poise-btn">
-                            {loading ? 'Authenticating...' : 'Sign In'}
-                        </button>
-
-                        <div className="poise-footer-link">
+                        <div>
                             <button
-                                type="button"
-                                onClick={() => navigate(APP_ROUTES.REGISTER)}
-                                className="poise-link"
+                                type="submit"
+                                disabled={loading}
+                                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                Not a member? Join OCCASIA
-                            </button>
-                        </div>
-
-                        <div className="poise-footer-link" style={{ marginTop: '10px' }}>
-                            <button
-                                type="button"
-                                onClick={() => navigate(APP_ROUTES.ADMIN_LOGIN)}
-                                className="poise-link"
-                            >
-                                Admin Access
+                                {loading ? 'Signing in...' : 'Sign in'}
                             </button>
                         </div>
                     </form>
+
+                    <div className="mt-6 text-center">
+                        <Link
+                            to={APP_ROUTES.ADMIN_LOGIN}
+                            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            Admin Access
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

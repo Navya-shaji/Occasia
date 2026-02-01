@@ -38,6 +38,10 @@ const UserSchema: Schema<IUserDocument> = new Schema(
     isVerified: {
       type: Boolean,
       default: false
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

@@ -56,9 +56,41 @@ export const sendOtpEmail = async (email: string, otp: string) => {
     await transporter.sendMail(mailOptions);
     console.log(`✅ Success: OTP email sent to ${email}`);
   } catch (error) {
-    console.log(`❌ Gmail Error: The email could not be sent to ${email}.`);
-    console.log(`👉 REASON: Your Gmail App Password in .env is likely invalid or missing a character.`);
-    console.log(`👉 FIX: Generate a 16-character App Password at: https://myaccount.google.com/apppasswords`);
-    console.log(`👉 NOTE: You can still use the OTP shown in the box above to proceed!\n`);
+    console.error(`❌ Gmail Error: The email could not be sent to ${email}.`);
+    console.error(`   Reason: ${(error as any).message}`);
+    console.log('   (If you are in development, you can use the OTP logged above)');
+    console.log('   (To fix email sending, update EMAIL_USER and EMAIL_PASS in backend/.env with valid Gmail App Password credentials)');
+  }
+};
+
+export const sendBookingConfirmation = async (email: string, bookingDetails: any) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: `Booking Confirmed: ${bookingDetails.serviceName}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 10px;">
+        <h2 style="color: #6366f1; text-align: center;">Booking Confirmation</h2>
+        <p style="font-size: 16px; color: #555;">Hi there,</p>
+        <p style="font-size: 16px; color: #555;">We are excited to confirm your booking for <strong>${bookingDetails.serviceName}</strong>.</p>
+        
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <p style="margin: 5px 0;"><strong>Timeline:</strong> ${bookingDetails.startDate} to ${bookingDetails.endDate}</p>
+            <p style="margin: 5px 0;"><strong>Total Valuation:</strong> $${bookingDetails.totalPrice}</p>
+            <p style="margin: 5px 0;"><strong>Status:</strong> ${bookingDetails.status}</p>
+        </div>
+
+        <p style="font-size: 14px; color: #777;">Our concierge team will reach out to you shortly to discuss further details.</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 12px; color: #999; text-align: center;">&copy; 2026 Occasia Prestige Services.</p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Success: Booking confirmation sent to ${email}`);
+  } catch (error) {
+    console.log(`❌ Error: Could not send booking confirmation to ${email}`);
   }
 };
