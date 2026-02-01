@@ -141,7 +141,7 @@ export default function MyBookingsPage() {
                                     <div className="md:w-64 h-48 md:h-auto relative bg-gray-100">
                                         {booking.service?.images?.[0] ? (
                                             <img
-                                                src={booking.service.images[0].startsWith('http') ? booking.service.images[0] : `http://localhost:1212${booking.service.images[0]}`}
+                                                src={booking.service.images[0].startsWith('http') ? booking.service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service.images[0]}`}
                                                 alt={booking.service?.name}
                                                 className="w-full h-full object-cover"
                                             />

@@ -128,7 +128,7 @@ export default function ServiceDetailsPage() {
                             <div className="aspect-[16/9] w-full bg-gray-100 rounded-2xl overflow-hidden relative">
                                 {service.images?.[0] ? (
                                     <img
-                                        src={service.images[0].startsWith('http') ? service.images[0] : `http://localhost:1212${service.images[0]}`}
+                                        src={service.images[0].startsWith('http') ? service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${service.images[0]}`}
                                         alt={service.name}
                                         className="w-full h-full object-cover"
                                     />
@@ -147,7 +147,7 @@ export default function ServiceDetailsPage() {
                                     {service.images.slice(1, 5).map((img, i) => (
                                         <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity bg-gray-100">
                                             <img
-                                                src={img.startsWith('http') ? img : `http://localhost:1212${img}`}
+                                                src={img.startsWith('http') ? img : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${img}`}
                                                 className="w-full h-full object-cover"
                                                 alt={`Gallery ${i}`}
                                             />

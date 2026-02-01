@@ -190,7 +190,7 @@ export default function ServicesPage() {
                                         <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
                                             {service.images?.[0] ? (
                                                 <img
-                                                    src={service.images[0].startsWith('http') ? service.images[0] : `http://localhost:1212${service.images[0]}`}
+                                                    src={service.images[0].startsWith('http') ? service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${service.images[0]}`}
                                                     alt={service.name}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />
