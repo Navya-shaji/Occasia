@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/slices/authSlice';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
 import authService from '../services/authService';
@@ -12,6 +14,7 @@ import { loginSchema, LoginFormData } from '../validations/authValidation';
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -23,8 +26,11 @@ export default function LoginPage() {
             const response = await authService.login(data);
 
             // Store simple auth state
-            localStorage.setItem('user', JSON.stringify(response.data));
-            localStorage.setItem('token', response.data.token);
+            // Update Redux state immediately
+            dispatch(setCredentials({
+                user: response.data,
+                accessToken: response.data.token
+            }));
 
             toast.success(`Welcome back, ${response.data.name}`);
             navigate('/');

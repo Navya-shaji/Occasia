@@ -43,6 +43,29 @@ export class BookingController {
         }
     };
 
+    getBookingById = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+            const bookingId = req.params.id as string;
+            const booking = await this.bookingService.getBookingById(bookingId, userId);
+
+            if (!booking) {
+                res.status(HTTP_STATUS.NOT_FOUND).json({ success: false, message: 'Booking not found' });
+                return;
+            }
+
+            res.status(HTTP_STATUS.OK).json({
+                success: true,
+                data: booking
+            });
+        } catch (error: any) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                success: false,
+                message: error.message
+            });
+        }
+    };
+
     getAllBookings = async (req: Request, res: Response) => {
         try {
             const bookings = await this.bookingService.getAllBookings();

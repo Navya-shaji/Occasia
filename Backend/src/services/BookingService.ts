@@ -82,6 +82,18 @@ export class BookingService implements IBookingService {
         return await this.bookingRepository.findAll();
     }
 
+    async getBookingById(bookingId: string, userId: string): Promise<IBookingDocument | null> {
+        const booking = await this.bookingRepository.findById(bookingId);
+        if (!booking) return null;
+
+        // Ensure user owns the booking (unless admin, but logic here assumes simpler checks)
+        // For simplicity allow if match, controller can handle logic
+        if ((booking.user as any)._id.toString() !== userId) {
+            throw new Error("Unauthorized access to booking");
+        }
+        return booking;
+    }
+
     async cancelBooking(bookingId: string, userId: string): Promise<IBookingDocument> {
         const booking = await this.bookingRepository.findById(bookingId);
         if (!booking) {

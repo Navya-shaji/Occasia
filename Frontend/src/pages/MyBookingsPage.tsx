@@ -204,7 +204,7 @@ export default function MyBookingsPage() {
                                                     </button>
                                                 )}
                                                 <Link
-                                                    to={APP_ROUTES.SERVICE_DETAILS.replace(':id', booking.service?._id)}
+                                                    to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking._id)}
                                                     className="flex-1 sm:flex-none px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors text-center"
                                                 >
                                                     View Details

@@ -11,6 +11,7 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import ServicesPage from './pages/ServicesPage';
 import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import MyBookingsPage from './pages/MyBookingsPage';
+import BookingDetailsPage from './pages/BookingDetailsPage';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import GuestRoute from './components/GuestRoute';
 import { APP_ROUTES } from './constants/routes';
@@ -57,6 +58,12 @@ function AppContent() {
                     <Route path={APP_ROUTES.MY_BOOKINGS} element={
                         <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
                             <MyBookingsPage />
+                        </RoleProtectedRoute>
+                    } />
+
+                    <Route path={APP_ROUTES.BOOKING_DETAILS} element={
+                        <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
+                            <BookingDetailsPage />
                         </RoleProtectedRoute>
                     } />
 
