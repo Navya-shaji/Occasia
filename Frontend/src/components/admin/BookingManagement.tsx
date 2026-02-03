@@ -49,98 +49,82 @@ export default function BookingManagement() {
     );
 
     return (
-        <div className="space-y-8 fade-in">
-            {/* Header Section */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center">
-                        <ClipboardList className="text-indigo-600" size={24} />
-                    </div>
-                    <div>
-                        <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Booking Manifest</h2>
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-1">
-                            Total Registered: <span className="text-indigo-600 ml-1">{bookings.length}</span>
-                        </p>
-                    </div>
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2 text-gray-900">
+                    <ClipboardList size={20} />
+                    <h3 className="text-lg font-bold">Total Bookings: {bookings.length}</h3>
                 </div>
-
-                <div className="flex items-center space-x-4 w-full lg:w-auto">
-                    <div className="relative group flex-1 lg:w-80">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
-                        <input
-                            type="text"
-                            placeholder="Search by User, Service or ID..."
-                            className="search-input-premium w-full outline-none"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
+                <div className="relative w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                        type="text"
+                        placeholder="Search bookings..."
+                        className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                 </div>
             </div>
 
-            {/* Table Container */}
-            <div className="user-table-container">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="user-table text-left">
-                        <thead>
+                    <table className="w-full text-left text-sm text-gray-500">
+                        <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
                             <tr>
-                                <th className="px-6 py-4">Transaction ID</th>
-                                <th className="px-6 py-4">Client Detail</th>
-                                <th className="px-6 py-4">Service Experience</th>
-                                <th className="px-6 py-4">Timeline</th>
-                                <th className="px-6 py-4">Valuation</th>
+                                <th className="px-6 py-4">Booking ID</th>
+                                <th className="px-6 py-4">User</th>
+                                <th className="px-6 py-4">Service</th>
+                                <th className="px-6 py-4">Dates</th>
+                                <th className="px-6 py-4">Amount</th>
                                 <th className="px-6 py-4">Status</th>
                                 <th className="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-gray-200">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={7} className="py-24 text-center">
-                                        <div className="flex flex-col items-center">
-                                            <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Synchronizing Registry...</p>
-                                        </div>
+                                    <td colSpan={7} className="px-6 py-12 text-center">
+                                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                                     </td>
                                 </tr>
                             ) : filteredBookings.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="py-24 text-center">
-                                        <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">No matching transaction records found.</div>
+                                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
+                                        No bookings found.
                                     </td>
                                 </tr>
                             ) : (
                                 filteredBookings.map((booking) => (
-                                    <tr key={booking._id} className="hover:bg-slate-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <span className="text-[10px] font-black text-indigo-400 tracking-tighter">#BK-{booking._id.slice(-6).toUpperCase()}</span>
+                                    <tr key={booking._id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4 font-mono text-xs text-gray-400">
+                                            #{booking._id.slice(-6).toUpperCase()}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div>
-                                                <div className="font-bold text-slate-800 text-sm tracking-tight">{booking.user?.name || 'Unknown'}</div>
-                                                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{booking.user?.email || 'N/A'}</div>
+                                                <div className="font-semibold text-gray-900">{booking.user?.name || 'Unknown'}</div>
+                                                <div className="text-xs text-gray-400">{booking.user?.email || 'N/A'}</div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div>
-                                                <div className="font-bold text-slate-800 text-sm tracking-tight">{booking.service?.name || 'Service Deleted'}</div>
-                                                <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-tighter">{booking.service?.category}</div>
+                                                <div className="font-semibold text-gray-900">{booking.service?.name || 'Deleted'}</div>
+                                                <div className="text-xs text-gray-400">{booking.service?.category}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-[10px] font-black uppercase text-slate-500">
-                                                {new Date(booking.startDate).toLocaleDateString()}
-                                                <span className="mx-2 text-slate-300">→</span>
-                                                {new Date(booking.endDate).toLocaleDateString()}
-                                            </div>
+                                        <td className="px-6 py-4 text-xs">
+                                            {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 font-bold text-gray-900">
+                                            ₹{booking.totalPrice}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="font-bold text-slate-900 text-sm">₹{booking.totalPrice}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className={`status-pill ${getStatusStyle(booking.status)}`}>
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${booking.status === 'CONFIRMED' ? 'bg-green-50 text-green-700 border-green-100' :
+                                                    booking.status === 'CANCELLED' ? 'bg-red-50 text-red-700 border-red-100' :
+                                                        'bg-yellow-50 text-yellow-700 border-yellow-100'
+                                                }`}>
                                                 {booking.status}
-                                            </div>
+                                            </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end space-x-2">
@@ -148,15 +132,15 @@ export default function BookingManagement() {
                                                     <>
                                                         <button
                                                             onClick={() => handleUpdateStatus(booking._id, 'CONFIRMED')}
-                                                            className="p-2 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all"
-                                                            title="Confirm Booking"
+                                                            className="p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors"
+                                                            title="Confirm"
                                                         >
                                                             <CheckCircle2 size={18} />
                                                         </button>
                                                         <button
                                                             onClick={() => handleUpdateStatus(booking._id, 'CANCELLED')}
-                                                            className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-all"
-                                                            title="Reject Booking"
+                                                            className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                            title="Cancel"
                                                         >
                                                             <XCircle size={18} />
                                                         </button>

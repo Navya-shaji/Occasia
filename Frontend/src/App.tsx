@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyOtpPage from './pages/VerifyOtpPage';
-import DashboardPage from './pages/DashboardPage';
+
 import LoginPage from './pages/LoginPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
@@ -48,12 +48,7 @@ function AppContent() {
                         </RoleProtectedRoute>
                     } />
 
-                    {/* User Routes */}
-                    <Route path={APP_ROUTES.DASHBOARD} element={
-                        <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
-                            <DashboardPage />
-                        </RoleProtectedRoute>
-                    } />
+
 
                     <Route path={APP_ROUTES.MY_BOOKINGS} element={
                         <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>

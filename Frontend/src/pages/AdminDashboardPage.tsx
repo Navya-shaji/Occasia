@@ -37,28 +37,28 @@ export default function AdminDashboardPage() {
     };
 
     return (
-        <div className="flex h-screen bg-[#f8fafc] overflow-hidden">
-            {/* Sidebar - Command Center */}
-            <aside className="w-80 bg-slate-900 flex flex-col flex-shrink-0 animate-in slide-in-from-left duration-500">
-                <div className="h-24 flex items-center px-10 border-b border-white/5">
-                    <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center border border-white/10 shadow-lg shadow-indigo-500/20">
-                            <Shield className="text-white" size={24} />
+        <div className="flex h-screen bg-gray-50 overflow-hidden">
+            {/* Sidebar - Simple & Clean */}
+            <aside className="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
+                <div className="h-20 flex items-center px-8 border-b border-gray-100">
+                    <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+                            <Shield className="text-white" size={18} />
                         </div>
-                        <span className="text-xl font-serif text-white tracking-[.4em] font-light italic">OCCASIA</span>
+                        <span className="text-lg font-bold text-gray-900 tracking-tight">OCCASIA</span>
                     </div>
                 </div>
 
-                <nav className="flex-1 py-10 px-6 space-y-2">
+                <nav className="flex-1 py-6 px-4 space-y-1">
                     {[
-                        { id: 'users', icon: Users, label: 'Subject Registry' },
-                        { id: 'services', icon: Package, label: 'Service Catalog' },
-                        { id: 'bookings', icon: ClipboardList, label: 'Booking Manifest' },
+                        { id: 'users', icon: Users, label: 'Users' },
+                        { id: 'services', icon: Package, label: 'Services' },
+                        { id: 'bookings', icon: ClipboardList, label: 'Bookings' },
                     ].map((item) => (
                         <button
                             key={item.id}
                             onClick={() => setActiveSection(item.id)}
-                            className={`w-full flex items-center space-x-4 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeSection === item.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'}`}
+                            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${activeSection === item.id ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                         >
                             <item.icon size={18} />
                             <span>{item.label}</span>
@@ -66,54 +66,43 @@ export default function AdminDashboardPage() {
                     ))}
                 </nav>
 
-                <div className="p-8 space-y-4">
-                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 space-y-4">
-                        <div className="flex items-center space-x-3 text-white/40">
-                            <Activity size={14} />
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Authority Console</span>
+                <div className="p-4 border-t border-gray-100">
+                    <div className="flex items-center space-x-3 px-4 py-3">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-xs uppercase">
+                            {user.name?.substring(0, 1) || 'A'}
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            className="w-full py-4 bg-white/5 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 border border-white/5 hover:border-rose-500/20 rounded-2xl transition-all text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center space-x-2"
-                        >
-                            <LogOut size={14} />
-                            <span>Terminate Access</span>
-                        </button>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-gray-900 truncate">{user.name || 'Admin'}</p>
+                            <p className="text-xs text-gray-500 truncate">Administrator</p>
+                        </div>
                     </div>
+                    <button
+                        onClick={handleLogout}
+                        className="mt-2 w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                        <LogOut size={18} />
+                        <span>Logout</span>
+                    </button>
                 </div>
             </aside>
 
-            {/* Main Operational Surface */}
-            <main className="flex-1 flex flex-col overflow-y-auto custom-scrollbar">
-                <header className="h-24 px-12 flex items-center justify-between sticky top-0 bg-white/90 backdrop-blur-xl z-20 border-b border-slate-100">
-                    <div className="space-y-1">
-                        <p className="text-[10px] font-black text-indigo-500 uppercase tracking-[.4em]">Administrative Oversight</p>
-                        <h2 className="text-3xl font-bold text-slate-900 tracking-tight leading-none uppercase">
-                            {activeSection === 'users' ? 'Subject Registry' : activeSection === 'services' ? 'Service Catalog' : 'Booking Manifest'}
-                        </h2>
-                    </div>
+            {/* Main Surface */}
+            <main className="flex-1 flex flex-col overflow-y-auto">
+                <header className="h-20 px-8 flex items-center justify-between sticky top-0 bg-white shadow-sm z-20">
+                    <h2 className="text-xl font-bold text-gray-900">
+                        {activeSection === 'users' ? 'User Management' : activeSection === 'services' ? 'Service Management' : 'Booking Management'}
+                    </h2>
 
-                    <div className="flex items-center space-x-8">
-                        <div className="hidden lg:flex items-center space-x-6">
-                            <button className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-colors border border-slate-100">
-                                <Search size={18} />
-                            </button>
-                            <div className="h-8 w-[1px] bg-slate-100" />
-                        </div>
-
-                        <div className="flex items-center space-x-4 pl-4 border-l border-slate-100">
-                            <div className="text-right">
-                                <div className="text-sm font-bold text-slate-900">{user.name || 'Admin'}</div>
-                                <div className="text-[10px] text-slate-400 uppercase font-black tracking-widest opacity-60">Master Authority</div>
-                            </div>
-                            <div className="h-12 w-12 bg-gradient-to-tr from-slate-200 to-slate-300 rounded-2xl flex items-center justify-center text-xs font-black text-slate-700 border border-white shadow-sm">
-                                {user.name?.substring(0, 2).toUpperCase() || 'AD'}
-                            </div>
-                        </div>
+                    <div className="flex items-center space-x-4">
+                        <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                            <Bell size={20} />
+                        </button>
+                        <div className="h-6 w-px bg-gray-200" />
+                        <span className="text-sm font-medium text-gray-700">Admin Panel</span>
                     </div>
                 </header>
 
-                <div className="p-12 animate-in fade-in duration-700">
+                <div className="p-8">
                     {activeSection === 'users' && <UserManagement />}
                     {activeSection === 'services' && <ServiceManagement />}
                     {activeSection === 'bookings' && <BookingManagement />}
