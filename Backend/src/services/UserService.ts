@@ -10,14 +10,14 @@ export class UserService implements IUserService {
     }
 
     async getAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
-        return await this.userRepository.findAll(page, limit, search, status);
+        return await this.userRepository.findAllUsers(page, limit, search, status);
     }
 
     async blockUser(userId: string): Promise<IUserResponse | null> {
-        return await this.userRepository.updateById(userId, { isBlocked: true });
+        return await this.userRepository.update(userId, { isBlocked: true });
     }
 
     async unblockUser(userId: string): Promise<IUserResponse | null> {
-        return await this.userRepository.updateById(userId, { isBlocked: false });
+        return await this.userRepository.update(userId, { isBlocked: false });
     }
 }

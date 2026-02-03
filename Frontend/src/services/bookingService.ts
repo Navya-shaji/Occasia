@@ -24,6 +24,12 @@ const bookingService = {
         return response.data;
     },
 
+    getBookingById: async (id: string) => {
+        const url = API_ROUTES.BOOKINGS.GET_BY_ID.replace(':id', id);
+        const response = await apiInstance.get(url);
+        return response.data;
+    },
+
     getAllBookings: async () => {
         const response = await apiInstance.get(API_ROUTES.BOOKINGS.GET_ALL);
         return response.data;

@@ -21,6 +21,7 @@ export const API_ROUTES = {
         BASE: '/bookings',
         CREATE: '/bookings',
         GET_MY: '/bookings/my',
+        GET_BY_ID: '/bookings/:id',
         GET_ALL: '/bookings/all',
         CANCEL: '/bookings/:id/cancel',
         UPDATE_STATUS: '/bookings/:id/status'
@@ -37,4 +38,5 @@ export const APP_ROUTES = {
     SERVICES: '/services',
     SERVICE_DETAILS: '/services/:id',
     MY_BOOKINGS: '/my-bookings',
+    BOOKING_DETAILS: '/bookings/:id',
 };

@@ -31,6 +31,7 @@ export const ROUTES = {
     BASE: '/bookings',
     CREATE: '/',
     GET_MY: '/my',
+    GET_BY_ID: '/:id',
     GET_ALL: '/all',
     CANCEL: '/:id/cancel',
     UPDATE_STATUS: '/:id/status'

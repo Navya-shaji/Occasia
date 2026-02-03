@@ -1,27 +1,22 @@
-import User from '../models/user.model';
+import User, { IUserDocument } from '../models/user.model';
 import { IUser, IUserResponse } from '../interface/user.interface';
 import { IUserRepository } from '../interface/repositories/IUserRepository';
+import { BaseRepository } from './BaseRepository';
 
-export class UserRepository implements IUserRepository {
-    async findByEmail(email: string): Promise<IUserResponse | null> {
-        return await User.findOne({ email });
+export class UserRepository extends BaseRepository<IUserDocument> implements IUserRepository {
+    constructor() {
+        super(User);
     }
 
-    async findById(id: string): Promise<IUserResponse | null> {
-        return await User.findById(id);
+    async findByEmail(email: string): Promise<IUserDocument | null> {
+        return await this.model.findOne({ email });
     }
 
-    async create(userData: Partial<IUser>): Promise<IUserResponse> {
-        return await User.create(userData);
+    async updateByEmail(email: string, userData: Partial<IUser>): Promise<IUserDocument | null> {
+        return await this.model.findOneAndUpdate({ email }, userData, { new: true });
     }
 
-    async update(email: string, userData: Partial<IUser>): Promise<IUserResponse | null> {
-        return await User.findOneAndUpdate({ email }, userData, { new: true });
-    }
-
-
-
-    async findAll(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
+    async findAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
         const skip = (page - 1) * limit;
         const query: any = {};
 
@@ -36,12 +31,8 @@ export class UserRepository implements IUserRepository {
             query.isBlocked = status === 'blocked';
         }
 
-        const total = await User.countDocuments(query);
-        const users = await User.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
+        const total = await this.model.countDocuments(query);
+        const users = await this.model.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
         return { users, total };
-    }
-
-    async updateById(id: string, userData: Partial<IUser>): Promise<IUserResponse | null> {
-        return await User.findByIdAndUpdate(id, userData, { new: true });
     }
 }

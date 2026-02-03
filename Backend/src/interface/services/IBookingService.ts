@@ -5,5 +5,6 @@ export interface IBookingService {
     getUserBookings(userId: string): Promise<IBookingDocument[]>;
     getAllBookings(): Promise<IBookingDocument[]>;
     cancelBooking(bookingId: string, userId: string): Promise<IBookingDocument>;
+    getBookingById(bookingId: string, userId: string): Promise<IBookingDocument | null>;
     updateBookingStatus(bookingId: string, status: string): Promise<IBookingDocument>;
 }
