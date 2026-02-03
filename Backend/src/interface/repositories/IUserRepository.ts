@@ -1,10 +1,9 @@
 import { IUser, IUserResponse } from '../user.interface';
+import { IBaseRepository } from './IBaseRepository';
+import { IUserDocument } from '../../models/user.model';
 
-export interface IUserRepository {
-    findByEmail(email: string): Promise<IUserResponse | null>;
-    findById(id: string): Promise<IUserResponse | null>;
-    create(userData: Partial<IUser>): Promise<IUserResponse>;
-    update(email: string, userData: Partial<IUser>): Promise<IUserResponse | null>;
-    findAll(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }>;
-    updateById(id: string, userData: Partial<IUser>): Promise<IUserResponse | null>;
+export interface IUserRepository extends IBaseRepository<IUserDocument> {
+    findByEmail(email: string): Promise<IUserDocument | null>;
+    updateByEmail(email: string, userData: Partial<IUser>): Promise<IUserDocument | null>;
+    findAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }>;
 }

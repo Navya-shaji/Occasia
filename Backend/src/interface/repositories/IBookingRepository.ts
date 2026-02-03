@@ -1,9 +1,7 @@
 import { IBooking, IBookingDocument } from '../booking.interface';
+import { IBaseRepository } from './IBaseRepository';
 
-export interface IBookingRepository {
-    create(bookingData: Partial<IBooking>): Promise<IBookingDocument>;
-    findById(id: string): Promise<IBookingDocument | null>;
-    findAll(query?: any): Promise<IBookingDocument[]>;
+export interface IBookingRepository extends IBaseRepository<IBookingDocument> {
     findByUserId(userId: string): Promise<IBookingDocument[]>;
     updateStatus(id: string, status: string): Promise<IBookingDocument | null>;
 }

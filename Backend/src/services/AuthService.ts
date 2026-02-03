@@ -35,7 +35,7 @@ export class AuthService implements IAuthService {
                 throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                await this.userRepository.update(email, {
+                await this.userRepository.updateByEmail(email, {
                     name,
                     password: hashedPassword,
                     role,
@@ -70,7 +70,7 @@ export class AuthService implements IAuthService {
         if (user.otp !== otp) throw new Error('Invalid OTP');
         if (user.otpExpires && user.otpExpires < new Date()) throw new Error('OTP expired');
 
-        await this.userRepository.update(email, {
+        await this.userRepository.updateByEmail(email, {
             isVerified: true,
             otp: undefined,
             otpExpires: undefined
@@ -94,7 +94,7 @@ export class AuthService implements IAuthService {
         const otp = this.generateOtp();
         const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-        await this.userRepository.update(email, { otp, otpExpires });
+        await this.userRepository.updateByEmail(email, { otp, otpExpires });
         await sendOtpEmail(email, otp);
 
         return { message: 'OTP resent successfully' };
