@@ -1,16 +1,19 @@
-import eventHero from '../assets/event-hero.png';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/slices/authSlice';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
 import authService from '../services/authService';
 import { loginSchema, LoginFormData } from '../validations/authValidation';
+import { Shield, Lock, Mail } from 'lucide-react';
 
 export default function AdminLoginPage() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -21,102 +24,96 @@ export default function AdminLoginPage() {
         try {
             const response = await authService.adminLogin(data);
 
-            localStorage.setItem('user', JSON.stringify(response.data));
-            localStorage.setItem('token', response.data.token);
+            // Store credentials in Redux and LocalStorage (handled by slice)
+            dispatch(setCredentials({
+                user: response.data,
+                accessToken: response.data.token
+            }));
 
-            toast.success(`Welcome, Admin ${response.data.name}`);
+            toast.success(`Welcome back, ${response.data.name}`);
             navigate(APP_ROUTES.ADMIN_DASHBOARD);
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
+            toast.error(error.response?.data?.message || 'Admin login failed. Please check your credentials.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-slate-900 overflow-hidden">
-            {/* Image Section - Dark Authority */}
-            <div className="hidden lg:block relative overflow-hidden group">
-                <img
-                    src={eventHero}
-                    alt="Control Center"
-                    className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 scale-110 group-hover:scale-100 transition-transform duration-[5000ms]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900/40 to-transparent" />
-
-                <div className="absolute top-12 left-12 space-y-2 animate-in fade-in slide-in-from-left duration-1000">
-                    <div className="flex items-center space-x-3 text-white italic">
-                        <div className="w-12 h-12 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-2xl flex items-center justify-center shadow-2xl">
-                            <span className="font-serif text-2xl font-bold">O</span>
-                        </div>
-                        <span className="text-4xl font-serif tracking-[.4em] font-light">OCCASIA</span>
-                    </div>
-                </div>
-
-                <div className="absolute bottom-12 left-12 right-12 p-10 bg-black/60 backdrop-blur-2xl rounded-[3rem] border border-white/5 space-y-4">
-                    <div className="inline-block px-4 py-1.5 bg-indigo-500 rounded-full text-[8px] font-black uppercase tracking-[0.3em] text-white mb-2">Authority Portal</div>
-                    <h3 className="text-3xl font-bold text-white tracking-tight">Executive Management Oversight</h3>
-                    <p className="text-white/40 text-sm leading-relaxed max-w-sm font-medium">Secure access to Occasia's core operational systems. Authorized personnel only. Your access is heavily audited.</p>
-                </div>
+        <div className="min-h-screen w-full flex items-center justify-center bg-slate-950 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            {/* Dark Professional Decorations */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+                <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] rounded-full bg-blue-900/10 blur-[120px]" />
+                <div className="absolute bottom-[10%] right-[10%] w-[30%] h-[30%] rounded-full bg-indigo-900/10 blur-[120px]" />
             </div>
 
-            {/* Content Section - High Contrast Professional */}
-            <div className="relative flex flex-col justify-center px-8 sm:px-12 lg:px-24 py-20 bg-slate-950">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-[100px] pointer-events-none" />
-
-                <div className="max-w-md w-full mx-auto space-y-12 animate-in fade-in slide-in-from-bottom duration-700">
-                    <div className="space-y-4">
-                        <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[.4em]">Secure Login</p>
-                        <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight">Admin Console</h1>
-                        <p className="text-slate-500 font-medium leading-relaxed">Enter your administrative credentials to manage the platform ecosystem.</p>
+            <div className="max-w-md w-full space-y-8 bg-white/5 backdrop-blur-xl rounded-2xl p-8 sm:p-10 shadow-2xl border border-white/10 relative z-10">
+                <div className="text-center space-y-2">
+                    <div className="mx-auto w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 mb-4 text-white">
+                        <Shield size={24} />
                     </div>
+                    <h2 className="text-2xl font-bold text-white tracking-tight">
+                        Admin Console
+                    </h2>
+                    <p className="text-sm text-gray-500 font-medium">
+                        Authorized Access Only
+                    </p>
+                </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="space-y-6">
-                            <div className="group space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within:text-indigo-400 transition-colors">Encrypted Email</label>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="space-y-4">
+                        <div className="space-y-1">
+                            <label htmlFor="email" className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">
+                                Administrator Email
+                            </label>
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
                                 <input
                                     {...register('email')}
-                                    className="w-full bg-slate-900/50 border border-slate-800/50 rounded-2xl p-5 text-sm font-medium text-white placeholder:text-slate-700 focus:bg-slate-900 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 transition-all outline-none"
+                                    id="email"
+                                    type="email"
+                                    className="block w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all sm:text-sm"
                                     placeholder="admin@occasia.com"
                                 />
-                                {errors.email && <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mt-2">{errors.email.message}</p>}
                             </div>
+                            {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>}
+                        </div>
 
-                            <div className="group space-y-2">
-                                <div className="flex justify-between items-center">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within:text-indigo-400 transition-colors">System Password</label>
-                                    <button type="button" className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider hover:text-indigo-300 transition-colors opacity-50">Support</button>
-                                </div>
+                        <div className="space-y-1">
+                            <label htmlFor="password" className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">
+                                Secret Key
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
                                 <input
                                     {...register('password')}
+                                    id="password"
                                     type="password"
-                                    className="w-full bg-slate-900/50 border border-slate-800/50 rounded-2xl p-5 text-sm font-medium text-white placeholder:text-slate-700 focus:bg-slate-900 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 transition-all outline-none"
+                                    className="block w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all sm:text-sm"
                                     placeholder="••••••••"
                                 />
-                                {errors.password && <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mt-2">{errors.password.message}</p>}
                             </div>
+                            {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>}
                         </div>
+                    </div>
 
-                        <button
-                            disabled={loading}
-                            type="submit"
-                            className="w-full bg-white text-slate-950 p-5 rounded-2xl text-xs font-black uppercase tracking-[0.3em] hover:bg-indigo-500 hover:text-white transition-all shadow-2xl shadow-indigo-600/10 disabled:opacity-50"
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500 disabled:opacity-50 transform transition-all active:scale-[0.98]"
+                    >
+                        {loading ? 'Authenticating...' : 'Secure Login'}
+                    </button>
+
+                    <div className="text-center">
+                        <Link
+                            to={APP_ROUTES.LOGIN}
+                            className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors"
                         >
-                            {loading ? 'Decrypting Access...' : 'Authenticate Admin Access'}
-                        </button>
-
-                        <div className="space-y-4 pt-8 border-t border-slate-800/50 text-center">
-                            <button
-                                type="button"
-                                onClick={() => navigate(APP_ROUTES.LOGIN)}
-                                className="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-indigo-400 transition-colors block w-full"
-                            >
-                                Return to User Terminal
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            Return to User Login
+                        </Link>
+                    </div>
+                </form>
             </div>
         </div>
     );

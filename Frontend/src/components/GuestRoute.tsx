@@ -15,7 +15,7 @@ const GuestRoute: React.FC<GuestRouteProps> = ({ children }) => {
         if (user.role === 'ADMIN') {
             return <Navigate to={APP_ROUTES.ADMIN_DASHBOARD} replace />;
         }
-        return <Navigate to={APP_ROUTES.DASHBOARD} replace />;
+        return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;
