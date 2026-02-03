@@ -49,7 +49,7 @@ export class ServiceService {
         else if (sort === 'newest') sortObj = { createdAt: -1 };
         else sortObj = { createdAt: -1 };
 
-        return await this.serviceRepository.findAll(query, sortObj, skip, limit);
+        return await this.serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
     }
 
     async getServiceById(id: string): Promise<IServiceDocument | null> {
@@ -60,7 +60,7 @@ export class ServiceService {
         return await this.serviceRepository.update(id, serviceData);
     }
 
-    async deleteService(id: string): Promise<IServiceDocument | null> {
+    async deleteService(id: string): Promise<boolean> {
         return await this.serviceRepository.delete(id);
     }
 }
