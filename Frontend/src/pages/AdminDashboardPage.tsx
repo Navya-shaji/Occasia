@@ -37,75 +37,99 @@ export default function AdminDashboardPage() {
     };
 
     return (
-        <div className="flex h-screen bg-gray-50 overflow-hidden">
-            {/* Sidebar - Simple & Clean */}
-            <aside className="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
-                <div className="h-20 flex items-center px-8 border-b border-gray-100">
-                    <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                            <Shield className="text-white" size={18} />
+        <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans">
+            {/* Sidebar - Modern & Deep */}
+            <aside className="w-72 bg-[#0F172A] flex flex-col flex-shrink-0 relative overflow-hidden">
+                {/* Decorative radial gradient for depth */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
+
+                <div className="h-24 flex items-center px-10 relative z-10">
+                    <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <Shield className="text-white" size={20} />
                         </div>
-                        <span className="text-lg font-bold text-gray-900 tracking-tight">OCCASIA</span>
+                        <div className="flex flex-col">
+                            <span className="text-xl font-black text-white tracking-tight leading-none">OCCASIA</span>
+                            <span className="text-[10px] text-blue-400 font-bold tracking-[0.2em] mt-1 uppercase">Control Center</span>
+                        </div>
                     </div>
                 </div>
 
-                <nav className="flex-1 py-6 px-4 space-y-1">
+                <nav className="flex-1 py-8 px-6 space-y-1 relative z-10">
+                    <p className="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Core Management</p>
                     {[
-                        { id: 'users', icon: Users, label: 'Users' },
-                        { id: 'services', icon: Package, label: 'Services' },
-                        { id: 'bookings', icon: ClipboardList, label: 'Bookings' },
+                        { id: 'users', icon: Users, label: 'Subject Registry' },
+                        { id: 'services', icon: Package, label: 'Service Catalog' },
+                        { id: 'bookings', icon: ClipboardList, label: 'Booking Manifest' },
                     ].map((item) => (
                         <button
                             key={item.id}
                             onClick={() => setActiveSection(item.id)}
-                            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${activeSection === item.id ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                            className={`w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${activeSection === item.id
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                }`}
                         >
-                            <item.icon size={18} />
+                            <item.icon size={18} className={activeSection === item.id ? 'text-white' : 'text-gray-500 group-hover:text-white'} />
                             <span>{item.label}</span>
                         </button>
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-gray-100">
-                    <div className="flex items-center space-x-3 px-4 py-3">
-                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-xs uppercase">
-                            {user.name?.substring(0, 1) || 'A'}
+                <div className="p-6 relative z-10">
+                    <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-gray-700 to-gray-600 border border-white/10 flex items-center justify-center text-white font-bold text-sm">
+                                {user.name?.substring(0, 1) || 'A'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-white truncate">{user.name || 'Admin Authority'}</p>
+                                <p className="text-[10px] text-gray-400 uppercase tracking-wider">Level 3 Clearance</p>
+                            </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-gray-900 truncate">{user.name || 'Admin'}</p>
-                            <p className="text-xs text-gray-500 truncate">Administrator</p>
-                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-500/10 border border-red-500/20 hover:bg-red-500 hover:border-transparent transition-all duration-300"
+                        >
+                            <LogOut size={14} />
+                            <span>Terminate Session</span>
+                        </button>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className="mt-2 w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                        <LogOut size={18} />
-                        <span>Logout</span>
-                    </button>
                 </div>
             </aside>
 
-            {/* Main Surface */}
-            <main className="flex-1 flex flex-col overflow-y-auto">
-                <header className="h-20 px-8 flex items-center justify-between sticky top-0 bg-white shadow-sm z-20">
-                    <h2 className="text-xl font-bold text-gray-900">
-                        {activeSection === 'users' ? 'User Management' : activeSection === 'services' ? 'Service Management' : 'Booking Management'}
-                    </h2>
+            {/* Main Content Area */}
+            <main className="flex-1 flex flex-col relative">
+                <header className="h-24 px-12 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100">
+                    <div>
+                        <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mb-1">Administrative Oversight</p>
+                        <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+                            {activeSection === 'users' ? 'Subject Registry' : activeSection === 'services' ? 'Service Catalog' : 'Booking Manifest'}
+                        </h2>
+                    </div>
 
-                    <div className="flex items-center space-x-4">
-                        <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                    <div className="flex items-center space-x-6">
+                        <div className="relative group">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-blue-500" size={18} />
+                            <input
+                                type="text"
+                                placeholder="Universal Search..."
+                                className="bg-slate-100 border-none rounded-full pl-10 pr-4 py-2.5 text-sm w-64 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                            />
+                        </div>
+                        <button className="relative p-2.5 bg-slate-100 rounded-full text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition-all">
                             <Bell size={20} />
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
                         </button>
-                        <div className="h-6 w-px bg-gray-200" />
-                        <span className="text-sm font-medium text-gray-700">Admin Panel</span>
                     </div>
                 </header>
 
-                <div className="p-8">
-                    {activeSection === 'users' && <UserManagement />}
-                    {activeSection === 'services' && <ServiceManagement />}
-                    {activeSection === 'bookings' && <BookingManagement />}
+                <div className="p-12 max-w-[1600px]">
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {activeSection === 'users' && <UserManagement />}
+                        {activeSection === 'services' && <ServiceManagement />}
+                        {activeSection === 'bookings' && <BookingManagement />}
+                    </div>
                 </div>
             </main>
         </div>

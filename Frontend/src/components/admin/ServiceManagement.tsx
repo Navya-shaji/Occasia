@@ -167,64 +167,68 @@ export default function ServiceManagement() {
     );
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2 text-gray-900">
-                    <Package size={20} />
-                    <h3 className="text-lg font-bold">Total Services: {services.length}</h3>
+        <div className="space-y-8">
+            <div className="flex justify-between items-end">
+                <div>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Service Catalog</h3>
+                    <p className="text-3xl font-black text-slate-900">Active Assets: <span className="text-blue-600 font-mono">{services.length}</span></p>
                 </div>
-                <div className="flex items-center space-x-4">
-                    <div className="relative w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <div className="flex items-center space-x-6">
+                    <div className="relative w-80">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
                             type="text"
-                            placeholder="Search services..."
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                            placeholder="Search by Name or Category..."
+                            className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
                     <button
                         onClick={handleOpenAddModal}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold flex items-center hover:bg-blue-700 transition-colors shadow-sm"
+                        className="px-6 py-3 bg-blue-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest flex items-center hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
                     >
-                        <Plus size={16} className="mr-2" />
-                        Add Service
+                        <Plus size={18} className="mr-2" />
+                        Deploy New
                     </button>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-gray-500">
-                        <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-slate-50/50 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-slate-100">
                             <tr>
-                                <th className="px-6 py-4">Service</th>
-                                <th className="px-6 py-4">Category</th>
-                                <th className="px-6 py-4">Price / Day</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <th className="px-8 py-5">Service Profile</th>
+                                <th className="px-8 py-5">Classification</th>
+                                <th className="px-8 py-5">Valuation / Day</th>
+                                <th className="px-8 py-5">Availability</th>
+                                <th className="px-8 py-5 text-center">Operations</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody className="divide-y divide-slate-50">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center">
-                                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                    <td colSpan={5} className="px-8 py-24 text-center">
+                                        <div className="inline-flex items-center space-x-3">
+                                            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                                            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                                            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+                                        </div>
                                     </td>
                                 </tr>
                             ) : filteredServices.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-400">
-                                        No services found.
+                                    <td colSpan={5} className="px-8 py-24 text-center text-slate-400 italic font-medium">
+                                        No services registered in the database.
                                     </td>
                                 </tr>
                             ) : (
                                 filteredServices.map((service) => (
-                                    <tr key={service._id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center space-x-3">
-                                                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                                    <tr key={service._id} className="hover:bg-slate-50/50 transition-colors group">
+                                        <td className="px-8 py-6">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm group-hover:scale-105 transition-transform duration-300">
                                                     {service.images?.[0] ? (
                                                         <img
                                                             src={service.images[0].startsWith('http')
@@ -235,39 +239,42 @@ export default function ServiceManagement() {
                                                             className="w-full h-full object-cover"
                                                         />
                                                     ) : (
-                                                        <Package className="text-gray-400" size={18} />
+                                                        <Package className="text-slate-400" size={20} />
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <div className="font-semibold text-gray-900">{service.name}</div>
-                                                    <div className="text-xs text-gray-400 truncate max-w-[200px]">{service.location}</div>
+                                                    <div className="font-black text-slate-900">{service.name}</div>
+                                                    <div className="text-[10px] text-slate-400 font-medium truncate max-w-[250px] italic">{service.location}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs font-bold">
+                                        <td className="px-8 py-6">
+                                            <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-black tracking-widest uppercase border border-slate-200">
                                                 {service.category}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-bold text-gray-900">₹{service.pricePerDay || service.price}</div>
+                                        <td className="px-8 py-6 font-black text-slate-900">
+                                            ₹{(service.pricePerDay || service.price).toLocaleString()}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${service.isAvailable ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'}`}>
-                                                {service.isAvailable ? 'Available' : 'Unavailable'}
+                                        <td className="px-8 py-6 text-[10px] font-black tracking-wider">
+                                            <span className={`inline-flex items-center ${service.isAvailable ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${service.isAvailable ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+                                                {service.isAvailable ? 'ACTIVE' : 'OFFLINE'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex justify-end space-x-2">
+                                        <td className="px-8 py-6">
+                                            <div className="flex justify-center space-x-3">
                                                 <button
                                                     onClick={() => handleOpenEditModal(service)}
-                                                    className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                                    className="w-9 h-9 flex items-center justify-center bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm"
+                                                    title="Modify"
                                                 >
                                                     <Edit2 size={16} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteService(service._id)}
-                                                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                    className="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl transition-all shadow-sm"
+                                                    title="Eliminate"
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>

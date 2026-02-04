@@ -7,7 +7,6 @@ const apiInstance = axios.create({
     },
 });
 
-// Request interceptor: Automatically attach JWT token
 apiInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
@@ -21,11 +20,9 @@ apiInstance.interceptors.request.use(
     }
 );
 
-// Response interceptor: Handle errors globally
 apiInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Handle 401 Unauthorized - token expired or invalid
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
