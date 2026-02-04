@@ -29,7 +29,20 @@ import {
 export default function AdminDashboardPage() {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('users');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // Safety check for user JSON parsing
+    const getUserFromStorage = () => {
+        try {
+            const stored = localStorage.getItem('user');
+            if (!stored || stored === 'undefined') return {};
+            return JSON.parse(stored);
+        } catch (e) {
+            console.error("Failed to parse user from storage", e);
+            return {};
+        }
+    };
+
+    const user = getUserFromStorage();
 
     const handleLogout = () => {
         authService.logout();
@@ -66,8 +79,8 @@ export default function AdminDashboardPage() {
                             key={item.id}
                             onClick={() => setActiveSection(item.id)}
                             className={`w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${activeSection === item.id
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
                                 }`}
                         >
                             <item.icon size={18} className={activeSection === item.id ? 'text-white' : 'text-gray-500 group-hover:text-white'} />
