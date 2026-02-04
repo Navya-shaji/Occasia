@@ -11,6 +11,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  debug: true, // Show SMTP traffic in logs
+  logger: true, // Log to console
+  pool: true, // Use pooled connections
   tls: {
     rejectUnauthorized: false
   }
