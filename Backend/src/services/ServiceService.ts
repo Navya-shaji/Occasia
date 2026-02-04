@@ -2,10 +2,10 @@ import { ServiceRepository } from '../repositories/ServiceRepository';
 import { IService, IServiceDocument } from '../interface/service.interface';
 
 export class ServiceService {
-    constructor(private serviceRepository: ServiceRepository) { }
+    constructor(private _serviceRepository: ServiceRepository) { }
 
     async createService(serviceData: IService): Promise<IServiceDocument> {
-        return await this.serviceRepository.create(serviceData);
+        return await this._serviceRepository.create(serviceData);
     }
 
     async getAllServices(filters: {
@@ -49,18 +49,18 @@ export class ServiceService {
         else if (sort === 'newest') sortObj = { createdAt: -1 };
         else sortObj = { createdAt: -1 };
 
-        return await this.serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
+        return await this._serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
     }
 
     async getServiceById(id: string): Promise<IServiceDocument | null> {
-        return await this.serviceRepository.findById(id);
+        return await this._serviceRepository.findById(id);
     }
 
     async updateService(id: string, serviceData: Partial<IService>): Promise<IServiceDocument | null> {
-        return await this.serviceRepository.update(id, serviceData);
+        return await this._serviceRepository.update(id, serviceData);
     }
 
     async deleteService(id: string): Promise<boolean> {
-        return await this.serviceRepository.delete(id);
+        return await this._serviceRepository.delete(id);
     }
 }

@@ -3,14 +3,14 @@ import { IBookingService } from '../interface/services/IBookingService';
 import { HTTP_STATUS } from '../constants/httpStatus';
 
 export class BookingController {
-    constructor(private bookingService: IBookingService) { }
+    constructor(private _bookingService: IBookingService) { }
 
     createBooking = async (req: Request, res: Response) => {
         try {
             const userId = (req as any).user.id;
             const { serviceId, startDate, endDate } = req.body;
 
-            const booking = await this.bookingService.createBooking(userId, serviceId, startDate, endDate);
+            const booking = await this._bookingService.createBooking(userId, serviceId, startDate, endDate);
 
             res.status(HTTP_STATUS.CREATED).json({
                 success: true,
@@ -28,7 +28,7 @@ export class BookingController {
     getUserBookings = async (req: Request, res: Response) => {
         try {
             const userId = (req as any).user.id;
-            const bookings = await this.bookingService.getUserBookings(userId);
+            const bookings = await this._bookingService.getUserBookings(userId);
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,
@@ -47,7 +47,7 @@ export class BookingController {
         try {
             const userId = (req as any).user.id;
             const bookingId = req.params.id as string;
-            const booking = await this.bookingService.getBookingById(bookingId, userId);
+            const booking = await this._bookingService.getBookingById(bookingId, userId);
 
             if (!booking) {
                 res.status(HTTP_STATUS.NOT_FOUND).json({ success: false, message: 'Booking not found' });
@@ -68,7 +68,7 @@ export class BookingController {
 
     getAllBookings = async (req: Request, res: Response) => {
         try {
-            const bookings = await this.bookingService.getAllBookings();
+            const bookings = await this._bookingService.getAllBookings();
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,
@@ -88,7 +88,7 @@ export class BookingController {
             const userId = (req as any).user.id;
             const bookingId = req.params.id as string;
 
-            const booking = await this.bookingService.cancelBooking(bookingId, userId);
+            const booking = await this._bookingService.cancelBooking(bookingId, userId);
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,
@@ -108,7 +108,7 @@ export class BookingController {
             const bookingId = req.params.id as string;
             const { status } = req.body;
 
-            const booking = await this.bookingService.updateBookingStatus(bookingId, status);
+            const booking = await this._bookingService.updateBookingStatus(bookingId, status);
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,

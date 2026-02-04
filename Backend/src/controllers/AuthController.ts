@@ -3,11 +3,11 @@ import { IAuthService } from '../interface/services/IAuthService';
 import { HTTP_STATUS } from '../constants/httpStatus';
 
 export class AuthController {
-    constructor(private authService: IAuthService) { }
+    constructor(private _authService: IAuthService) { }
 
     register = async (req: Request, res: Response) => {
         try {
-            const result = await this.authService.register(req.body);
+            const result = await this._authService.register(req.body);
             res.status(HTTP_STATUS.OK).json({ success: true, ...result });
         } catch (error: any) {
             res.status(HTTP_STATUS.BAD_REQUEST).json({ success: false, message: error.message });
@@ -16,7 +16,7 @@ export class AuthController {
 
     login = async (req: Request, res: Response) => {
         try {
-            const result = await this.authService.login(req.body);
+            const result = await this._authService.login(req.body);
             res.status(HTTP_STATUS.OK).json({
                 success: true,
                 message: 'Login successful',
@@ -29,7 +29,7 @@ export class AuthController {
 
     adminLogin = async (req: Request, res: Response) => {
         try {
-            const result = await this.authService.adminLogin(req.body);
+            const result = await this._authService.adminLogin(req.body);
             res.status(HTTP_STATUS.OK).json({
                 success: true,
                 message: 'Admin login successful',

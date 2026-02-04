@@ -8,15 +8,15 @@ import { Schema } from 'mongoose';
 
 export class BookingService implements IBookingService {
     constructor(
-        private bookingRepository: IBookingRepository,
-        private serviceRepository: ServiceRepository,
-        private userRepository: UserRepository
+        private _bookingRepository: IBookingRepository,
+        private _serviceRepository: ServiceRepository,
+        private _userRepository: UserRepository
     ) { }
 
     async createBooking(userId: string, serviceId: string, startDate: string, endDate: string): Promise<IBookingDocument> {
         const [service, user] = await Promise.all([
-            this.serviceRepository.findById(serviceId),
-            this.userRepository.findById(userId)
+            this._serviceRepository.findById(serviceId),
+            this._userRepository.findById(userId)
         ]);
 
         if (!service) throw new Error('Service not found');
@@ -48,7 +48,7 @@ export class BookingService implements IBookingService {
             throw new Error('Service is not available for requested dates');
         }
 
-        const booking = await this.bookingRepository.create({
+        const booking = await this._bookingRepository.create({
             user: userId as unknown as Schema.Types.ObjectId,
             service: serviceId as unknown as Schema.Types.ObjectId,
             startDate: start,
@@ -58,7 +58,7 @@ export class BookingService implements IBookingService {
         });
 
         // Update service's unavailable dates
-        await this.serviceRepository.update(serviceId, {
+        await this._serviceRepository.update(serviceId, {
             unavailableDates: [...service.unavailableDates, ...requestedDates]
         });
 
@@ -75,15 +75,15 @@ export class BookingService implements IBookingService {
     }
 
     async getUserBookings(userId: string): Promise<IBookingDocument[]> {
-        return await this.bookingRepository.findByUserId(userId);
+        return await this._bookingRepository.findByUserId(userId);
     }
 
     async getAllBookings(): Promise<IBookingDocument[]> {
-        return await this.bookingRepository.findAll();
+        return await this._bookingRepository.findAll();
     }
 
     async getBookingById(bookingId: string, userId: string): Promise<IBookingDocument | null> {
-        const booking = await this.bookingRepository.findById(bookingId);
+        const booking = await this._bookingRepository.findById(bookingId);
         if (!booking) return null;
 
         // Ensure user owns the booking (unless admin, but logic here assumes simpler checks)
@@ -95,7 +95,7 @@ export class BookingService implements IBookingService {
     }
 
     async cancelBooking(bookingId: string, userId: string): Promise<IBookingDocument> {
-        const booking = await this.bookingRepository.findById(bookingId);
+        const booking = await this._bookingRepository.findById(bookingId);
         if (!booking) {
             throw new Error('Booking not found');
         }
@@ -109,12 +109,12 @@ export class BookingService implements IBookingService {
         }
 
         // Normally we'd also free up the dates here, but simple cancel for now
-        const updated = await this.bookingRepository.updateStatus(bookingId, 'CANCELLED');
+        const updated = await this._bookingRepository.updateStatus(bookingId, 'CANCELLED');
         return updated!;
     }
 
     async updateBookingStatus(bookingId: string, status: string): Promise<IBookingDocument> {
-        const updated = await this.bookingRepository.updateStatus(bookingId, status);
+        const updated = await this._bookingRepository.updateStatus(bookingId, status);
         if (!updated) {
             throw new Error('Booking not found');
         }

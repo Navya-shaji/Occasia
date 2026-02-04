@@ -9,8 +9,8 @@ export class ServiceRepository extends BaseRepository<IServiceDocument> implemen
     }
 
     async findAllWithPagination(query: any = {}, sort: any = { createdAt: -1 }, skip: number = 0, limit: number = 10): Promise<{ services: IServiceDocument[], total: number }> {
-        const services = await this.model.find(query).sort(sort).skip(skip).limit(limit);
-        const total = await this.model.countDocuments(query);
+        const services = await this._model.find(query).sort(sort).skip(skip).limit(limit);
+        const total = await this._model.countDocuments(query);
         return { services, total };
     }
 }

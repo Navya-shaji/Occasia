@@ -3,7 +3,7 @@ import { ServiceService } from '../services/ServiceService';
 import { HTTP_STATUS } from '../constants/httpStatus';
 
 export class ServiceController {
-    constructor(private serviceService: ServiceService) { }
+    constructor(private _serviceService: ServiceService) { }
 
     createService = async (req: Request, res: Response) => {
         try {
@@ -16,7 +16,7 @@ export class ServiceController {
                 console.log('Mapped image paths:', serviceData.images);
             }
 
-            const service = await this.serviceService.createService(serviceData);
+            const service = await this._serviceService.createService(serviceData);
             res.status(HTTP_STATUS.CREATED).json({
                 success: true,
                 message: 'Service created successfully',
@@ -44,7 +44,7 @@ export class ServiceController {
                 date
             } = req.query;
 
-            const result = await this.serviceService.getAllServices({
+            const result = await this._serviceService.getAllServices({
                 category: category as string,
                 location: location as string,
                 keyword: keyword as string,
@@ -75,7 +75,7 @@ export class ServiceController {
     getServiceById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id as string;
-            const service = await this.serviceService.getServiceById(id);
+            const service = await this._serviceService.getServiceById(id);
             if (!service) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({
                     success: false,
@@ -105,7 +105,7 @@ export class ServiceController {
                 serviceData.images = req.files.map((file: any) => file.path);
             }
 
-            const service = await this.serviceService.updateService(id, serviceData);
+            const service = await this._serviceService.updateService(id, serviceData);
             if (!service) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({
                     success: false,
@@ -128,7 +128,7 @@ export class ServiceController {
     deleteService = async (req: Request, res: Response) => {
         try {
             const id = req.params.id as string;
-            const service = await this.serviceService.deleteService(id);
+            const service = await this._serviceService.deleteService(id);
             if (!service) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({
                     success: false,

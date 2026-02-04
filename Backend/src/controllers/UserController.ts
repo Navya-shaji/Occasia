@@ -3,7 +3,7 @@ import { IUserService } from '../interface/services/IUserService';
 import { HTTP_STATUS } from '../constants/httpStatus';
 
 export class UserController {
-    constructor(private userService: IUserService) { }
+    constructor(private _userService: IUserService) { }
 
     getUsers = async (req: Request, res: Response) => {
         try {
@@ -12,7 +12,7 @@ export class UserController {
             const search = req.query.search as string || '';
             const status = req.query.status as string || 'all';
 
-            const result = await this.userService.getAllUsers(page, limit, search, status);
+            const result = await this._userService.getAllUsers(page, limit, search, status);
 
             res.status(HTTP_STATUS.OK).json({
                 success: true,
@@ -33,7 +33,7 @@ export class UserController {
     blockUser = async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;
-            const updatedUser = await this.userService.blockUser(userId as string);
+            const updatedUser = await this._userService.blockUser(userId as string);
             if (!updatedUser) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({ success: false, message: 'User not found' });
             }
@@ -53,7 +53,7 @@ export class UserController {
     unblockUser = async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;
-            const updatedUser = await this.userService.unblockUser(userId as string);
+            const updatedUser = await this._userService.unblockUser(userId as string);
             if (!updatedUser) {
                 return res.status(HTTP_STATUS.NOT_FOUND).json({ success: false, message: 'User not found' });
             }

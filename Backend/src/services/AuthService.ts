@@ -8,7 +8,7 @@ import { Role } from '../enums/role';
 import { sendOtpEmail } from './mail.service';
 
 export class AuthService implements IAuthService {
-    constructor(private userRepository: IUserRepository) { }
+    constructor(private _userRepository: IUserRepository) { }
 
     async register(userData: IUser) {
         const { name, email, password, role = Role.USER } = userData;
@@ -21,14 +21,14 @@ export class AuthService implements IAuthService {
             throw new Error('Invalid role specified');
         }
 
-        let user = await this.userRepository.findByEmail(email);
+        let user = await this._userRepository.findByEmail(email);
 
         if (user) {
             if (user.isVerified) {
                 throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                user = await this.userRepository.updateByEmail(email, {
+                user = await this._userRepository.updateByEmail(email, {
                     name,
                     password: hashedPassword,
                     role,
@@ -39,7 +39,7 @@ export class AuthService implements IAuthService {
             }
         } else {
             const hashedPassword = await bcrypt.hash(password, 10);
-            user = await this.userRepository.create({
+            user = await this._userRepository.create({
                 name,
                 email,
                 password: hashedPassword,
@@ -66,7 +66,7 @@ export class AuthService implements IAuthService {
 
     async login(loginData: any) {
         const { email, password } = loginData;
-        const user = await this.userRepository.findByEmail(email);
+        const user = await this._userRepository.findByEmail(email);
 
         if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
 
@@ -89,7 +89,7 @@ export class AuthService implements IAuthService {
 
     async adminLogin(loginData: any) {
         const { email, password } = loginData;
-        const user = await this.userRepository.findByEmail(email);
+        const user = await this._userRepository.findByEmail(email);
 
         if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
         if (user.role !== Role.ADMIN) throw new Error('Access denied. Admin privileges required.');

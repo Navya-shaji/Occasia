@@ -9,11 +9,11 @@ export class UserRepository extends BaseRepository<IUserDocument> implements IUs
     }
 
     async findByEmail(email: string): Promise<IUserDocument | null> {
-        return await this.model.findOne({ email });
+        return await this._model.findOne({ email });
     }
 
     async updateByEmail(email: string, userData: Partial<IUser>): Promise<IUserDocument | null> {
-        return await this.model.findOneAndUpdate({ email }, userData, { new: true });
+        return await this._model.findOneAndUpdate({ email }, userData, { new: true });
     }
 
     async findAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
@@ -31,8 +31,8 @@ export class UserRepository extends BaseRepository<IUserDocument> implements IUs
             query.isBlocked = status === 'blocked';
         }
 
-        const total = await this.model.countDocuments(query);
-        const users = await this.model.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
+        const total = await this._model.countDocuments(query);
+        const users = await this._model.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
         return { users, total };
     }
 }
