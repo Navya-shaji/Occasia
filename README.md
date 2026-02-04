@@ -40,7 +40,6 @@ Occasia is a world-class event management platform designed for prestigious even
 ### Auth
 *   `POST /api/auth/register` - Create new account
 *   `POST /api/auth/login` - Authenticate & receive token
-*   `POST /api/auth/verify-otp` - Verify email residency
 
 ### Services
 *   `GET /api/services` - List all services (Supports: keyword, category, location, minPrice, maxPrice, date)
@@ -57,3 +56,4 @@ For detailed API documentation, including schema and request examples, please re
 
 ---
 &copy; 2026 Occasia Prestige Services.
+
