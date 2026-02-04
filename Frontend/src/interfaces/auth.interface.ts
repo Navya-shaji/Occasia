@@ -5,14 +5,6 @@ export interface RegisterPayload {
     role: 'USER' | 'VENDOR';
 }
 
-export interface VerifyOtpPayload {
-    email: string;
-    otp: string;
-}
-
-export interface ResendOtpPayload {
-    email: string;
-}
 
 export interface AuthResponse {
     success: boolean;

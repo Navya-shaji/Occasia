@@ -1,6 +1,5 @@
 export const API_ROUTES = {
     REGISTER: '/auth/register',
-    RESEND_OTP: '/auth/resend-otp',
     LOGIN: '/auth/login',
     ADMIN_LOGIN: '/auth/admin-login',
     USERS: {
