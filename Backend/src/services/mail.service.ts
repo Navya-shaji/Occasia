@@ -42,6 +42,7 @@ console.log("✅ Gmail SMTP is ready");
     const filePath = path.join(process.cwd(), 'LATEST_OTP.txt');
     fs.writeFileSync(filePath, `EMAIL: ${email}\nOTP: ${otp}\nTIME: ${new Date().toLocaleString()}`);
   } catch (err) {
+    console.log(err)
     // Ignore file write errors
   }
 
