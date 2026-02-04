@@ -42,7 +42,7 @@ export class AuthService implements IAuthService {
                     otp,
                     otpExpires
                 });
-                await sendOtpEmail(email, otp);
+                sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
                 return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
             }
         }
@@ -58,7 +58,8 @@ export class AuthService implements IAuthService {
             isVerified: false
         });
 
-        await sendOtpEmail(email, otp);
+        // Send email in background - do not await
+        sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
         return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
     }
 
@@ -95,7 +96,7 @@ export class AuthService implements IAuthService {
         const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
         await this.userRepository.updateByEmail(email, { otp, otpExpires });
-        await sendOtpEmail(email, otp);
+        sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
 
         return { message: 'OTP resent successfully' };
     }
