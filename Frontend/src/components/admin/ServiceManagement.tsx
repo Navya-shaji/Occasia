@@ -366,6 +366,25 @@ export default function ServiceManagement() {
                                         onChange={(e) => setFormData({ ...formData, contactDetails: { ...formData.contactDetails, phone: e.target.value } })}
                                     />
                                 </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Contact Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-blue-500 outline-none"
+                                        value={formData.contactDetails.email}
+                                        onChange={(e) => setFormData({ ...formData, contactDetails: { ...formData.contactDetails, email: e.target.value } })}
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Full Address</label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-blue-500 outline-none"
+                                        value={formData.contactDetails.address}
+                                        onChange={(e) => setFormData({ ...formData, contactDetails: { ...formData.contactDetails, address: e.target.value } })}
+                                    />
+                                </div>
                                 <div className="col-span-2">
                                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Images</label>
                                     <div className="grid grid-cols-5 gap-2 mb-2">
@@ -402,19 +421,19 @@ export default function ServiceManagement() {
                                 </div>
                             </div>
 
-                            <div className="pt-4 flex space-x-3">
+                            <div className="pt-4 flex space-x-3 sticky bottom-0 bg-white pb-2 mt-4 border-t border-gray-100 pt-6">
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors"
+                                    className="flex-1 py-3 bg-slate-100 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors shadow-md"
+                                    className="flex-1 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
                                 >
-                                    {editingService ? 'Save Changes' : 'Create Service'}
+                                    {editingService ? 'Authorize Changes' : 'Confirm Deployment'}
                                 </button>
                             </div>
                         </form>
