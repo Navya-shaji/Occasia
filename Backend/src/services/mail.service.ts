@@ -6,18 +6,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  debug: true, // Show SMTP traffic in logs
-  logger: true, // Log to console
-  pool: true, // Use pooled connections
-  tls: {
-    rejectUnauthorized: false
-  }
+  connectionTimeout: 10000, // 10s
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
 });
+
+
+
+
+console.log(process.env.EMAIL_USER);
+
 
 export const sendOtpEmail = async (email: string, otp: string) => {
   // 1. LOG TO CONSOLE IMMEDIATELY
@@ -30,8 +33,10 @@ export const sendOtpEmail = async (email: string, otp: string) => {
   console.log('**************************************************');
   console.log('>>> CHECK ABOVE FOR THE OTP CODE <<<\n\n\n');
 
-  // 2. FAILSAFE: Write to a file in case terminal is hidden
   try {
+    await transporter.verify();
+console.log("✅ Gmail SMTP is ready");
+
     const filePath = path.join(process.cwd(), 'LATEST_OTP.txt');
     fs.writeFileSync(filePath, `EMAIL: ${email}\nOTP: ${otp}\nTIME: ${new Date().toLocaleString()}`);
   } catch (err) {
