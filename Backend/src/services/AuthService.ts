@@ -10,11 +10,6 @@ import { sendOtpEmail } from './mail.service';
 export class AuthService implements IAuthService {
     constructor(private userRepository: IUserRepository) { }
 
-    private generateOtp(): string {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        return otp;
-    }
-
     async register(userData: IUser) {
         const { name, email, password, role = Role.USER } = userData;
 
@@ -26,84 +21,47 @@ export class AuthService implements IAuthService {
             throw new Error('Invalid role specified');
         }
 
-        const existingUser = await this.userRepository.findByEmail(email);
-        const otp = this.generateOtp();
-        const otpExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 Hours
+        let user = await this.userRepository.findByEmail(email);
 
-        if (existingUser) {
-            if (existingUser.isVerified) {
+        if (user) {
+            if (user.isVerified) {
                 throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                await this.userRepository.updateByEmail(email, {
+                user = await this.userRepository.updateByEmail(email, {
                     name,
                     password: hashedPassword,
                     role,
-                    otp,
-                    otpExpires
-                });
-                this.sendEmailInBackground(email, otp);
-                return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
+                    isVerified: true,
+                    otp: undefined,
+                    otpExpires: undefined
+                }) as any;
             }
+        } else {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user = await this.userRepository.create({
+                name,
+                email,
+                password: hashedPassword,
+                role,
+                isVerified: true
+            }) as any;
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await this.userRepository.create({
-            name,
-            email,
-            password: hashedPassword,
-            role,
-            otp,
-            otpExpires,
-            isVerified: false
-        });
-
-        this.sendEmailInBackground(email, otp);
-        return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
-    }
-
-    private sendEmailInBackground(email: string, otp: string) {
-        sendOtpEmail(email, otp).catch(err => {
-            console.error(`| MAIL BACKGROUND ERR: ${err.message}`);
-        });
-    }
-
-    async verifyOtp(email: string, otp: string) {
-        const user = await this.userRepository.findByEmail(email);
-
-        if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
-        if (user.isVerified) throw new Error('User already verified');
-        if (user.otp !== otp) throw new Error('Invalid OTP');
-        if (user.otpExpires && user.otpExpires < new Date()) throw new Error('OTP expired');
-
-        await this.userRepository.updateByEmail(email, {
-            isVerified: true,
-            otp: undefined,
-            otpExpires: undefined
-        });
-
         const token = jwt.sign(
-            { id: user._id, name: user.name, role: user.role },
+            { id: user!._id, name: user!.name, role: user!.role },
             process.env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '1d' }
         );
 
-        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
-    }
-
-    async resendOtp(email: string) {
-        const user = await this.userRepository.findByEmail(email);
-
-        if (!user) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
-        if (user.isVerified) throw new Error('User already verified');
-
-        const otp = this.generateOtp();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-
-        await this.userRepository.updateByEmail(email, { otp, otpExpires });
-        this.sendEmailInBackground(email, otp);
-
-        return { message: 'OTP resent successfully' };
+        return {
+            id: user!._id,
+            name: user!.name,
+            email: user!.email,
+            role: user!.role,
+            token,
+            message: 'Registration successful'
+        };
     }
 
     async login(loginData: any) {

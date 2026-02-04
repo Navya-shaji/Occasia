@@ -3,15 +3,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
+import { setCredentials } from '../store/slices/authSlice';
 import authService, { RegisterPayload } from '../services/authService';
 import { APP_ROUTES } from '../constants/routes';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../constants/messages';
+import { ERROR_MESSAGES } from '../constants/messages';
 import { registerSchema, RegisterFormData } from '../validations/authValidation';
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
@@ -20,9 +23,25 @@ export default function RegisterPage() {
     const onSubmit = async (data: RegisterFormData) => {
         setLoading(true);
         try {
-            await authService.register({ ...data, role: 'USER' } as RegisterPayload);
-            toast.success(SUCCESS_MESSAGES.REGISTRATION_SUCCESS);
-            navigate(APP_ROUTES.VERIFY_OTP, { state: { email: data.email } });
+            const response = await authService.register({ ...data, role: 'USER' } as RegisterPayload);
+
+            // Save user data and token for immediate login
+            if (response.token) {
+                dispatch(setCredentials({
+                    user: {
+                        _id: response.id,
+                        name: response.name,
+                        email: response.email,
+                        role: response.role,
+                        isVerified: true,
+                        isBlocked: false
+                    },
+                    accessToken: response.token
+                }));
+            }
+
+            toast.success('Registration successful! Welcome to Occasia.');
+            navigate(APP_ROUTES.HOME);
         } catch (error: any) {
             toast.error(error.response?.data?.message || ERROR_MESSAGES.REGISTRATION_FAILED);
         } finally {

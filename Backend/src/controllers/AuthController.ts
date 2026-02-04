@@ -14,30 +14,6 @@ export class AuthController {
         }
     };
 
-    verify = async (req: Request, res: Response) => {
-        try {
-            const { email, otp } = req.body;
-            const user = await this.authService.verifyOtp(email, otp);
-            res.status(HTTP_STATUS.OK).json({
-                success: true,
-                message: 'Email verified successfully',
-                data: user
-            });
-        } catch (error: any) {
-            res.status(HTTP_STATUS.BAD_REQUEST).json({ success: false, message: error.message });
-        }
-    };
-
-    resend = async (req: Request, res: Response) => {
-        try {
-            const { email } = req.body;
-            const result = await this.authService.resendOtp(email);
-            res.status(HTTP_STATUS.OK).json({ success: true, ...result });
-        } catch (error: any) {
-            res.status(HTTP_STATUS.BAD_REQUEST).json({ success: false, message: error.message });
-        }
-    };
-
     login = async (req: Request, res: Response) => {
         try {
             const result = await this.authService.login(req.body);

@@ -30,12 +30,10 @@ app.use(`${ROUTES.API.BASE}${ROUTES.SERVICES.BASE}`, serviceRoutes);
 app.use(`${ROUTES.API.BASE}${ROUTES.BOOKINGS.BASE}`, bookingRoutes);
 app.use(`${ROUTES.API.BASE}`, protectedRoutes);
 
-// Root route for sanity check
 app.get('/', (req, res) => {
     res.json({ status: 'online', service: 'Occasia API' });
 });
 
-// Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(`| CRITICAL ERROR: ${err.message}`);
     res.status(err.status || 500).json({

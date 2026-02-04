@@ -7,8 +7,6 @@ export const ROUTES = {
   AUTH: {
     REGISTER: '/register',
     LOGIN: '/login',
-    VERIFY_OTP: '/verify-otp',
-    RESEND_OTP: '/resend-otp',
     ADMIN_LOGIN: '/admin-login'
   },
 

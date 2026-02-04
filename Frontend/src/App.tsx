@@ -3,8 +3,6 @@ import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
-import VerifyOtpPage from './pages/VerifyOtpPage';
-
 import LoginPage from './pages/LoginPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
@@ -37,7 +35,6 @@ function AppContent() {
 
                     {/* Auth Routes */}
                     <Route path={APP_ROUTES.REGISTER} element={<GuestRoute><RegisterPage /></GuestRoute>} />
-                    <Route path={APP_ROUTES.VERIFY_OTP} element={<GuestRoute><VerifyOtpPage /></GuestRoute>} />
                     <Route path={APP_ROUTES.LOGIN} element={<GuestRoute><LoginPage /></GuestRoute>} />
                     <Route path={APP_ROUTES.ADMIN_LOGIN} element={<GuestRoute><AdminLoginPage /></GuestRoute>} />
 

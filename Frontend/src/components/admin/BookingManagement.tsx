@@ -52,8 +52,8 @@ export default function BookingManagement() {
         <div className="space-y-8">
             <div className="flex justify-between items-end">
                 <div>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Booking Manifest</h3>
-                    <p className="text-3xl font-black text-slate-900">Total Registered: <span className="text-blue-600 font-mono">{bookings.length}</span></p>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">All Bookings</h3>
+                    <p className="text-3xl font-black text-slate-900">Total Bookings: <span className="text-blue-600 font-mono">{bookings.length}</span></p>
                 </div>
                 <div className="relative w-80">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -72,11 +72,11 @@ export default function BookingManagement() {
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50/50 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-slate-100">
                             <tr>
-                                <th className="px-8 py-5">Transaction ID</th>
-                                <th className="px-8 py-5">Client Detail</th>
-                                <th className="px-8 py-5">Service Experience</th>
-                                <th className="px-8 py-5">Timeline</th>
-                                <th className="px-8 py-5">Valuation</th>
+                                <th className="px-8 py-5">Booking ID</th>
+                                <th className="px-8 py-5">User</th>
+                                <th className="px-8 py-5">Service</th>
+                                <th className="px-8 py-5">Dates</th>
+                                <th className="px-8 py-5">Price</th>
                                 <th className="px-8 py-5">Status</th>
                                 <th className="px-8 py-5 text-center">Actions</th>
                             </tr>
@@ -97,7 +97,7 @@ export default function BookingManagement() {
                                     <td colSpan={7} className="px-8 py-24 text-center">
                                         <div className="flex flex-col items-center justify-center space-y-3 opacity-20">
                                             <ClipboardList size={48} />
-                                            <p className="font-bold uppercase tracking-widest text-xs">No matching transaction records found.</p>
+                                            <p className="font-bold uppercase tracking-widest text-xs">No bookings found.</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -137,8 +137,8 @@ export default function BookingManagement() {
                                         </td>
                                         <td className="px-8 py-6">
                                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black tracking-widest border shadow-sm ${booking.status === 'CONFIRMED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                                                    booking.status === 'CANCELLED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
-                                                        'bg-amber-50 text-amber-600 border-amber-100'
+                                                booking.status === 'CANCELLED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                                                    'bg-amber-50 text-amber-600 border-amber-100'
                                                 }`}>
                                                 {booking.status}
                                             </span>

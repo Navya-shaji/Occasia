@@ -170,8 +170,8 @@ export default function ServiceManagement() {
         <div className="space-y-8">
             <div className="flex justify-between items-end">
                 <div>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Service Catalog</h3>
-                    <p className="text-3xl font-black text-slate-900">Active Assets: <span className="text-blue-600 font-mono">{services.length}</span></p>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Manage Services</h3>
+                    <p className="text-3xl font-black text-slate-900">Total Services: <span className="text-blue-600 font-mono">{services.length}</span></p>
                 </div>
                 <div className="flex items-center space-x-6">
                     <div className="relative w-80">
@@ -189,7 +189,7 @@ export default function ServiceManagement() {
                         className="px-6 py-3 bg-blue-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest flex items-center hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
                     >
                         <Plus size={18} className="mr-2" />
-                        Deploy New
+                        Add Service
                     </button>
                 </div>
             </div>
@@ -199,11 +199,11 @@ export default function ServiceManagement() {
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50/50 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-slate-100">
                             <tr>
-                                <th className="px-8 py-5">Service Profile</th>
-                                <th className="px-8 py-5">Classification</th>
-                                <th className="px-8 py-5">Valuation / Day</th>
-                                <th className="px-8 py-5">Availability</th>
-                                <th className="px-8 py-5 text-center">Operations</th>
+                                <th className="px-8 py-5">Service Name</th>
+                                <th className="px-8 py-5">Category</th>
+                                <th className="px-8 py-5">Price / Day</th>
+                                <th className="px-8 py-5">Status</th>
+                                <th className="px-8 py-5 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
@@ -258,8 +258,8 @@ export default function ServiceManagement() {
                                         </td>
                                         <td className="px-8 py-6 text-[10px] font-black tracking-wider">
                                             <span className={`inline-flex items-center ${service.isAvailable ? 'text-emerald-500' : 'text-rose-500'}`}>
-                                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${service.isAvailable ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
-                                                {service.isAvailable ? 'ACTIVE' : 'OFFLINE'}
+                                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${service.isAvailable ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                                                {service.isAvailable ? 'Available' : 'Unavailable'}
                                             </span>
                                         </td>
                                         <td className="px-8 py-6">
@@ -433,7 +433,7 @@ export default function ServiceManagement() {
                                     type="submit"
                                     className="flex-1 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
                                 >
-                                    {editingService ? 'Authorize Changes' : 'Confirm Deployment'}
+                                    {editingService ? 'Update Service' : 'Create Service'}
                                 </button>
                             </div>
                         </form>

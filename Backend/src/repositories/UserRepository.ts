@@ -18,7 +18,7 @@ export class UserRepository extends BaseRepository<IUserDocument> implements IUs
 
     async findAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }> {
         const skip = (page - 1) * limit;
-        const query: any = {};
+        const query: any = { role: 'USER' };
 
         if (search) {
             query.$or = [

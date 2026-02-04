@@ -1,6 +1,5 @@
 export const API_ROUTES = {
     REGISTER: '/auth/register',
-    VERIFY_OTP: '/auth/verify-otp',
     RESEND_OTP: '/auth/resend-otp',
     LOGIN: '/auth/login',
     ADMIN_LOGIN: '/auth/admin-login',
@@ -29,9 +28,8 @@ export const API_ROUTES = {
 };
 
 export const APP_ROUTES = {
+    HOME: '/',
     REGISTER: '/register',
-    VERIFY_OTP: '/verify-otp',
-
     LOGIN: '/login',
     ADMIN_LOGIN: '/admin/login',
     ADMIN_DASHBOARD: '/admin',

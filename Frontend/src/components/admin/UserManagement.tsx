@@ -52,8 +52,8 @@ export default function UserManagement() {
         <div className="space-y-8">
             <div className="flex justify-between items-end">
                 <div>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Subject Registry</h3>
-                    <p className="text-3xl font-black text-slate-900">Total Records: <span className="text-blue-600 font-mono">{totalUsers}</span></p>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">User Management</h3>
+                    <p className="text-3xl font-black text-slate-900">Total Users: <span className="text-blue-600 font-mono">{totalUsers}</span></p>
                 </div>
                 <div className="relative w-80">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -75,11 +75,11 @@ export default function UserManagement() {
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50/50 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-slate-100">
                             <tr>
-                                <th className="px-8 py-5">Subject Identity</th>
-                                <th className="px-8 py-4">Communication Hub</th>
-                                <th className="px-8 py-4">Auth Level</th>
+                                <th className="px-8 py-5">Name</th>
+                                <th className="px-8 py-4">Email</th>
+                                <th className="px-8 py-4">Role</th>
                                 <th className="px-8 py-4">Status</th>
-                                <th className="px-8 py-4 text-center">Restrictions</th>
+                                <th className="px-8 py-4 text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
@@ -109,15 +109,15 @@ export default function UserManagement() {
                                                 </div>
                                                 <div>
                                                     <span className="font-bold text-slate-900 block">{u.name}</span>
-                                                    <span className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase italic">UID-{u._id.slice(-8)}</span>
+                                                    <span className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase italic">ID: {u._id.slice(-8)}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-8 py-6 font-medium text-slate-600">{u.email}</td>
                                         <td className="px-8 py-6">
                                             <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black tracking-widest border ${u.role === 'ADMIN' ? 'bg-purple-50 text-purple-600 border-purple-100' :
-                                                    u.role === 'VENDOR' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
-                                                        'bg-emerald-50 text-emerald-600 border-emerald-100'
+                                                u.role === 'VENDOR' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
+                                                    'bg-emerald-50 text-emerald-600 border-emerald-100'
                                                 }`}>
                                                 {u.role}
                                             </span>
@@ -125,19 +125,19 @@ export default function UserManagement() {
                                         <td className="px-8 py-6">
                                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider ${u.isBlocked ? 'text-rose-500' : 'text-emerald-500'
                                                 }`}>
-                                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${u.isBlocked ? 'bg-rose-500' : 'bg-emerald-500 underline-offset-4 animate-pulse'}`} />
-                                                {u.isBlocked ? 'RESTRICTED' : 'AUTHORIZED'}
+                                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${u.isBlocked ? 'bg-rose-500' : 'bg-emerald-500'}`} />
+                                                {u.isBlocked ? 'Blocked' : 'Active'}
                                             </span>
                                         </td>
                                         <td className="px-8 py-4 text-center">
                                             <button
                                                 onClick={() => handleToggleBlock(u)}
                                                 className={`px-4 py-2 rounded-xl text-[10px] font-black tracking-widest shadow-sm transition-all duration-300 ${u.isBlocked
-                                                        ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-emerald-200'
-                                                        : 'bg-rose-600 text-white hover:bg-rose-700 hover:shadow-rose-200'
+                                                    ? 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-emerald-200'
+                                                    : 'bg-rose-600 text-white hover:bg-rose-700 hover:shadow-rose-200'
                                                     }`}
                                             >
-                                                {u.isBlocked ? 'RESTORE ACCESS' : 'REVOKE ACCESS'}
+                                                {u.isBlocked ? 'Unblock' : 'Block'}
                                             </button>
                                         </td>
                                     </tr>
