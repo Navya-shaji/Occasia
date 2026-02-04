@@ -42,7 +42,7 @@ export class AuthService implements IAuthService {
                     otp,
                     otpExpires
                 });
-                sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
+                await this.sendEmailWithRetry(email, otp);
                 return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
             }
         }
@@ -58,9 +58,20 @@ export class AuthService implements IAuthService {
             isVerified: false
         });
 
-        // Send email in background - do not await
-        sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
+        await this.sendEmailWithRetry(email, otp);
         return { email, message: `OTP sent for ${role.toLowerCase()} verification` };
+    }
+
+    private async sendEmailWithRetry(email: string, otp: string) {
+        try {
+            await sendOtpEmail(email, otp);
+        } catch (error: any) {
+            console.error(`| MAIL CRITICAL: ${error.message}`);
+            // In production, we MUST know if mail fails
+            if (process.env.NODE_ENV === 'production') {
+                throw new Error(`Technical error: Could not deliver verification code. ${error.message}`);
+            }
+        }
     }
 
     async verifyOtp(email: string, otp: string) {
@@ -96,7 +107,7 @@ export class AuthService implements IAuthService {
         const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
         await this.userRepository.updateByEmail(email, { otp, otpExpires });
-        sendOtpEmail(email, otp).catch(err => console.error("Email failed:", err));
+        await this.sendEmailWithRetry(email, otp);
 
         return { message: 'OTP resent successfully' };
     }
