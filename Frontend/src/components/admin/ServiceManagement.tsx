@@ -89,10 +89,9 @@ export default function ServiceManagement() {
     };
 
     const handleDeleteService = async (id: string) => {
-        if (!window.confirm('Are you sure you want to delete this service?')) return;
         try {
             await serviceService.deleteService(id);
-            toast.success('Service deleted');
+            toast.success('Service deleted successfully');
             fetchServices();
         } catch (error) {
             toast.error('Failed to delete service');

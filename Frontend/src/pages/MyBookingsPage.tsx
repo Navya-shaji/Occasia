@@ -43,7 +43,6 @@ export default function MyBookingsPage() {
     const displayBookings = activeTab === 'UPCOMING' ? upcomingBookings : pastBookings;
 
     const handleCancel = async (id: string) => {
-        if (!window.confirm('Are you sure you want to cancel this booking?')) return;
         try {
             await bookingService.cancelBooking(id);
             toast.success('Booking cancelled successfully');
