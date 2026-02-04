@@ -28,7 +28,7 @@ export class AuthService implements IAuthService {
 
         const existingUser = await this.userRepository.findByEmail(email);
         const otp = this.generateOtp();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+        const otpExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 Hours
 
         if (existingUser) {
             if (existingUser.isVerified) {

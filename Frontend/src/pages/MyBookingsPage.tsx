@@ -195,7 +195,7 @@ export default function MyBookingsPage() {
                                             </div>
 
                                             <div className="flex space-x-3 w-full sm:w-auto">
-                                                {booking.status === 'PENDING' && activeTab === 'UPCOMING' && (
+                                                {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && activeTab === 'UPCOMING' && (
                                                     <button
                                                         onClick={() => handleCancel(booking._id)}
                                                         className="flex-1 sm:flex-none px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
