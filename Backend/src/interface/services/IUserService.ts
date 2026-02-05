@@ -1,7 +1,9 @@
 import { IUserResponse } from '../user.interface';
+import { UserResponseDto } from '../../dto/user.dto';
 
 export interface IUserService {
-    getAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: IUserResponse[]; total: number }>;
-    blockUser(userId: string): Promise<IUserResponse | null>;
-    unblockUser(userId: string): Promise<IUserResponse | null>;
+    getAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: UserResponseDto[]; total: number }>;
+    blockUser(userId: string): Promise<UserResponseDto | null>;
+    unblockUser(userId: string): Promise<UserResponseDto | null>;
 }
+

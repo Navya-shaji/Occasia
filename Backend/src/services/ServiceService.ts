@@ -1,24 +1,17 @@
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { IService, IServiceDocument } from '../interface/service.interface';
+import { ServiceResponseDto, ServiceListResponseDto, ServiceFilterDto } from '../dto/service.dto';
+import { ServiceMapper } from '../mappers/service.mapper';
 
 export class ServiceService {
     constructor(private _serviceRepository: ServiceRepository) { }
 
-    async createService(serviceData: IService): Promise<IServiceDocument> {
-        return await this._serviceRepository.create(serviceData);
+    async createService(serviceData: IService): Promise<ServiceResponseDto> {
+        const service = await this._serviceRepository.create(serviceData);
+        return ServiceMapper.toServiceResponseDto(service);
     }
 
-    async getAllServices(filters: {
-        category?: string,
-        location?: string,
-        keyword?: string,
-        minPrice?: number,
-        maxPrice?: number,
-        sort?: string,
-        page?: number,
-        limit?: number,
-        date?: string
-    }): Promise<{ services: IServiceDocument[], total: number }> {
+    async getAllServices(filters: ServiceFilterDto): Promise<ServiceListResponseDto> {
         const { category, location, keyword, minPrice, maxPrice, sort = '-createdAt', page = 1, limit = 10, date } = filters;
 
         const query: any = {};
@@ -49,18 +42,23 @@ export class ServiceService {
         else if (sort === 'newest') sortObj = { createdAt: -1 };
         else sortObj = { createdAt: -1 };
 
-        return await this._serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
+        const result = await this._serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
+
+        return ServiceMapper.toServiceListResponseDto(result.services, result.total, page, limit);
     }
 
-    async getServiceById(id: string): Promise<IServiceDocument | null> {
-        return await this._serviceRepository.findById(id);
+    async getServiceById(id: string): Promise<ServiceResponseDto | null> {
+        const service = await this._serviceRepository.findById(id);
+        return service ? ServiceMapper.toServiceResponseDto(service) : null;
     }
 
-    async updateService(id: string, serviceData: Partial<IService>): Promise<IServiceDocument | null> {
-        return await this._serviceRepository.update(id, serviceData);
+    async updateService(id: string, serviceData: Partial<IService>): Promise<ServiceResponseDto | null> {
+        const service = await this._serviceRepository.update(id, serviceData);
+        return service ? ServiceMapper.toServiceResponseDto(service) : null;
     }
 
     async deleteService(id: string): Promise<boolean> {
         return await this._serviceRepository.delete(id);
     }
 }
+

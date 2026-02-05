@@ -5,6 +5,8 @@ import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { sendBookingConfirmation } from './mail.service';
 import { Schema } from 'mongoose';
+import { CreateBookingDto, BookingResponseDto } from '../dto/booking.dto';
+import { BookingMapper } from '../mappers/booking.mapper';
 
 export class BookingService implements IBookingService {
     constructor(
@@ -13,7 +15,7 @@ export class BookingService implements IBookingService {
         private _userRepository: UserRepository
     ) { }
 
-    async createBooking(userId: string, serviceId: string, startDate: string, endDate: string): Promise<IBookingDocument> {
+    async createBooking(userId: string, serviceId: string, startDate: string, endDate: string): Promise<BookingResponseDto> {
         const [service, user] = await Promise.all([
             this._serviceRepository.findById(serviceId),
             this._userRepository.findById(userId)
@@ -71,18 +73,20 @@ export class BookingService implements IBookingService {
             status: 'PENDING'
         });
 
-        return booking;
+        return BookingMapper.toBookingResponseDto(booking);
     }
 
-    async getUserBookings(userId: string): Promise<IBookingDocument[]> {
-        return await this._bookingRepository.findByUserId(userId);
+    async getUserBookings(userId: string): Promise<BookingResponseDto[]> {
+        const bookings = await this._bookingRepository.findByUserId(userId);
+        return BookingMapper.toBookingResponseDtoList(bookings);
     }
 
-    async getAllBookings(): Promise<IBookingDocument[]> {
-        return await this._bookingRepository.findAll();
+    async getAllBookings(): Promise<BookingResponseDto[]> {
+        const bookings = await this._bookingRepository.findAll();
+        return BookingMapper.toBookingResponseDtoList(bookings);
     }
 
-    async getBookingById(bookingId: string, userId: string): Promise<IBookingDocument | null> {
+    async getBookingById(bookingId: string, userId: string): Promise<BookingResponseDto | null> {
         const booking = await this._bookingRepository.findById(bookingId);
         if (!booking) return null;
 
@@ -91,10 +95,10 @@ export class BookingService implements IBookingService {
         if ((booking.user as any)._id.toString() !== userId) {
             throw new Error("Unauthorized access to booking");
         }
-        return booking;
+        return BookingMapper.toBookingResponseDto(booking);
     }
 
-    async cancelBooking(bookingId: string, userId: string): Promise<IBookingDocument> {
+    async cancelBooking(bookingId: string, userId: string): Promise<BookingResponseDto> {
         const booking = await this._bookingRepository.findById(bookingId);
         if (!booking) {
             throw new Error('Booking not found');
@@ -110,14 +114,15 @@ export class BookingService implements IBookingService {
 
         // Normally we'd also free up the dates here, but simple cancel for now
         const updated = await this._bookingRepository.updateStatus(bookingId, 'CANCELLED');
-        return updated!;
+        return BookingMapper.toBookingResponseDto(updated!);
     }
 
-    async updateBookingStatus(bookingId: string, status: string): Promise<IBookingDocument> {
+    async updateBookingStatus(bookingId: string, status: string): Promise<BookingResponseDto> {
         const updated = await this._bookingRepository.updateStatus(bookingId, status);
         if (!updated) {
             throw new Error('Booking not found');
         }
-        return updated;
+        return BookingMapper.toBookingResponseDto(updated);
     }
 }
+

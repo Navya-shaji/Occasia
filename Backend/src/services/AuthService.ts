@@ -6,11 +6,13 @@ import { IAuthService } from '../interface/services/IAuthService';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { Role } from '../enums/role';
 import { sendOtpEmail } from './mail.service';
+import { RegisterUserDto, LoginUserDto, AuthResponseDto } from '../dto/user.dto';
+import { UserMapper } from '../mappers/user.mapper';
 
 export class AuthService implements IAuthService {
     constructor(private _userRepository: IUserRepository) { }
 
-    async register(userData: IUser) {
+    async register(userData: IUser): Promise<AuthResponseDto> {
         const { name, email, password, role = Role.USER } = userData;
 
         if (role === Role.ADMIN) {
@@ -54,17 +56,10 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return {
-            id: user!._id,
-            name: user!.name,
-            email: user!.email,
-            role: user!.role,
-            token,
-            message: 'Registration successful'
-        };
+        return UserMapper.toAuthResponseDto(user!, token, 'Registration successful');
     }
 
-    async login(loginData: any) {
+    async login(loginData: any): Promise<AuthResponseDto> {
         const { email, password } = loginData;
         const user = await this._userRepository.findByEmail(email);
 
@@ -84,10 +79,10 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
+        return UserMapper.toAuthResponseDto(user, token);
     }
 
-    async adminLogin(loginData: any) {
+    async adminLogin(loginData: any): Promise<AuthResponseDto> {
         const { email, password } = loginData;
         const user = await this._userRepository.findByEmail(email);
 
@@ -103,6 +98,6 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return { id: user._id, name: user.name, email: user.email, role: user.role, token };
+        return UserMapper.toAuthResponseDto(user, token);
     }
 }
