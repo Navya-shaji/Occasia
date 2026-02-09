@@ -1,4 +1,5 @@
 import { ServiceRepository } from '../repositories/ServiceRepository';
+import { isValidObjectId } from 'mongoose';
 import { IService, IServiceDocument } from '../interface/service.interface';
 import { ServiceResponseDto, ServiceListResponseDto, ServiceFilterDto } from '../dto/service.dto';
 import { toServiceResponseDto, toServiceListResponseDto } from '../mappers/service.mapper';
@@ -48,16 +49,19 @@ export class ServiceService {
     }
 
     async getServiceById(id: string): Promise<ServiceResponseDto | null> {
+        if (!isValidObjectId(id)) return null;
         const service = await this._serviceRepository.findById(id);
         return service ? toServiceResponseDto(service) : null;
     }
 
     async updateService(id: string, serviceData: Partial<IService>): Promise<ServiceResponseDto | null> {
+        if (!isValidObjectId(id)) return null;
         const service = await this._serviceRepository.update(id, serviceData);
         return service ? toServiceResponseDto(service) : null;
     }
 
     async deleteService(id: string): Promise<boolean> {
+        if (!isValidObjectId(id)) return false;
         return await this._serviceRepository.delete(id);
     }
 }

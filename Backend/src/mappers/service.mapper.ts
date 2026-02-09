@@ -2,17 +2,17 @@ import { IServiceDocument } from '../interface/service.interface';
 import { ServiceResponseDto, ServiceListResponseDto } from '../dto/service.dto';
 
 export const toServiceResponseDto = (service: IServiceDocument): ServiceResponseDto => ({
-    id: service._id.toString(),
-    name: service.name,
-    description: service.description,
-    price: service.price,
-    pricePerDay: service.pricePerDay,
-    category: service.category,
-    location: service.location,
-    images: service.images,
-    isAvailable: service.isAvailable,
-    unavailableDates: service.unavailableDates,
-    contactDetails: service.contactDetails,
+    id: service._id ? service._id.toString() : '',
+    name: service.name || '',
+    description: service.description || '',
+    price: service.price || 0,
+    pricePerDay: service.pricePerDay || 0,
+    category: service.category || '',
+    location: service.location || '',
+    images: service.images || [],
+    isAvailable: !!service.isAvailable,
+    unavailableDates: service.unavailableDates || [],
+    contactDetails: service.contactDetails || '',
     createdAt: service.createdAt,
     updatedAt: service.updatedAt,
 });

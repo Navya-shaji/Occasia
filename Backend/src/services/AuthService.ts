@@ -13,6 +13,7 @@ export class AuthService implements IAuthService {
     constructor(private _userRepository: IUserRepository) { }
 
     async register(userData: IUser): Promise<AuthResponseDto> {
+        console.log('AuthService: Registering user', { email: userData.email, role: userData.role });
         const { name, email, password, role = Role.USER } = userData;
 
         if (role === Role.ADMIN) {
