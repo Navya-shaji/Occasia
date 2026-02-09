@@ -50,13 +50,17 @@ export class AuthService implements IAuthService {
             }) as any;
         }
 
+        if (!user) {
+            throw new Error('Failed to create or update user');
+        }
+
         const token = jwt.sign(
-            { id: user!._id, name: user!.name, role: user!.role },
+            { id: user._id, name: user.name, role: user.role },
             process.env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '1d' }
         );
 
-        return toAuthResponseDto(user!, token, 'Registration successful');
+        return toAuthResponseDto(user, token, 'Registration successful');
     }
 
     async login(loginData: any): Promise<AuthResponseDto> {

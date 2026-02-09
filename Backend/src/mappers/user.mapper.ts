@@ -2,10 +2,10 @@ import { IUserResponse } from '../interface/user.interface';
 import { UserResponseDto, AuthResponseDto } from '../dto/user.dto';
 
 export const toUserResponseDto = (user: IUserResponse): UserResponseDto => ({
-    id: user._id.toString(),
+    id: user._id.toString(), // _id is expected to be present
     name: user.name,
     email: user.email,
-    role: user.role!,
+    role: user.role!, // role is expected to be present
     isVerified: user.isVerified,
     isBlocked: user.isBlocked,
 });
