@@ -7,7 +7,7 @@ import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { Role } from '../enums/role';
 import { sendOtpEmail } from './mail.service';
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from '../dto/user.dto';
-import { UserMapper } from '../mappers/user.mapper';
+import { toAuthResponseDto } from '../mappers/user.mapper';
 
 export class AuthService implements IAuthService {
     constructor(private _userRepository: IUserRepository) { }
@@ -56,7 +56,7 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return UserMapper.toAuthResponseDto(user!, token, 'Registration successful');
+        return toAuthResponseDto(user!, token, 'Registration successful');
     }
 
     async login(loginData: any): Promise<AuthResponseDto> {
@@ -79,7 +79,7 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return UserMapper.toAuthResponseDto(user, token);
+        return toAuthResponseDto(user, token);
     }
 
     async adminLogin(loginData: any): Promise<AuthResponseDto> {
@@ -98,6 +98,6 @@ export class AuthService implements IAuthService {
             { expiresIn: '1d' }
         );
 
-        return UserMapper.toAuthResponseDto(user, token);
+        return toAuthResponseDto(user, token);
     }
 }
