@@ -6,7 +6,7 @@ import { UserRepository } from '../repositories/UserRepository';
 import { sendBookingConfirmation } from './mail.service';
 import { Schema } from 'mongoose';
 import { CreateBookingDto, BookingResponseDto } from '../dto/booking.dto';
-import { BookingMapper } from '../mappers/booking.mapper';
+import { toBookingResponseDto, toBookingResponseDtoList } from '../mappers/booking.mapper';
 
 export class BookingService implements IBookingService {
     constructor(
@@ -73,17 +73,17 @@ export class BookingService implements IBookingService {
             status: 'PENDING'
         });
 
-        return BookingMapper.toBookingResponseDto(booking);
+        return toBookingResponseDto(booking);
     }
 
     async getUserBookings(userId: string): Promise<BookingResponseDto[]> {
         const bookings = await this._bookingRepository.findByUserId(userId);
-        return BookingMapper.toBookingResponseDtoList(bookings);
+        return toBookingResponseDtoList(bookings);
     }
 
     async getAllBookings(): Promise<BookingResponseDto[]> {
         const bookings = await this._bookingRepository.findAll();
-        return BookingMapper.toBookingResponseDtoList(bookings);
+        return toBookingResponseDtoList(bookings);
     }
 
     async getBookingById(bookingId: string, userId: string): Promise<BookingResponseDto | null> {
@@ -95,7 +95,7 @@ export class BookingService implements IBookingService {
         if ((booking.user as any)._id.toString() !== userId) {
             throw new Error("Unauthorized access to booking");
         }
-        return BookingMapper.toBookingResponseDto(booking);
+        return toBookingResponseDto(booking);
     }
 
     async cancelBooking(bookingId: string, userId: string): Promise<BookingResponseDto> {
@@ -114,7 +114,7 @@ export class BookingService implements IBookingService {
 
         // Normally we'd also free up the dates here, but simple cancel for now
         const updated = await this._bookingRepository.updateStatus(bookingId, 'CANCELLED');
-        return BookingMapper.toBookingResponseDto(updated!);
+        return toBookingResponseDto(updated!);
     }
 
     async updateBookingStatus(bookingId: string, status: string): Promise<BookingResponseDto> {
@@ -122,7 +122,7 @@ export class BookingService implements IBookingService {
         if (!updated) {
             throw new Error('Booking not found');
         }
-        return BookingMapper.toBookingResponseDto(updated);
+        return toBookingResponseDto(updated);
     }
 }
 

@@ -1,14 +1,14 @@
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { IService, IServiceDocument } from '../interface/service.interface';
 import { ServiceResponseDto, ServiceListResponseDto, ServiceFilterDto } from '../dto/service.dto';
-import { ServiceMapper } from '../mappers/service.mapper';
+import { toServiceResponseDto, toServiceListResponseDto } from '../mappers/service.mapper';
 
 export class ServiceService {
     constructor(private _serviceRepository: ServiceRepository) { }
 
     async createService(serviceData: IService): Promise<ServiceResponseDto> {
         const service = await this._serviceRepository.create(serviceData);
-        return ServiceMapper.toServiceResponseDto(service);
+        return toServiceResponseDto(service);
     }
 
     async getAllServices(filters: ServiceFilterDto): Promise<ServiceListResponseDto> {
@@ -44,17 +44,17 @@ export class ServiceService {
 
         const result = await this._serviceRepository.findAllWithPagination(query, sortObj, skip, limit);
 
-        return ServiceMapper.toServiceListResponseDto(result.services, result.total, page, limit);
+        return toServiceListResponseDto(result.services, result.total, page, limit);
     }
 
     async getServiceById(id: string): Promise<ServiceResponseDto | null> {
         const service = await this._serviceRepository.findById(id);
-        return service ? ServiceMapper.toServiceResponseDto(service) : null;
+        return service ? toServiceResponseDto(service) : null;
     }
 
     async updateService(id: string, serviceData: Partial<IService>): Promise<ServiceResponseDto | null> {
         const service = await this._serviceRepository.update(id, serviceData);
-        return service ? ServiceMapper.toServiceResponseDto(service) : null;
+        return service ? toServiceResponseDto(service) : null;
     }
 
     async deleteService(id: string): Promise<boolean> {

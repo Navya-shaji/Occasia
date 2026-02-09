@@ -1,58 +1,39 @@
 import { IBookingDocument } from '../interface/booking.interface';
 import { BookingResponseDto, BookingListResponseDto } from '../dto/booking.dto';
 
-export class BookingMapper {
-    /**
-     * Maps a Booking entity to BookingResponseDto
-     * Handles populated and non-populated references
-     */
-    static toBookingResponseDto(booking: IBookingDocument): BookingResponseDto {
-        const dto = new BookingResponseDto();
-        dto.id = booking._id.toString();
+export const toBookingResponseDto = (booking: IBookingDocument): BookingResponseDto => {
+    const isUserPopulated = typeof booking.user === 'object' && booking.user !== null && '_id' in booking.user;
+    const userFn = isUserPopulated ? (booking.user as any) : null;
 
-        // Handle user reference (can be populated or just ObjectId)
-        if (typeof booking.user === 'object' && booking.user !== null && '_id' in booking.user) {
-            dto.userId = (booking.user as any)._id.toString();
-            dto.userName = (booking.user as any).name;
-            dto.userEmail = (booking.user as any).email;
-        } else {
-            dto.userId = booking.user.toString();
-        }
+    const isServicePopulated = typeof booking.service === 'object' && booking.service !== null && '_id' in booking.service;
+    const serviceFn = isServicePopulated ? (booking.service as any) : null;
 
-        // Handle service reference (can be populated or just ObjectId)
-        if (typeof booking.service === 'object' && booking.service !== null && '_id' in booking.service) {
-            dto.serviceId = (booking.service as any)._id.toString();
-            dto.serviceName = (booking.service as any).name;
-            dto.serviceImage = (booking.service as any).images?.[0];
-        } else {
-            dto.serviceId = booking.service.toString();
-        }
+    return {
+        id: booking._id.toString(),
+        userId: isUserPopulated ? userFn._id.toString() : booking.user.toString(),
+        userName: userFn?.name,
+        userEmail: userFn?.email,
+        serviceId: isServicePopulated ? serviceFn._id.toString() : booking.service.toString(),
+        serviceName: serviceFn?.name,
+        serviceImage: serviceFn?.images?.[0],
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        totalPrice: booking.totalPrice,
+        status: booking.status,
+        bookingDate: booking.bookingDate,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+    };
+};
 
-        dto.startDate = booking.startDate;
-        dto.endDate = booking.endDate;
-        dto.totalPrice = booking.totalPrice;
-        dto.status = booking.status;
-        dto.bookingDate = booking.bookingDate;
-        dto.createdAt = booking.createdAt;
-        dto.updatedAt = booking.updatedAt;
+export const toBookingResponseDtoList = (bookings: IBookingDocument[]): BookingResponseDto[] => {
+    return bookings.map(toBookingResponseDto);
+};
 
-        return dto;
-    }
 
-    /**
-     * Maps multiple Booking entities to BookingResponseDto array
-     */
-    static toBookingResponseDtoList(bookings: IBookingDocument[]): BookingResponseDto[] {
-        return bookings.map(booking => this.toBookingResponseDto(booking));
-    }
-
-    /**
-     * Maps bookings to BookingListResponseDto
-     */
-    static toBookingListResponseDto(bookings: IBookingDocument[]): BookingListResponseDto {
-        const dto = new BookingListResponseDto();
-        dto.bookings = this.toBookingResponseDtoList(bookings);
-        dto.total = bookings.length;
-        return dto;
-    }
-}
+export const toBookingListResponseDto = (bookings: IBookingDocument[]): BookingListResponseDto => {
+    return {
+        bookings: toBookingResponseDtoList(bookings),
+        total: bookings.length,
+    };
+};
