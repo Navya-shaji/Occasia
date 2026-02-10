@@ -2,7 +2,7 @@ import { IServiceDocument } from '../interface/service.interface';
 import { ServiceResponseDto, ServiceListResponseDto } from '../dto/service.dto';
 
 export const toServiceResponseDto = (service: IServiceDocument): ServiceResponseDto => ({
-    id: service._id ? service._id.toString() : '',
+    id: service._id?.toString() || '',
     name: service.name || '',
     description: service.description || '',
     price: service.price || 0,

@@ -9,11 +9,11 @@ export const toBookingResponseDto = (booking: IBookingDocument): BookingResponse
     const serviceFn = isServicePopulated ? (booking.service as any) : null;
 
     return {
-        id: booking._id.toString(),
-        userId: isUserPopulated ? userFn._id.toString() : booking.user.toString(),
+        id: booking._id?.toString() || '',
+        userId: isUserPopulated ? (userFn._id?.toString() || '') : (booking.user?.toString() || ''),
         userName: userFn?.name,
         userEmail: userFn?.email,
-        serviceId: isServicePopulated ? serviceFn._id.toString() : booking.service.toString(),
+        serviceId: isServicePopulated ? (serviceFn._id?.toString() || '') : (booking.service?.toString() || ''),
         serviceName: serviceFn?.name,
         serviceImage: serviceFn?.images?.[0],
         startDate: booking.startDate,

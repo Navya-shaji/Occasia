@@ -5,7 +5,7 @@ import { Role } from '../enums/role';
 
 export const toUserResponseDto = (user: IUserResponse): UserResponseDto => {
     return {
-        id: user._id ? user._id.toString() : '',
+        id: user._id?.toString() || '',
         name: user.name || '',
         email: user.email || '',
         role: user.role || Role.USER,
@@ -16,7 +16,7 @@ export const toUserResponseDto = (user: IUserResponse): UserResponseDto => {
 
 export const toAuthResponseDto = (user: IUserResponse, token: string, message?: string): AuthResponseDto => {
     const dto: AuthResponseDto = {
-        id: user._id ? user._id.toString() : '',
+        id: user._id?.toString() || '',
         name: user.name || '',
         email: user.email || '',
         role: user.role || Role.USER,
