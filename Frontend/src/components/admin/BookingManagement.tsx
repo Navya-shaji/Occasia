@@ -29,12 +29,17 @@ export default function BookingManagement() {
     const handleUpdateStatus = async (e: React.MouseEvent, id: string, status: string) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // Optimistically update or just fetch silently to prevent "reload" flicker
         try {
             await bookingService.updateStatus(id, status);
-            toast.success(`Booking status updated to ${status}`);
-            fetchBookings();
+            toast.success(`Booking ${status.toLowerCase()}`);
+
+            // Silent refresh of data
+            const response = await bookingService.getAllBookings();
+            setBookings(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
-            toast.error('Failed to update status');
+            toast.error('Operation failed');
         }
     };
 
