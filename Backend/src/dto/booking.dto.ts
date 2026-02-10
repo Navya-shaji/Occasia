@@ -18,6 +18,22 @@ export class BookingResponseDto {
     serviceImage?: string;
     userName?: string;
     userEmail?: string;
+    user?: {
+        id: string;
+        name: string;
+        email: string;
+    };
+    service?: {
+        id: string;
+        name: string;
+        category: string;
+        location: string;
+        images: string[];
+        contactDetails?: {
+            phone: string;
+            email: string;
+        };
+    };
     startDate!: Date;
     endDate!: Date;
     totalPrice!: number;

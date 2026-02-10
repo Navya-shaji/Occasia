@@ -104,7 +104,7 @@ export class BookingService implements IBookingService {
             throw new Error('Booking not found');
         }
 
-        if (booking.user.toString() !== userId) {
+        if (booking.user.toString() !== userId && (booking.user as any)._id?.toString() !== userId) {
             throw new Error('Unauthorized');
         }
 
