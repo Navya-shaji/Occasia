@@ -147,7 +147,7 @@ export default function ServiceManagement() {
             });
 
             if (editingService) {
-                await serviceService.updateService(editingService._id, formDataToSend);
+                await serviceService.updateService(editingService.id, formDataToSend);
                 toast.success('Service updated');
             } else {
                 await serviceService.createService(formDataToSend);
@@ -224,7 +224,7 @@ export default function ServiceManagement() {
                                 </tr>
                             ) : (
                                 filteredServices.map((service) => (
-                                    <tr key={service._id} className="hover:bg-slate-50/50 transition-colors group">
+                                    <tr key={service.id} className="hover:bg-slate-50/50 transition-colors group">
                                         <td className="px-8 py-6">
                                             <div className="flex items-center space-x-4">
                                                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm group-hover:scale-105 transition-transform duration-300">
@@ -271,7 +271,7 @@ export default function ServiceManagement() {
                                                     <Edit2 size={16} />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDeleteService(service._id)}
+                                                    onClick={() => handleDeleteService(service.id)}
                                                     className="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl transition-all shadow-sm"
                                                     title="Eliminate"
                                                 >

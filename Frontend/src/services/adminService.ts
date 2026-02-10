@@ -2,13 +2,13 @@ import apiInstance from '../api/apiInstance';
 import { API_ROUTES } from '../constants/routes';
 
 export interface User {
-    _id: string;
+    id: string;
     name: string;
     email: string;
     role: string;
     isVerified: boolean;
     isBlocked: boolean;
-    createdAt: string;
+    createdAt?: string;
 }
 
 const adminService = {

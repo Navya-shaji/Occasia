@@ -2,7 +2,7 @@ import apiInstance from '../api/apiInstance';
 import { API_ROUTES } from '../constants/routes';
 
 export interface Service {
-    _id: string;
+    id: string;
     name: string;
     description: string;
     price: number;

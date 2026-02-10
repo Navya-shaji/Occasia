@@ -36,10 +36,10 @@ export default function UserManagement() {
     const handleToggleBlock = async (u: User) => {
         try {
             if (u.isBlocked) {
-                await adminService.unblockUser(u._id);
+                await adminService.unblockUser(u.id);
                 toast.success(`Access restored for ${u.name}`);
             } else {
-                await adminService.blockUser(u._id);
+                await adminService.blockUser(u.id);
                 toast.success(`Access restricted for ${u.name}`);
             }
             fetchUsers(currentPage, searchQuery, statusFilter);
@@ -101,7 +101,7 @@ export default function UserManagement() {
                                 </tr>
                             ) : (
                                 users.map((u) => (
-                                    <tr key={u._id} className="hover:bg-slate-50/50 transition-colors group">
+                                    <tr key={u.id} className="hover:bg-slate-50/50 transition-colors group">
                                         <td className="px-8 py-6">
                                             <div className="flex items-center space-x-3">
                                                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-50 to-indigo-50 text-blue-600 border border-blue-100 flex items-center justify-center font-black text-sm">
@@ -109,7 +109,7 @@ export default function UserManagement() {
                                                 </div>
                                                 <div>
                                                     <span className="font-bold text-slate-900 block">{u.name}</span>
-                                                    <span className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase italic">ID: {u._id.slice(-8)}</span>
+                                                    <span className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase italic">ID: {u.id.slice(-8)}</span>
                                                 </div>
                                             </div>
                                         </td>

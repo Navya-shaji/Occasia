@@ -133,7 +133,7 @@ export default function MyBookingsPage() {
                     <div className="space-y-6">
                         {displayBookings.map((booking) => (
                             <div
-                                key={booking._id}
+                                key={booking.id}
                                 className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
                             >
                                 <div className="flex flex-col md:flex-row">
@@ -163,7 +163,7 @@ export default function MyBookingsPage() {
                                                             {getStatusIcon(booking.status)}
                                                             <span>{booking.status}</span>
                                                         </span>
-                                                        <span className="text-xs text-gray-400">#{booking._id.slice(-6).toUpperCase()}</span>
+                                                        <span className="text-xs text-gray-400">#{booking.id.slice(-6).toUpperCase()}</span>
                                                     </div>
                                                     <h3 className="text-xl font-bold text-gray-900">{booking.service?.name}</h3>
                                                 </div>
@@ -196,14 +196,14 @@ export default function MyBookingsPage() {
                                             <div className="flex space-x-3 w-full sm:w-auto">
                                                 {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && activeTab === 'UPCOMING' && (
                                                     <button
-                                                        onClick={() => handleCancel(booking._id)}
+                                                        onClick={() => handleCancel(booking.id)}
                                                         className="flex-1 sm:flex-none px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
                                                     >
                                                         Cancel
                                                     </button>
                                                 )}
                                                 <Link
-                                                    to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking._id)}
+                                                    to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking.id)}
                                                     className="flex-1 sm:flex-none px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors text-center"
                                                 >
                                                     View Details

@@ -2,7 +2,7 @@ import apiInstance from '../api/apiInstance';
 import { API_ROUTES } from '../constants/routes';
 
 export interface Booking {
-    _id: string;
+    id: string;
     user: any;
     service: any;
     startDate: string;

@@ -45,7 +45,7 @@ export default function BookingManagement() {
     const filteredBookings = bookings.filter(b =>
         b.service?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         b.user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b._id.toLowerCase().includes(searchQuery.toLowerCase())
+        b.id.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -103,10 +103,10 @@ export default function BookingManagement() {
                                 </tr>
                             ) : (
                                 filteredBookings.map((booking) => (
-                                    <tr key={booking._id} className="hover:bg-slate-50/50 transition-colors group">
+                                    <tr key={booking.id} className="hover:bg-slate-50/50 transition-colors group">
                                         <td className="px-8 py-6">
                                             <span className="font-mono text-[10px] text-slate-400 bg-slate-100 px-2 py-1 rounded">
-                                                #{booking._id.slice(-8).toUpperCase()}
+                                                #{booking.id.slice(-8).toUpperCase()}
                                             </span>
                                         </td>
                                         <td className="px-8 py-6">
@@ -148,14 +148,14 @@ export default function BookingManagement() {
                                                 {booking.status === 'PENDING' && (
                                                     <>
                                                         <button
-                                                            onClick={() => handleUpdateStatus(booking._id, 'CONFIRMED')}
+                                                            onClick={() => handleUpdateStatus(booking.id, 'CONFIRMED')}
                                                             className="w-8 h-8 flex items-center justify-center bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-lg transition-all shadow-sm"
                                                             title="Authorize"
                                                         >
                                                             <CheckCircle2 size={16} />
                                                         </button>
                                                         <button
-                                                            onClick={() => handleUpdateStatus(booking._id, 'CANCELLED')}
+                                                            onClick={() => handleUpdateStatus(booking.id, 'CANCELLED')}
                                                             className="w-8 h-8 flex items-center justify-center bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-lg transition-all shadow-sm"
                                                             title="Revoke"
                                                         >
