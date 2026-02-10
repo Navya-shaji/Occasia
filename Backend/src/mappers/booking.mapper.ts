@@ -2,14 +2,13 @@ import { IBookingDocument } from '../interface/booking.interface';
 import { BookingResponseDto, BookingListResponseDto } from '../dto/booking.dto';
 
 export const toBookingResponseDto = (booking: IBookingDocument): BookingResponseDto => {
-    // Robust check for populated user (Mongoose can return ObjectId as an object with _bsontype)
+    // A field is populated if it's an object and has identifying properties
     const userObj = booking.user as any;
-    const isUserPopulated = userObj && typeof userObj === 'object' && !userObj._bsontype && (userObj.name || userObj.email);
+    const isUserPopulated = !!(userObj && userObj.name);
     const userFn = isUserPopulated ? userObj : null;
 
-    // Robust check for populated service
     const serviceObj = booking.service as any;
-    const isServicePopulated = serviceObj && typeof serviceObj === 'object' && !serviceObj._bsontype && (serviceObj.name || serviceObj.category);
+    const isServicePopulated = !!(serviceObj && serviceObj.name);
     const serviceFn = isServicePopulated ? serviceObj : null;
 
     return {

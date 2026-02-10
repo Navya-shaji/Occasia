@@ -16,7 +16,9 @@ export default function BookingManagement() {
         setLoading(true);
         try {
             const response = await bookingService.getAllBookings();
-            setBookings(Array.isArray(response.data) ? response.data : []);
+            const data = Array.isArray(response.data) ? response.data : [];
+            console.log('Admin Bookings Data:', data);
+            setBookings(data);
         } catch (error) {
             toast.error('Failed to load bookings');
         } finally {
@@ -117,7 +119,7 @@ export default function BookingManagement() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-gray-900 font-medium">
-                                                {booking.service?.name || booking.serviceName || (booking.serviceId ? `ID: ${booking.serviceId.slice(-6).toUpperCase()}` : 'N/A')}
+                                                {booking.service?.name || (booking.serviceName && booking.serviceName !== 'N/A' ? booking.serviceName : (booking.serviceId ? `ID: ${booking.serviceId.slice(-6).toUpperCase()}` : 'N/A'))}
                                             </td>
                                             <td className="px-6 py-4 text-gray-600">
                                                 <div className="text-xs">
