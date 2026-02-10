@@ -12,6 +12,11 @@ export class BookingRepository extends BaseRepository<IBookingDocument> implemen
         return await this._model.findById(id).populate('service').populate('user');
     }
 
+    async create(data: Partial<IBookingDocument>): Promise<IBookingDocument> {
+        const booking = await this._model.create(data);
+        return await booking.populate(['service', 'user']);
+    }
+
     async findAll(query: any = {}): Promise<IBookingDocument[]> {
         return await this._model.find(query).populate('service').populate('user').sort({ createdAt: -1 });
     }

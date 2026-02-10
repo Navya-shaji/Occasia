@@ -2,14 +2,14 @@ import { IBookingDocument } from '../interface/booking.interface';
 import { BookingResponseDto, BookingListResponseDto } from '../dto/booking.dto';
 
 export const toBookingResponseDto = (booking: IBookingDocument): BookingResponseDto => {
-    // Robust check for populated user
+    // Robust check for populated user (Mongoose can return ObjectId as an object with _bsontype)
     const userObj = booking.user as any;
-    const isUserPopulated = userObj && typeof userObj === 'object' && !userObj.constructor.name.includes('ObjectId') && (userObj.name || userObj.email || userObj._id);
+    const isUserPopulated = userObj && typeof userObj === 'object' && !userObj._bsontype && (userObj.name || userObj.email);
     const userFn = isUserPopulated ? userObj : null;
 
     // Robust check for populated service
     const serviceObj = booking.service as any;
-    const isServicePopulated = serviceObj && typeof serviceObj === 'object' && !serviceObj.constructor.name.includes('ObjectId') && (serviceObj.name || serviceObj.category || serviceObj._id);
+    const isServicePopulated = serviceObj && typeof serviceObj === 'object' && !serviceObj._bsontype && (serviceObj.name || serviceObj.category);
     const serviceFn = isServicePopulated ? serviceObj : null;
 
     return {
@@ -46,7 +46,6 @@ export const toBookingResponseDto = (booking: IBookingDocument): BookingResponse
 export const toBookingResponseDtoList = (bookings: IBookingDocument[]): BookingResponseDto[] => {
     return bookings.map(toBookingResponseDto);
 };
-
 
 export const toBookingListResponseDto = (bookings: IBookingDocument[]): BookingListResponseDto => {
     return {

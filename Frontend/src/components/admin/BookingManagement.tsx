@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ClipboardList, CheckCircle2, XCircle, Clock, Trash2 } from 'lucide-react';
+import { Search, CheckCircle2, XCircle } from 'lucide-react';
 import bookingService, { Booking } from '../../services/bookingService';
 import toast from 'react-hot-toast';
 
@@ -24,7 +24,9 @@ export default function BookingManagement() {
         }
     };
 
-    const handleUpdateStatus = async (id: string, status: string) => {
+    const handleUpdateStatus = async (e: React.MouseEvent, id: string, status: string) => {
+        e.preventDefault();
+        e.stopPropagation();
         try {
             await bookingService.updateStatus(id, status);
             toast.success(`Booking status updated to ${status}`);
@@ -37,7 +39,7 @@ export default function BookingManagement() {
     const filteredBookings = bookings.filter(b => {
         const userName = b.user?.name || b.userName || 'Anonymous';
         const serviceName = b.service?.name || b.serviceName || 'N/A';
-        const bookingId = b.id || (b as any)._id || '';
+        const bookingId = b.id || (b as any)._id || b.serviceId || '';
 
         return (
             serviceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -139,15 +141,17 @@ export default function BookingManagement() {
                                                     {booking.status === 'PENDING' && (
                                                         <>
                                                             <button
-                                                                onClick={() => handleUpdateStatus(bId, 'CONFIRMED')}
-                                                                className="p-1 text-green-600 hover:bg-green-50 rounded"
+                                                                type="button"
+                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CONFIRMED')}
+                                                                className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
                                                                 title="Confirm"
                                                             >
                                                                 <CheckCircle2 size={18} />
                                                             </button>
                                                             <button
-                                                                onClick={() => handleUpdateStatus(bId, 'CANCELLED')}
-                                                                className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                                                type="button"
+                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CANCELLED')}
+                                                                className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
                                                                 title="Cancel"
                                                             >
                                                                 <XCircle size={18} />
