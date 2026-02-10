@@ -133,7 +133,7 @@ export default function BookingDetailsPage() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-gray-500">Booking Reference</p>
-                                        <p className="font-mono font-semibold text-gray-900 tracking-wider">#{booking.id.slice(-8).toUpperCase()}</p>
+                                        <p className="font-mono font-semibold text-gray-900 tracking-wider">#{(booking.id || (booking as any)._id || 'N/A').slice(-8).toUpperCase()}</p>
                                         <p className="text-xs text-gray-400 mt-1">Booked on {new Date(booking.bookingDate).toLocaleDateString()}</p>
                                     </div>
                                 </div>

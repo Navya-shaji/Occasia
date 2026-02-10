@@ -89,6 +89,7 @@ export default function AdminLoginPage() {
                                     {...register('password')}
                                     id="password"
                                     type="password"
+                                    autoComplete="current-password"
                                     className="block w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all sm:text-sm"
                                     placeholder="••••••••"
                                 />
