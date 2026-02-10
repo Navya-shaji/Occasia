@@ -29,5 +29,22 @@ export const toAuthResponseDto = (user: IUserResponse, token: string, message?: 
 };
 
 export const toUserResponseDtoList = (users: IUserResponse[]): UserResponseDto[] => {
-    return users.map(toUserResponseDto);
+    if (!Array.isArray(users)) {
+        console.error('toUserResponseDtoList received non-array:', users);
+        return [];
+    }
+
+    return users
+        .filter(user => {
+            if (!user) {
+                console.warn('Null user found in list');
+                return false;
+            }
+            if (!user._id) {
+                console.warn('User without _id found:', user);
+                return false;
+            }
+            return true;
+        })
+        .map(toUserResponseDto);
 };

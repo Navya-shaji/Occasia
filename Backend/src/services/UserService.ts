@@ -12,11 +12,20 @@ export class UserService implements IUserService {
     }
 
     async getAllUsers(page: number, limit: number, search?: string, status?: string): Promise<{ users: UserResponseDto[]; total: number }> {
-        const result = await this._userRepository.findAllUsers(page, limit, search, status);
-        return {
-            users: toUserResponseDtoList(result.users),
-            total: result.total
-        };
+        try {
+            const result = await this._userRepository.findAllUsers(page, limit, search, status);
+
+            // Filter out any null or invalid users
+            const validUsers = result.users.filter(user => user && user._id);
+
+            return {
+                users: toUserResponseDtoList(validUsers),
+                total: result.total
+            };
+        } catch (error) {
+            console.error('Error in getAllUsers:', error);
+            throw error;
+        }
     }
 
     async blockUser(userId: string): Promise<UserResponseDto | null> {
