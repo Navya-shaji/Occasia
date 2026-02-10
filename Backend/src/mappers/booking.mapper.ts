@@ -2,10 +2,10 @@ import { IBookingDocument } from '../interface/booking.interface';
 import { BookingResponseDto, BookingListResponseDto } from '../dto/booking.dto';
 
 export const toBookingResponseDto = (booking: IBookingDocument): BookingResponseDto => {
-    const isUserPopulated = typeof booking.user === 'object' && booking.user !== null && '_id' in booking.user;
+    const isUserPopulated = booking.user && typeof booking.user === 'object' && ('name' in (booking.user as any) || 'email' in (booking.user as any));
     const userFn = isUserPopulated ? (booking.user as any) : null;
 
-    const isServicePopulated = typeof booking.service === 'object' && booking.service !== null && '_id' in booking.service;
+    const isServicePopulated = booking.service && typeof booking.service === 'object' && ('name' in (booking.service as any) || 'category' in (booking.service as any));
     const serviceFn = isServicePopulated ? (booking.service as any) : null;
 
     return {

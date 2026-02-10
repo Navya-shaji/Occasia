@@ -5,6 +5,10 @@ export interface Booking {
     id: string;
     user: any;
     service: any;
+    userName?: string;
+    userEmail?: string;
+    serviceName?: string;
+    serviceImage?: string;
     startDate: string;
     endDate: string;
     totalPrice: number;
