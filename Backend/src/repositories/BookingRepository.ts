@@ -21,6 +21,6 @@ export class BookingRepository extends BaseRepository<IBookingDocument> implemen
     }
 
     async updateStatus(id: string, status: string): Promise<IBookingDocument | null> {
-        return await this._model.findByIdAndUpdate(id, { status }, { new: true });
+        return await this._model.findByIdAndUpdate(id, { status }, { new: true }).populate('service').populate('user');
     }
 }

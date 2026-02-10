@@ -115,7 +115,7 @@ export default function BookingManagement() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-gray-900 font-medium">
-                                                {booking.service?.name || booking.serviceName || 'N/A'}
+                                                {booking.service?.name || booking.serviceName || (booking.serviceId ? `ID: ${booking.serviceId.slice(-6).toUpperCase()}` : 'N/A')}
                                             </td>
                                             <td className="px-6 py-4 text-gray-600">
                                                 <div className="text-xs">
@@ -128,8 +128,8 @@ export default function BookingManagement() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex px-2 py-1 rounded-md text-[11px] font-semibold ${booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-700' :
-                                                        booking.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
-                                                            'bg-yellow-100 text-yellow-700'
+                                                    booking.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
+                                                        'bg-yellow-100 text-yellow-700'
                                                     }`}>
                                                     {booking.status}
                                                 </span>

@@ -2,11 +2,15 @@ import { IBookingDocument } from '../interface/booking.interface';
 import { BookingResponseDto, BookingListResponseDto } from '../dto/booking.dto';
 
 export const toBookingResponseDto = (booking: IBookingDocument): BookingResponseDto => {
-    const isUserPopulated = booking.user && typeof booking.user === 'object' && ('name' in (booking.user as any) || 'email' in (booking.user as any));
-    const userFn = isUserPopulated ? (booking.user as any) : null;
+    // Robust check for populated user
+    const userObj = booking.user as any;
+    const isUserPopulated = userObj && typeof userObj === 'object' && !userObj.constructor.name.includes('ObjectId') && (userObj.name || userObj.email || userObj._id);
+    const userFn = isUserPopulated ? userObj : null;
 
-    const isServicePopulated = booking.service && typeof booking.service === 'object' && ('name' in (booking.service as any) || 'category' in (booking.service as any));
-    const serviceFn = isServicePopulated ? (booking.service as any) : null;
+    // Robust check for populated service
+    const serviceObj = booking.service as any;
+    const isServicePopulated = serviceObj && typeof serviceObj === 'object' && !serviceObj.constructor.name.includes('ObjectId') && (serviceObj.name || serviceObj.category || serviceObj._id);
+    const serviceFn = isServicePopulated ? serviceObj : null;
 
     return {
         id: booking._id?.toString() || '',
