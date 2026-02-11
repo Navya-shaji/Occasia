@@ -37,6 +37,19 @@ export default function BookingDetailsPage() {
         }
     };
 
+    const handleCancel = async () => {
+        if (!booking || !id) return;
+        if (!window.confirm('Are you sure you want to cancel this booking?')) return;
+
+        try {
+            await bookingService.cancelBooking(id);
+            toast.success('Booking cancelled successfully');
+            fetchBooking(id);
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || 'Failed to cancel booking');
+        }
+    };
+
     const getStatusStyle = (status: string) => {
         switch (status) {
             case 'CONFIRMED': return 'bg-green-50 text-green-700 border-green-100';
@@ -101,12 +114,20 @@ export default function BookingDetailsPage() {
                                 <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.service?.name || booking.serviceName || 'Booking Details'}</h1>
                                 <div className="flex items-center text-gray-500">
                                     <MapPin size={18} className="mr-2 text-gray-400" />
-                                    {booking.service?.location || 'Location Not Provided'}
+                                    {booking.location || booking.service?.location || 'Location Not Provided'}
                                 </div>
                             </div>
                             <div className="text-right">
                                 <p className="text-sm text-gray-500">Total Booking Amount</p>
-                                <p className="text-3xl font-bold text-blue-600">₹{booking.totalPrice}</p>
+                                <p className="text-3xl font-bold text-blue-600 mb-4">₹{booking.totalPrice}</p>
+                                {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && (
+                                    <button
+                                        onClick={handleCancel}
+                                        className="px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
+                                    >
+                                        Cancel Booking
+                                    </button>
+                                )}
                             </div>
                         </div>
 

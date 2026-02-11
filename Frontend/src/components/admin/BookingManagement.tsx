@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, CheckCircle2 } from 'lucide-react';
+import { Search, CheckCircle2, XCircle } from 'lucide-react';
 import bookingService, { Booking } from '../../services/bookingService';
 import toast from 'react-hot-toast';
 
@@ -140,14 +140,24 @@ export default function BookingManagement() {
                                             <td className="px-6 py-4">
                                                 <div className="flex justify-center space-x-2">
                                                     {booking.status === 'PENDING' && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={(e) => handleUpdateStatus(e, bId, 'CONFIRMED')}
-                                                            className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
-                                                            title="Confirm"
-                                                        >
-                                                            <CheckCircle2 size={18} />
-                                                        </button>
+                                                        <>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CONFIRMED')}
+                                                                className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
+                                                                title="Confirm"
+                                                            >
+                                                                <CheckCircle2 size={18} />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CANCELLED')}
+                                                                className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                                title="Reject"
+                                                            >
+                                                                <XCircle size={18} />
+                                                            </button>
+                                                        </>
                                                     )}
                                                 </div>
                                             </td>

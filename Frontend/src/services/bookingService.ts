@@ -10,6 +10,7 @@ export interface Booking {
     serviceName?: string;
     serviceImage?: string;
     serviceId?: string;
+    location?: string;
     startDate: string;
     endDate: string;
     totalPrice: number;
