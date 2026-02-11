@@ -194,14 +194,7 @@ export default function MyBookingsPage() {
                                             </div>
 
                                             <div className="flex space-x-3 w-full sm:w-auto">
-                                                {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && activeTab === 'UPCOMING' && (
-                                                    <button
-                                                        onClick={() => handleCancel(booking.id || (booking as any)._id)}
-                                                        className="flex-1 sm:flex-none px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                )}
+                                                {/* Cancel button removed */}
                                                 <Link
                                                     to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking.id || (booking as any)._id || '')}
                                                     className="flex-1 sm:flex-none px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors text-center"

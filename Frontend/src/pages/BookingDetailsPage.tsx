@@ -6,10 +6,7 @@ import {
     MapPin,
     Clock,
     CheckCircle2,
-    XCircle,
     ArrowLeft,
-    Phone,
-    Mail,
     Image as ImageIcon
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -37,18 +34,7 @@ export default function BookingDetailsPage() {
         }
     };
 
-    const handleCancel = async () => {
-        if (!booking || !id) return;
-        if (!window.confirm('Are you sure you want to cancel this booking?')) return;
 
-        try {
-            await bookingService.cancelBooking(id);
-            toast.success('Booking cancelled successfully');
-            fetchBooking(id);
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to cancel booking');
-        }
-    };
 
     const getStatusStyle = (status: string) => {
         switch (status) {
@@ -61,7 +47,7 @@ export default function BookingDetailsPage() {
     const getStatusIcon = (status: string) => {
         switch (status) {
             case 'CONFIRMED': return <CheckCircle2 size={16} />;
-            case 'CANCELLED': return <XCircle size={16} />;
+            case 'CANCELLED': return <Clock size={16} />;
             default: return <Clock size={16} />;
         }
     };
@@ -120,18 +106,10 @@ export default function BookingDetailsPage() {
                             <div className="text-right">
                                 <p className="text-sm text-gray-500">Total Booking Amount</p>
                                 <p className="text-3xl font-bold text-blue-600 mb-4">₹{booking.totalPrice}</p>
-                                {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && (
-                                    <button
-                                        onClick={handleCancel}
-                                        className="px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
-                                    >
-                                        Cancel Booking
-                                    </button>
-                                )}
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="max-w-2xl">
                             {/* Booking Details */}
                             <div className="space-y-6">
                                 <h3 className="text-lg font-bold text-gray-900 border-b pb-2">Booking Information</h3>
@@ -154,30 +132,8 @@ export default function BookingDetailsPage() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-gray-500">Booking Reference</p>
-                                        <p className="font-mono font-semibold text-gray-900 tracking-wider">#{(booking.id || (booking as any)._id || 'N/A').slice(-8).toUpperCase()}</p>
+                                        <p className="font-mono font-semibold text-gray-900 tracking-wider">#{String(booking.id || (booking as any)._id || 'N/A').slice(-8).toUpperCase()}</p>
                                         <p className="text-xs text-gray-400 mt-1">Booked on {new Date(booking.bookingDate).toLocaleDateString()}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Vendor Contact */}
-                            <div className="space-y-6">
-                                <h3 className="text-lg font-bold text-gray-900 border-b pb-2">Vendor Contact</h3>
-
-                                <div className="bg-gray-50 p-5 rounded-xl space-y-4">
-                                    <div className="flex items-center">
-                                        <Phone size={18} className="mr-3 text-gray-400" />
-                                        <div>
-                                            <p className="text-xs text-gray-500">Phone</p>
-                                            <p className="font-medium">{booking.service?.contactDetails?.phone || 'N/A'}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <Mail size={18} className="mr-3 text-gray-400" />
-                                        <div>
-                                            <p className="text-xs text-gray-500">Email</p>
-                                            <p className="font-medium">{booking.service?.contactDetails?.email || 'N/A'}</p>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
