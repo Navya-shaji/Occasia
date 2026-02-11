@@ -9,7 +9,7 @@ export interface Booking {
     userEmail?: string;
     serviceName?: string;
     serviceImage?: string;
-    serviceId?: string; // Add this
+    serviceId?: string;
     startDate: string;
     endDate: string;
     totalPrice: number;

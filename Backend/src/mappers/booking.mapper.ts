@@ -8,15 +8,15 @@ export const toBookingResponseDto = (booking: IBookingDocument): BookingResponse
     const userFn = isUserPopulated ? userObj : null;
 
     const serviceObj = booking.service as any;
-    const isServicePopulated = !!(serviceObj && typeof serviceObj === 'object' && serviceObj.name);
+    const isServicePopulated = !!(serviceObj && typeof serviceObj === 'object' && (serviceObj.name || (booking.populated && booking.populated('service'))));
     const serviceFn = isServicePopulated ? serviceObj : null;
 
     // Get the raw ID if population returned null (e.g. service was deleted)
     const rawUserId = booking.populated ? booking.populated('user') : null;
     const rawServiceId = booking.populated ? booking.populated('service') : null;
 
-    const userId = isUserPopulated ? (userFn._id?.toString()) : (rawUserId?.toString() || booking.user?.toString());
-    const serviceId = isServicePopulated ? (serviceFn._id?.toString()) : (rawServiceId?.toString() || booking.service?.toString());
+    const userId = isUserPopulated ? (userFn._id?.toString() || userFn.id) : (rawUserId?.toString() || booking.user?.toString());
+    const serviceId = isServicePopulated ? (serviceFn._id?.toString() || serviceFn.id) : (rawServiceId?.toString() || booking.service?.toString());
 
     return {
         id: booking._id?.toString() || '',
@@ -27,17 +27,17 @@ export const toBookingResponseDto = (booking: IBookingDocument): BookingResponse
         serviceName: serviceFn?.name,
         serviceImage: serviceFn?.images?.[0],
         user: isUserPopulated ? {
-            id: userFn._id?.toString() || '',
+            id: userFn._id?.toString() || userFn.id || '',
             name: userFn.name || '',
             email: userFn.email || '',
         } : undefined,
         service: isServicePopulated ? {
-            id: serviceFn._id?.toString() || '',
+            id: serviceFn._id?.toString() || serviceFn.id || '',
             name: serviceFn.name || '',
             category: serviceFn.category || '',
             location: serviceFn.location || '',
             images: serviceFn.images || [],
-            contactDetails: serviceFn.contactDetails,
+            contactDetails: serviceFn.contactDetails || { phone: 'N/A', email: 'N/A' },
         } : undefined,
         startDate: booking.startDate,
         endDate: booking.endDate,

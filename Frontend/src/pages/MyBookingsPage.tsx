@@ -138,10 +138,10 @@ export default function MyBookingsPage() {
                             >
                                 <div className="flex flex-col md:flex-row">
                                     <div className="md:w-64 h-48 md:h-auto relative bg-gray-100">
-                                        {booking.service?.images?.[0] ? (
+                                        {(booking.service?.images?.[0] || booking.serviceImage) ? (
                                             <img
-                                                src={booking.service.images[0].startsWith('http') ? booking.service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service.images[0]}`}
-                                                alt={booking.service?.name}
+                                                src={(booking.service?.images?.[0] || booking.serviceImage || '').startsWith('http') ? (booking.service?.images?.[0] || booking.serviceImage) : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service?.images?.[0] || booking.serviceImage}`}
+                                                alt={booking.service?.name || booking.serviceName || 'Service Image'}
                                                 className="w-full h-full object-cover"
                                             />
                                         ) : (
@@ -165,7 +165,7 @@ export default function MyBookingsPage() {
                                                         </span>
                                                         <span className="text-xs text-gray-400">#{(booking.id || (booking as any)._id || 'N/A').slice(-6).toUpperCase()}</span>
                                                     </div>
-                                                    <h3 className="text-xl font-bold text-gray-900">{booking.service?.name}</h3>
+                                                    <h3 className="text-xl font-bold text-gray-900">{booking.service?.name || booking.serviceName || 'Service Name Not Available'}</h3>
                                                 </div>
                                                 <div className="text-right">
                                                     <div className="text-2xl font-bold text-blue-600">₹{booking.totalPrice}</div>
@@ -182,7 +182,7 @@ export default function MyBookingsPage() {
                                                 <div className="flex items-center">
                                                     <MapPin size={16} className="mr-2 text-gray-400" />
                                                     <span className="font-medium text-gray-900 mr-2">Location:</span>
-                                                    {booking.service?.location}
+                                                    {booking.service?.location || 'Location Not Provided'}
                                                 </div>
                                             </div>
                                         </div>

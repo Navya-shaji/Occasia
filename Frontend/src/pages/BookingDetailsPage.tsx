@@ -75,10 +75,10 @@ export default function BookingDetailsPage() {
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     {/* Header Image */}
                     <div className="h-64 relative bg-gray-200">
-                        {booking.service?.images?.[0] ? (
+                        {(booking.service?.images?.[0] || booking.serviceImage) ? (
                             <img
-                                src={booking.service.images[0].startsWith('http') ? booking.service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service.images[0]}`}
-                                alt={booking.service.name}
+                                src={(booking.service?.images?.[0] || booking.serviceImage || '').startsWith('http') ? (booking.service?.images?.[0] || booking.serviceImage) : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service?.images?.[0] || booking.serviceImage}`}
+                                alt={booking.service?.name || booking.serviceName}
                                 className="w-full h-full object-cover"
                             />
                         ) : (
@@ -98,10 +98,10 @@ export default function BookingDetailsPage() {
                         {/* Title Section */}
                         <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.service?.name}</h1>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.service?.name || booking.serviceName || 'Booking Details'}</h1>
                                 <div className="flex items-center text-gray-500">
                                     <MapPin size={18} className="mr-2 text-gray-400" />
-                                    {booking.service?.location}
+                                    {booking.service?.location || 'Location Not Provided'}
                                 </div>
                             </div>
                             <div className="text-right">
