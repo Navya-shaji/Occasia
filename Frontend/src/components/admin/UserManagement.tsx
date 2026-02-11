@@ -112,8 +112,8 @@ export default function UserManagement() {
                                             <td className="px-6 py-4 text-gray-600">{u.email}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`px-2 py-1 rounded-md text-[11px] font-semibold ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' :
-                                                        u.role === 'VENDOR' ? 'bg-indigo-100 text-indigo-700' :
-                                                            'bg-blue-100 text-blue-700'
+                                                    u.role === 'VENDOR' ? 'bg-indigo-100 text-indigo-700' :
+                                                        'bg-blue-100 text-blue-700'
                                                     }`}>
                                                     {u.role}
                                                 </span>
@@ -129,8 +129,8 @@ export default function UserManagement() {
                                                 <button
                                                     onClick={() => handleToggleBlock(u)}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${u.isBlocked
-                                                            ? 'bg-green-600 text-white hover:bg-green-700'
-                                                            : 'bg-red-50 text-red-600 hover:bg-red-100'
+                                                        ? 'bg-green-600 text-white hover:bg-green-700'
+                                                        : 'bg-red-50 text-red-600 hover:bg-red-100'
                                                         }`}
                                                 >
                                                     {u.isBlocked ? 'Unblock' : 'Block'}

@@ -165,7 +165,7 @@ export default function MyBookingsPage() {
                                                         </span>
                                                         <span className="text-xs text-gray-400">#{(booking.id || (booking as any)._id || 'N/A').slice(-6).toUpperCase()}</span>
                                                     </div>
-                                                    <h3 className="text-xl font-bold text-gray-900">{booking.service?.name || booking.serviceName || 'Service Name Not Available'}</h3>
+                                                    <h3 className="text-xl font-bold text-gray-900">{booking.serviceName || booking.service?.name || 'Service Name Not Available'}</h3>
                                                 </div>
                                                 <div className="text-right">
                                                     <div className="text-2xl font-bold text-blue-600">₹{booking.totalPrice}</div>
@@ -182,7 +182,7 @@ export default function MyBookingsPage() {
                                                 <div className="flex items-center">
                                                     <MapPin size={16} className="mr-2 text-gray-400" />
                                                     <span className="font-medium text-gray-900 mr-2">Location:</span>
-                                                    {booking.service?.location || 'Location Not Provided'}
+                                                    {booking.location || booking.service?.location || 'Location Not Provided'}
                                                 </div>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@ export default function MyBookingsPage() {
                                                     </button>
                                                 )}
                                                 <Link
-                                                    to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking.id || (booking as any)._id)}
+                                                    to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking.id || (booking as any)._id || '')}
                                                     className="flex-1 sm:flex-none px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors text-center"
                                                 >
                                                     View Details

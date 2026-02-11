@@ -3,7 +3,7 @@ import { IBookingService } from '../interface/services/IBookingService';
 import { IBookingDocument } from '../interface/booking.interface';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
-// import { sendBookingConfirmation } from './mail.service';
+
 import { Schema } from 'mongoose';
 import { CreateBookingDto, BookingResponseDto } from '../dto/booking.dto';
 import { toBookingResponseDto, toBookingResponseDtoList } from '../mappers/booking.mapper';
@@ -67,14 +67,7 @@ export class BookingService implements IBookingService {
             unavailableDates: [...service.unavailableDates, ...requestedDates]
         });
 
-        // Send Email Notification
-        /* sendBookingConfirmation(user.email, {
-            serviceName: service.name,
-            startDate: start.toLocaleDateString(),
-            endDate: end.toLocaleDateString(),
-            totalPrice,
-            status: 'PENDING'
-        }); */
+
 
         return toBookingResponseDto(booking);
     }

@@ -111,7 +111,7 @@ export default function BookingDetailsPage() {
                         {/* Title Section */}
                         <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.service?.name || booking.serviceName || 'Booking Details'}</h1>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.serviceName || booking.service?.name || 'Booking Details'}</h1>
                                 <div className="flex items-center text-gray-500">
                                     <MapPin size={18} className="mr-2 text-gray-400" />
                                     {booking.location || booking.service?.location || 'Location Not Provided'}

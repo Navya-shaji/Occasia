@@ -12,7 +12,7 @@ export const toServiceResponseDto = (service: IServiceDocument): ServiceResponse
     images: service.images || [],
     isAvailable: !!service.isAvailable,
     unavailableDates: service.unavailableDates || [],
-    contactDetails: service.contactDetails || { phone: 'N/A', email: 'N/A', address: '' },
+    contactDetails: service.contactDetails || '',
     createdAt: service.createdAt,
     updatedAt: service.updatedAt,
 });

@@ -45,7 +45,7 @@ const BookingSchema: Schema<IBookingDocument> = new Schema(
         },
         location: {
             type: String,
-            required: true // Use required true as it should always be there from service
+            required: true
         }
     },
     { timestamps: true }

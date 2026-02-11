@@ -183,8 +183,8 @@ export default function ServicesPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {services.map(service => (
                                     <Link
-                                        to={APP_ROUTES.SERVICE_DETAILS.replace(':id', service.id)}
-                                        key={service.id}
+                                        to={APP_ROUTES.SERVICE_DETAILS.replace(':id', service.id || (service as any)._id || '')}
+                                        key={service.id || (service as any)._id}
                                         className="group bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300"
                                     >
                                         <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">

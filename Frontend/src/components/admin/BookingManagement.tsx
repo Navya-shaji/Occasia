@@ -111,7 +111,7 @@ export default function BookingManagement() {
                                         <tr key={bId} className="hover:bg-gray-50/50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <span className="font-mono text-xs text-gray-500">
-                                                    #{bId ? bId.slice(-8).toUpperCase() : 'N/A'}
+                                                    #{bId ? String(bId).slice(-8).toUpperCase() : 'N/A'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 text-gray-900 font-medium">
