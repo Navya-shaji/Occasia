@@ -5,7 +5,7 @@ import { IUserRepository } from '../interface/repositories/IUserRepository';
 import { IAuthService } from '../interface/services/IAuthService';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { Role } from '../enums/role';
-import { sendOtpEmail } from './mail.service';
+
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from '../dto/user.dto';
 import { toAuthResponseDto } from '../mappers/user.mapper';
 

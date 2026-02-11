@@ -8,6 +8,9 @@ export interface IBooking {
     totalPrice: number;
     status: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
     bookingDate: Date;
+    serviceName: string;
+    serviceImage: string;
+    location: string;
 }
 
 export interface IBookingDocument extends IBooking, Document {
