@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, CheckCircle2, XCircle } from 'lucide-react';
+import { Search, CheckCircle2 } from 'lucide-react';
 import bookingService, { Booking } from '../../services/bookingService';
 import toast from 'react-hot-toast';
 
@@ -45,11 +45,9 @@ export default function BookingManagement() {
 
     const filteredBookings = bookings.filter(b => {
         const userName = b.user?.name || b.userName || 'Anonymous';
-        const serviceName = b.service?.name || b.serviceName || 'N/A';
         const bookingId = b.id || (b as any)._id || b.serviceId || '';
 
         return (
-            serviceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             bookingId.toLowerCase().includes(searchQuery.toLowerCase())
         );
@@ -87,7 +85,6 @@ export default function BookingManagement() {
                             <tr>
                                 <th className="px-6 py-4">Booking ID</th>
                                 <th className="px-6 py-4">User</th>
-                                <th className="px-6 py-4">Service</th>
                                 <th className="px-6 py-4">Dates</th>
                                 <th className="px-6 py-4">Price</th>
                                 <th className="px-6 py-4">Status</th>
@@ -97,13 +94,13 @@ export default function BookingManagement() {
                         <tbody className="divide-y divide-gray-100">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
+                                    <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
                                         Loading bookings...
                                     </td>
                                 </tr>
                             ) : filteredBookings.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
+                                    <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
                                         No bookings found.
                                     </td>
                                 </tr>
@@ -117,14 +114,11 @@ export default function BookingManagement() {
                                                     #{bId ? bId.slice(-8).toUpperCase() : 'N/A'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-6 py-4 text-gray-900 font-medium">
                                                 <div className="flex flex-col">
                                                     <span className="font-medium text-gray-900">{booking.user?.name || booking.userName || 'Anonymous'}</span>
                                                     <span className="text-xs text-gray-500">{booking.user?.email || booking.userEmail || 'N/A'}</span>
                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-900 font-medium">
-                                                {booking.service?.name || (booking.serviceName && booking.serviceName !== 'N/A' ? booking.serviceName : (booking.serviceId ? `ID: ${booking.serviceId.slice(-6).toUpperCase()}` : 'N/A'))}
                                             </td>
                                             <td className="px-6 py-4 text-gray-600">
                                                 <div className="text-xs">
@@ -146,24 +140,14 @@ export default function BookingManagement() {
                                             <td className="px-6 py-4">
                                                 <div className="flex justify-center space-x-2">
                                                     {booking.status === 'PENDING' && (
-                                                        <>
-                                                            <button
-                                                                type="button"
-                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CONFIRMED')}
-                                                                className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
-                                                                title="Confirm"
-                                                            >
-                                                                <CheckCircle2 size={18} />
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                onClick={(e) => handleUpdateStatus(e, bId, 'CANCELLED')}
-                                                                className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
-                                                                title="Cancel"
-                                                            >
-                                                                <XCircle size={18} />
-                                                            </button>
-                                                        </>
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => handleUpdateStatus(e, bId, 'CONFIRMED')}
+                                                            className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
+                                                            title="Confirm"
+                                                        >
+                                                            <CheckCircle2 size={18} />
+                                                        </button>
                                                     )}
                                                 </div>
                                             </td>
