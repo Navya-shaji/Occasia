@@ -69,4 +69,55 @@ export class UserController {
             });
         }
     };
+
+    addToWishlist = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+            const { serviceId } = req.body;
+            await this._userService.addToWishlist(userId, serviceId);
+            res.status(HTTP_STATUS.OK).json({
+                success: true,
+                message: 'Added to wishlist'
+            });
+        } catch (error: any) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: error.message || 'Error adding to wishlist'
+            });
+        }
+    };
+
+    removeFromWishlist = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+            const { serviceId } = req.params;
+            await this._userService.removeFromWishlist(userId, serviceId as string);
+            res.status(HTTP_STATUS.OK).json({
+                success: true,
+                message: 'Removed from wishlist'
+            });
+        } catch (error: any) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: error.message || 'Error removing from wishlist'
+            });
+        }
+    };
+
+    getWishlist = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+            const wishlist = await this._userService.getWishlist(userId);
+            res.status(HTTP_STATUS.OK).json({
+                success: true,
+                message: 'Wishlist fetched successfully',
+                data: wishlist
+            });
+        } catch (error: any) {
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: error.message || 'Error fetching wishlist'
+            });
+        }
+    };
 }

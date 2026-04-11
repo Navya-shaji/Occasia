@@ -48,6 +48,14 @@ const ServiceSchema: Schema<IServiceDocument> = new Schema(
             phone: { type: String, required: true },
             email: { type: String, required: true },
             address: { type: String }
+        },
+        averageRating: {
+            type: Number,
+            default: 0
+        },
+        numReviews: {
+            type: Number,
+            default: 0
         }
     },
     { timestamps: true }

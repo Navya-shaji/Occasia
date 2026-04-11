@@ -9,6 +9,8 @@ Occasia is a world-class event management platform designed for prestigious even
 *   **Filtering**: Search by category, price range, location, and real-time date availability.
 *   **Prestige Booking**: Seamless booking process with instant total valuation calculation based on duration.
 *   **Personal Dashboard**: View past and upcoming scheduled experiences.
+*   **Reviews & Ratings**: Share your feedback and view community ratings for premium experiences.
+*   **Wishlist**: Save your favorite services for quick access and future planning.
 *   **Email Notifications**: Instant confirmation requests sent to users upon reservation.
 
 ### 2. Admin Capabilities

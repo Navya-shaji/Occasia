@@ -33,5 +33,17 @@ export const ROUTES = {
     GET_ALL: '/all',
     CANCEL: '/:id/cancel',
     UPDATE_STATUS: '/:id/status'
+  },
+  REVIEWS: {
+    BASE: '/reviews',
+    CREATE: '/',
+    GET_BY_SERVICE: '/service/:serviceId',
+    GET_MY: '/my'
+  },
+  WISHLIST: {
+    BASE: '/wishlist',
+    GET_ALL: '/',
+    ADD: '/',
+    REMOVE: '/:serviceId'
   }
 } as const;

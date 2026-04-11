@@ -37,5 +37,17 @@ export class UserService implements IUserService {
         const user = await this._userRepository.update(userId, { isBlocked: false });
         return user ? toUserResponseDto(user) : null;
     }
+
+    async addToWishlist(userId: string, serviceId: string): Promise<any> {
+        return await this._userRepository.addToWishlist(userId, serviceId);
+    }
+
+    async removeFromWishlist(userId: string, serviceId: string): Promise<any> {
+        return await this._userRepository.removeFromWishlist(userId, serviceId);
+    }
+
+    async getWishlist(userId: string): Promise<any[]> {
+        return await this._userRepository.getWishlist(userId);
+    }
 }
 

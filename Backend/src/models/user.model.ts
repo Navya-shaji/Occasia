@@ -42,7 +42,13 @@ const UserSchema: Schema<IUserDocument> = new Schema(
     isBlocked: {
       type: Boolean,
       default: false
-    }
+    },
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Service'
+      }
+    ]
   },
   { timestamps: true }
 );

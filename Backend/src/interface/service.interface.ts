@@ -15,9 +15,13 @@ export interface IService {
         email: string;
         address?: string;
     };
+    averageRating?: number;
+    numReviews?: number;
 }
 
 export interface IServiceDocument extends IService, Document {
+    averageRating: number;
+    numReviews: number;
     createdAt: Date;
     updatedAt: Date;
 }

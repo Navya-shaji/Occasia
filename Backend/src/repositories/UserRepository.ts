@@ -35,4 +35,17 @@ export class UserRepository extends BaseRepository<IUserDocument> implements IUs
         const users = await this._model.find(query).select('-password').skip(skip).limit(limit).sort({ createdAt: -1 });
         return { users, total };
     }
+
+    async addToWishlist(userId: string, serviceId: string): Promise<IUserDocument | null> {
+        return await this._model.findByIdAndUpdate(userId, { $addToSet: { wishlist: serviceId } }, { new: true });
+    }
+
+    async removeFromWishlist(userId: string, serviceId: string): Promise<IUserDocument | null> {
+        return await this._model.findByIdAndUpdate(userId, { $pull: { wishlist: serviceId } }, { new: true });
+    }
+
+    async getWishlist(userId: string): Promise<any[]> {
+        const user = await this._model.findById(userId).populate('wishlist');
+        return user?.wishlist || [];
+    }
 }

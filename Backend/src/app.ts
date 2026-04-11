@@ -8,6 +8,8 @@ import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import serviceRoutes from './routes/service.routes';
 import bookingRoutes from './routes/booking.routes';
+import reviewRoutes from './routes/review.routes';
+import wishlistRoutes from './routes/wishlist.routes';
 import protectedRoutes from './routes/protected.routes';
 
 const app = express();
@@ -28,6 +30,8 @@ app.use(`${ROUTES.API.BASE}${ROUTES.API.AUTH}`, authRoutes);
 app.use(`${ROUTES.API.BASE}${ROUTES.USERS.base}`, userRoutes);
 app.use(`${ROUTES.API.BASE}${ROUTES.SERVICES.BASE}`, serviceRoutes);
 app.use(`${ROUTES.API.BASE}${ROUTES.BOOKINGS.BASE}`, bookingRoutes);
+app.use(`${ROUTES.API.BASE}${ROUTES.REVIEWS.BASE}`, reviewRoutes);
+app.use(`${ROUTES.API.BASE}${ROUTES.WISHLIST.BASE}`, wishlistRoutes);
 app.use(`${ROUTES.API.BASE}`, protectedRoutes);
 
 app.get('/', (req, res) => {

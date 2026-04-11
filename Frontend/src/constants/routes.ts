@@ -23,6 +23,16 @@ export const API_ROUTES = {
         GET_ALL: '/bookings/all',
         CANCEL: '/bookings/:id/cancel',
         UPDATE_STATUS: '/bookings/:id/status'
+    },
+    REVIEWS: {
+        CREATE: '/reviews',
+        GET_BY_SERVICE: '/reviews/service/:serviceId',
+        GET_MY: '/reviews/my'
+    },
+    WISHLIST: {
+        GET_ALL: '/wishlist',
+        ADD: '/wishlist',
+        REMOVE: '/wishlist/:serviceId'
     }
 };
 
@@ -36,4 +46,5 @@ export const APP_ROUTES = {
     SERVICE_DETAILS: '/services/:id',
     MY_BOOKINGS: '/my-bookings',
     BOOKING_DETAILS: '/bookings/:id',
+    WISHLIST: '/wishlist',
 };

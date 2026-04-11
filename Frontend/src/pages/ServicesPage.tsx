@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import serviceService, { Service } from '../services/serviceService';
+import wishlistService from '../services/wishlistService';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, MapPin, SlidersHorizontal, Star, Image as ImageIcon } from 'lucide-react';
 import { APP_ROUTES } from '../constants/routes';
 import toast from 'react-hot-toast';
+import ServiceCard from '../components/ServiceCard';
+import { useSelector } from 'react-redux';
 
 export default function ServicesPage() {
     const [searchParams] = useSearchParams();
     const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(false);
+    const [wishlistIds, setWishlistIds] = useState<string[]>([]);
+    const { isAuthenticated } = useSelector((state: any) => state.auth);
 
     // Initial state from URL params
     const [filters, setFilters] = useState({
@@ -30,7 +35,26 @@ export default function ServicesPage() {
 
     useEffect(() => {
         fetchServices();
-    }, [filters.category, filters.sort]); // Fetch on category/sort change
+        if (isAuthenticated) {
+            fetchWishlist();
+        }
+    }, [filters.category, filters.sort, isAuthenticated]);
+
+    const fetchWishlist = async () => {
+        try {
+            const response = await wishlistService.getWishlist();
+            const ids = response.data.map((item: any) => item.id || item._id);
+            setWishlistIds(ids);
+        } catch (error) {
+            console.error('Error fetching wishlist', error);
+        }
+    };
+
+    const toggleFavorite = (id: string) => {
+        setWishlistIds(prev => 
+            prev.includes(id) ? prev.filter(wishId => wishId !== id) : [...prev, id]
+        );
+    };
 
     // Debounced search could go here, but for now button/enter works
     const handleSearch = () => {
@@ -182,48 +206,12 @@ export default function ServicesPage() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {services.map(service => (
-                                    <Link
-                                        to={APP_ROUTES.SERVICE_DETAILS.replace(':id', service.id || (service as any)._id || '')}
-                                        key={service.id || (service as any)._id}
-                                        className="group bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300"
-                                    >
-                                        <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
-                                            {service.images?.[0] ? (
-                                                <img
-                                                    src={service.images[0].startsWith('http') ? service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${service.images[0]}`}
-                                                    alt={service.name}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                                    <ImageIcon size={32} />
-                                                </div>
-                                            )}
-                                            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-semibold text-gray-800">
-                                                {service.category}
-                                            </div>
-                                        </div>
-                                        <div className="p-5">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">{service.name}</h3>
-                                                <div className="flex items-center text-yellow-400 text-xs font-bold">
-                                                    <Star size={12} fill="currentColor" className="mr-1" />
-                                                    4.8
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center text-gray-500 text-sm mb-4">
-                                                <MapPin size={14} className="mr-1" />
-                                                {service.location || 'Location varies'}
-                                            </div>
-                                            <div className="flex items-end justify-between">
-                                                <div>
-                                                    <span className="text-xl font-bold text-blue-600">₹{service.pricePerDay || service.price}</span>
-                                                    <span className="text-xs text-gray-500 ml-1">/ day</span>
-                                                </div>
-                                                <span className="text-sm font-medium text-blue-600 group-hover:underline">View Details</span>
-                                            </div>
-                                        </div>
-                                    </Link>
+                                    <ServiceCard 
+                                        key={service.id || (service as any)._id} 
+                                        service={service} 
+                                        isFavorite={wishlistIds.includes(service.id || (service as any)._id || '')}
+                                        onToggleFavorite={toggleFavorite}
+                                    />
                                 ))}
                             </div>
                         )}

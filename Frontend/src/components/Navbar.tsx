@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, Heart } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
 import { APP_ROUTES } from '../constants/routes';
@@ -43,6 +43,10 @@ export default function Navbar() {
                             <div className="flex items-center space-x-4">
                                 <Link to={APP_ROUTES.MY_BOOKINGS} className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                                     My Bookings
+                                </Link>
+                                <Link to={APP_ROUTES.WISHLIST} className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors flex items-center">
+                                    <Heart size={16} className="mr-1" />
+                                    Wishlist
                                 </Link>
                                 <div className="h-4 w-px bg-gray-300"></div>
                                 <div className="flex items-center space-x-3">
@@ -114,6 +118,13 @@ export default function Navbar() {
                                     onClick={() => setIsOpen(false)}
                                 >
                                     My Bookings
+                                </Link>
+                                <Link
+                                    to={APP_ROUTES.WISHLIST}
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Wishlist
                                 </Link>
                                 <div className="border-t border-gray-100 my-2 pt-2">
                                     <div className="flex items-center px-3 py-2">

@@ -86,8 +86,7 @@ export class BookingService implements IBookingService {
         const booking = await this._bookingRepository.findById(bookingId);
         if (!booking) return null;
 
-        // Ensure user owns the booking (unless admin, but logic here assumes simpler checks)
-        // For simplicity allow if match, controller can handle logic
+    
         if ((booking.user as any)._id.toString() !== userId) {
             throw new Error("Unauthorized access to booking");
         }
@@ -108,7 +107,6 @@ export class BookingService implements IBookingService {
             throw new Error('Booking is already cancelled');
         }
 
-        // Normally we'd also free up the dates here, but simple cancel for now
         const updated = await this._bookingRepository.updateStatus(bookingId, 'CANCELLED');
         return toBookingResponseDto(updated!);
     }

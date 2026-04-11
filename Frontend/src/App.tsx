@@ -10,6 +10,7 @@ import ServicesPage from './pages/ServicesPage';
 import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import MyBookingsPage from './pages/MyBookingsPage';
 import BookingDetailsPage from './pages/BookingDetailsPage';
+import WishlistPage from './pages/WishlistPage';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import GuestRoute from './components/GuestRoute';
 import { APP_ROUTES } from './constants/routes';
@@ -56,6 +57,12 @@ function AppContent() {
                     <Route path={APP_ROUTES.BOOKING_DETAILS} element={
                         <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
                             <BookingDetailsPage />
+                        </RoleProtectedRoute>
+                    } />
+
+                    <Route path={APP_ROUTES.WISHLIST} element={
+                        <RoleProtectedRoute allowedRoles={['USER', 'VENDOR']}>
+                            <WishlistPage />
                         </RoleProtectedRoute>
                     } />
 

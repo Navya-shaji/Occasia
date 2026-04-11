@@ -17,6 +17,8 @@ export interface Service {
         email: string;
         address?: string;
     };
+    averageRating?: number;
+    numReviews?: number;
     createdAt: string;
     updatedAt: string;
 }

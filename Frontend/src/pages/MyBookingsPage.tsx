@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import bookingService, { Booking } from '../services/bookingService';
+import reviewService from '../services/reviewService';
+import ReviewModal from '../components/ReviewModal';
 import {
     Calendar,
     MapPin,
@@ -17,11 +19,24 @@ export default function MyBookingsPage() {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'UPCOMING' | 'PAST'>('UPCOMING');
+    const [reviewedBookingIds, setReviewedBookingIds] = useState<string[]>([]);
+    const [selectedBookingForReview, setSelectedBookingForReview] = useState<any | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchBookings();
+        fetchMyReviews();
     }, []);
+
+    const fetchMyReviews = async () => {
+        try {
+            const response = await reviewService.getMyReviews();
+            const ids = response.data.map((r: any) => r.booking?._id || r.booking);
+            setReviewedBookingIds(ids);
+        } catch (error) {
+            console.error('Error fetching my reviews', error);
+        }
+    };
 
     const fetchBookings = async () => {
         try {
@@ -194,7 +209,14 @@ export default function MyBookingsPage() {
                                             </div>
 
                                             <div className="flex space-x-3 w-full sm:w-auto">
-                                                {/* Cancel button removed */}
+                                                {booking.status === 'CONFIRMED' && !reviewedBookingIds.includes(booking.id || (booking as any)._id) && (
+                                                    <button
+                                                        onClick={() => setSelectedBookingForReview(booking)}
+                                                        className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors text-center"
+                                                    >
+                                                        Rate & Review
+                                                    </button>
+                                                )}
                                                 <Link
                                                     to={APP_ROUTES.BOOKING_DETAILS.replace(':id', booking.id || (booking as any)._id || '')}
                                                     className="flex-1 sm:flex-none px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors text-center"
@@ -210,6 +232,18 @@ export default function MyBookingsPage() {
                     </div>
                 )}
             </div>
+
+            {selectedBookingForReview && (
+                <ReviewModal
+                    bookingId={selectedBookingForReview.id || selectedBookingForReview._id}
+                    serviceId={selectedBookingForReview.service?.id || selectedBookingForReview.service?._id || selectedBookingForReview.serviceId}
+                    serviceName={selectedBookingForReview.serviceName || selectedBookingForReview.service?.name}
+                    onClose={() => setSelectedBookingForReview(null)}
+                    onSuccess={() => {
+                        fetchMyReviews();
+                    }}
+                />
+            )}
         </div>
     );
 }

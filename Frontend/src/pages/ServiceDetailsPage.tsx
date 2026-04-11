@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import serviceService, { Service } from '../services/serviceService';
 import bookingService from '../services/bookingService';
+import reviewService from '../services/reviewService';
 import {
     MapPin,
     Calendar,
@@ -12,7 +13,8 @@ import {
     CheckCircle2,
     Star,
     ShieldCheck,
-    Image as ImageIcon
+    Image as ImageIcon,
+    User
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
@@ -23,14 +25,27 @@ export default function ServiceDetailsPage() {
     const [service, setService] = useState<Service | null>(null);
     const [loading, setLoading] = useState(true);
     const [bookingLoading, setBookingLoading] = useState(false);
+    const [reviews, setReviews] = useState<any[]>([]);
     const [dateRange, setDateRange] = useState({
         startDate: '',
         endDate: ''
     });
 
     useEffect(() => {
-        if (id) fetchService(id);
+        if (id) {
+            fetchService(id);
+            fetchReviews(id);
+        }
     }, [id]);
+
+    const fetchReviews = async (serviceId: string) => {
+        try {
+            const response = await reviewService.getReviewsByService(serviceId);
+            setReviews(response.data);
+        } catch (error) {
+            console.error('Error fetching reviews', error);
+        }
+    };
 
     const fetchService = async (serviceId: string) => {
         try {
@@ -167,9 +182,9 @@ export default function ServiceDetailsPage() {
                                             <MapPin size={16} className="mr-1 text-gray-400" />
                                             {service.location}
                                         </div>
-                                        <div className="flex items-center items-center text-yellow-500 font-medium">
+                                        <div className="flex items-center text-yellow-500 font-medium bg-yellow-50 px-2 py-0.5 rounded-md">
                                             <Star size={16} fill="currentColor" className="mr-1" />
-                                            4.9 (120 reviews)
+                                            {service.averageRating || '4.8'} ({service.numReviews || 0} reviews)
                                         </div>
                                     </div>
                                 </div>
@@ -226,6 +241,64 @@ export default function ServiceDetailsPage() {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <hr className="border-gray-100 my-12" />
+
+                            {/* Reviews Section */}
+                            <div>
+                                <div className="flex justify-between items-center mb-10">
+                                    <div>
+                                        <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-1">Guest Experiences</h3>
+                                        <p className="text-gray-500 text-sm font-medium">Real stories from real users</p>
+                                    </div>
+                                    <div className="flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-2xl shadow-lg shadow-blue-200 font-black">
+                                        <Star size={20} fill="currentColor" className="mr-2 text-yellow-400" />
+                                        {service.averageRating || '4.8'}
+                                    </div>
+                                </div>
+
+                                {reviews.length === 0 ? (
+                                    <div className="bg-slate-50 rounded-3xl p-16 text-center border-2 border-dashed border-slate-200">
+                                        <p className="text-slate-400 text-lg font-bold">No reviews yet. Be the first to share your experience!</p>
+                                    </div>
+                                ) : (
+                                    <div className="grid gap-6">
+                                        {reviews.map((review) => (
+                                            <div key={review._id} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <div className="flex items-center space-x-4">
+                                                        <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-100">
+                                                            {(review.user?.name || 'U').charAt(0).toUpperCase()}
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-black text-gray-900 text-lg">{review.user?.name || 'Anonymous User'}</p>
+                                                            <p className="text-xs text-gray-400 font-bold uppercase tracking-widest bg-slate-50 px-2 py-1 rounded inline-block mt-1">
+                                                                {new Date(review.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex text-yellow-400 bg-yellow-50 p-2 rounded-xl border border-yellow-100">
+                                                        {[...Array(5)].map((_, i) => (
+                                                            <Star
+                                                                key={i}
+                                                                size={16}
+                                                                fill={i < review.rating ? 'currentColor' : 'none'}
+                                                                className={i < review.rating ? 'stroke-yellow-400' : 'stroke-gray-300 text-transparent'}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div className="relative">
+                                                    <span className="absolute -top-4 -left-2 text-6xl text-blue-50 opacity-10 font-serif">"</span>
+                                                    <p className="text-gray-600 leading-relaxed text-lg font-medium relative z-10 pl-2">
+                                                        {review.comment}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -9,6 +9,7 @@ export interface IUser {
   otpExpires?: Date;
   isVerified?: boolean;
   isBlocked?: boolean;
+  wishlist?: any[];
 }
 
 export interface IUserResponse extends IUser {
