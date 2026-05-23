@@ -31,45 +31,65 @@ export default function WishlistPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8" style={{ background: '#111111' }}>
             <div className="max-w-7xl mx-auto">
                 <div className="flex items-center space-x-4 mb-10">
-                    <div className="bg-red-100 p-3 rounded-2xl">
-                        <Heart className="text-red-600" size={32} fill="currentColor" />
+                    <div
+                        className="p-3 rounded-2xl"
+                        style={{ background: 'rgba(232, 213, 176, 0.1)', border: '1px solid rgba(232, 213, 176, 0.2)' }}
+                    >
+                        <Heart size={28} fill="currentColor" style={{ color: '#e8d5b0' }} />
                     </div>
                     <div>
-                        <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase">My Wishlist</h1>
-                        <p className="text-gray-500 font-medium">Your curated collection of premium experiences</p>
+                        <h1 className="text-4xl font-black tracking-tight" style={{ color: '#f5ede0' }}>My Wishlist</h1>
+                        <p className="text-sm mt-0.5" style={{ color: '#666' }}>Your curated collection of premium experiences</p>
                     </div>
                 </div>
 
                 {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="bg-white rounded-2xl border border-gray-100 p-4 animate-pulse h-[400px]" />
+                            <div
+                                key={i}
+                                className="rounded-2xl p-4 animate-pulse h-[380px]"
+                                style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)' }}
+                            />
                         ))}
                     </div>
                 ) : wishlist.length === 0 ? (
-                    <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-gray-100 p-16 text-center max-w-2xl mx-auto">
-                        <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-8">
-                            <Heart className="text-red-200" size={48} />
+                    <div
+                        className="rounded-2xl p-16 text-center max-w-2xl mx-auto"
+                        style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.07)' }}
+                    >
+                        <div
+                            className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8"
+                            style={{ background: 'rgba(232, 213, 176, 0.06)' }}
+                        >
+                            <Heart size={40} style={{ color: '#333' }} />
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase tracking-tight">Your wishlist is empty</h2>
-                        <p className="text-gray-500 mb-10 text-lg">Start exploring our premium services and save your favorites here for later.</p>
+                        <h2 className="text-2xl font-black mb-4 tracking-tight" style={{ color: '#f5ede0' }}>
+                            Your wishlist is empty
+                        </h2>
+                        <p className="mb-10 text-base" style={{ color: '#666' }}>
+                            Start exploring our premium services and save your favorites here for later.
+                        </p>
                         <Link
                             to={APP_ROUTES.SERVICES}
-                            className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 group"
+                            className="inline-flex items-center px-8 py-4 rounded-full font-bold transition-all group"
+                            style={{ background: '#e8d5b0', color: '#111111' }}
+                            onMouseEnter={e => (e.currentTarget.style.background = '#f0e0c0')}
+                            onMouseLeave={e => (e.currentTarget.style.background = '#e8d5b0')}
                         >
                             Explore Services
-                            <ArrowRight size={20} className="ml-2 transform group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight size={18} className="ml-2 transform group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {wishlist.map(service => (
-                            <ServiceCard 
-                                key={service.id || service._id} 
-                                service={service} 
+                            <ServiceCard
+                                key={service.id || service._id}
+                                service={service}
                                 isFavorite={true}
                                 onToggleFavorite={handleToggleFavorite}
                             />

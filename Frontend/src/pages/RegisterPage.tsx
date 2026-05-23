@@ -50,20 +50,20 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden" style={{ background: '#0d0d0d' }}>
             {/* Background Decor */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 blur-[100px]" />
-                <div className="absolute top-[20%] right-[10%] w-[40%] h-[40%] rounded-full bg-purple-500/20 blur-[100px]" />
-                <div className="absolute -bottom-[10%] left-[20%] w-[30%] h-[30%] rounded-full bg-pink-500/20 blur-[100px]" />
+                <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full blur-[120px] opacity-15" style={{ background: '#e8d5b0' }} />
+                <div className="absolute bottom-[10%] right-[5%] w-[35%] h-[35%] rounded-full blur-[100px] opacity-8" style={{ background: '#c9b99a' }} />
             </div>
 
-            <div className="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-lg rounded-2xl p-8 sm:p-10 shadow-2xl border border-white/10 relative z-10">
+            <div className="max-w-md w-full space-y-8 backdrop-blur-lg rounded-2xl p-8 sm:p-10 shadow-2xl relative z-10" style={{ background: 'rgba(26,26,26,0.85)', border: '1px solid rgba(232, 213, 176, 0.12)' }}>
                 <div className="text-center">
-                    <h2 className="text-3xl font-extrabold text-white tracking-tight">
+                    <div className="text-2xl font-black tracking-widest mb-2" style={{ color: '#e8d5b0' }}>OCCASIA</div>
+                    <h2 className="text-2xl font-bold" style={{ color: '#f5ede0' }}>
                         Create Account
                     </h2>
-                    <p className="mt-2 text-sm text-gray-300">
+                    <p className="mt-2 text-sm" style={{ color: '#888' }}>
                         Join Occasia today
                     </p>
                 </div>
@@ -71,53 +71,50 @@ export default function RegisterPage() {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                     <div className="space-y-4">
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-300">
+                            <label htmlFor="name" className="block text-sm font-medium mb-1" style={{ color: '#999' }}>
                                 Full Name
                             </label>
-                            <div className="mt-1">
-                                <input
-                                    {...register('name')}
-                                    id="name"
-                                    type="text"
-                                    autoComplete="name"
-                                    className="appearance-none block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 sm:text-sm hover:bg-white/10"
-                                    placeholder="John Doe"
-                                />
-                            </div>
+                            <input
+                                {...register('name')}
+                                id="name"
+                                type="text"
+                                autoComplete="name"
+                                className="appearance-none block w-full px-4 py-3 rounded-xl text-sm transition-all duration-200"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#f5ede0' }}
+                                placeholder="John Doe"
+                            />
                             {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+                            <label htmlFor="email" className="block text-sm font-medium mb-1" style={{ color: '#999' }}>
                                 Email address
                             </label>
-                            <div className="mt-1">
-                                <input
-                                    {...register('email')}
-                                    id="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    className="appearance-none block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 sm:text-sm hover:bg-white/10"
-                                    placeholder="you@example.com"
-                                />
-                            </div>
+                            <input
+                                {...register('email')}
+                                id="email"
+                                type="email"
+                                autoComplete="email"
+                                className="appearance-none block w-full px-4 py-3 rounded-xl text-sm transition-all duration-200"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#f5ede0' }}
+                                placeholder="you@example.com"
+                            />
                             {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                            <label htmlFor="password" className="block text-sm font-medium mb-1" style={{ color: '#999' }}>
                                 Password
                             </label>
-                            <div className="mt-1">
-                                <input
-                                    {...register('password')}
-                                    id="password"
-                                    type="password"
-                                    autoComplete="new-password"
-                                    className="appearance-none block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 sm:text-sm hover:bg-white/10"
-                                    placeholder="••••••••"
-                                />
-                            </div>
+                            <input
+                                {...register('password')}
+                                id="password"
+                                type="password"
+                                autoComplete="new-password"
+                                className="appearance-none block w-full px-4 py-3 rounded-xl text-sm transition-all duration-200"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#f5ede0' }}
+                                placeholder="••••••••"
+                            />
                             {errors.password && <p className="mt-1 text-sm text-red-400">{errors.password.message}</p>}
                         </div>
                     </div>
@@ -126,11 +123,12 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                            className="w-full flex justify-center py-3.5 px-4 rounded-xl text-sm font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                            style={{ background: '#e8d5b0', color: '#111111' }}
                         >
                             {loading ? (
                                 <span className="flex items-center">
-                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" style={{ color: '#111' }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
@@ -142,9 +140,9 @@ export default function RegisterPage() {
                 </form>
 
                 <div className="text-center">
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm" style={{ color: '#666' }}>
                         Already have an account?{' '}
-                        <Link to={APP_ROUTES.LOGIN} className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+                        <Link to={APP_ROUTES.LOGIN} className="font-semibold transition-colors" style={{ color: '#e8d5b0' }}>
                             Sign in
                         </Link>
                     </p>

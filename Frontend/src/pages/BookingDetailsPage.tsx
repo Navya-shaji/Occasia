@@ -7,7 +7,7 @@ import {
     Clock,
     CheckCircle2,
     ArrowLeft,
-    Image as ImageIcon
+    Image as ImageIcon,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { APP_ROUTES } from '../constants/routes';
@@ -34,59 +34,73 @@ export default function BookingDetailsPage() {
         }
     };
 
-
-
-    const getStatusStyle = (status: string) => {
+    const getStatusStyle = (status: string): React.CSSProperties => {
         switch (status) {
-            case 'CONFIRMED': return 'bg-green-50 text-green-700 border-green-100';
-            case 'CANCELLED': return 'bg-red-50 text-red-700 border-red-100';
-            default: return 'bg-yellow-50 text-yellow-700 border-yellow-100';
+            case 'CONFIRMED': return { background: 'rgba(110, 231, 183, 0.12)', color: '#6ee7b7', border: '1px solid rgba(110, 231, 183, 0.25)' };
+            case 'CANCELLED': return { background: 'rgba(255, 107, 107, 0.12)', color: '#ff6b6b', border: '1px solid rgba(255, 107, 107, 0.25)' };
+            default: return { background: 'rgba(251, 191, 36, 0.12)', color: '#fbbf24', border: '1px solid rgba(251, 191, 36, 0.25)' };
         }
     };
 
     const getStatusIcon = (status: string) => {
         switch (status) {
             case 'CONFIRMED': return <CheckCircle2 size={16} />;
-            case 'CANCELLED': return <Clock size={16} />;
             default: return <Clock size={16} />;
         }
     };
 
     if (loading) return (
-        <div className="min-h-screen pt-32 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="min-h-screen pt-32 flex items-center justify-center" style={{ background: '#111' }}>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: '#e8d5b0' }}></div>
         </div>
     );
 
     if (!booking) return null;
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8" style={{ background: '#111111' }}>
             <div className="max-w-4xl mx-auto">
                 <button
                     onClick={() => navigate(APP_ROUTES.MY_BOOKINGS)}
-                    className="flex items-center space-x-2 text-gray-500 hover:text-blue-600 transition-colors mb-6"
+                    className="flex items-center space-x-2 mb-6 text-sm font-medium transition-colors"
+                    style={{ color: '#666' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#e8d5b0')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#666')}
                 >
-                    <ArrowLeft size={20} />
-                    <span className="font-medium">Back to My Bookings</span>
+                    <ArrowLeft size={18} />
+                    <span>Back to My Bookings</span>
                 </button>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div
+                    className="rounded-2xl overflow-hidden"
+                    style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.08)' }}
+                >
                     {/* Header Image */}
-                    <div className="h-64 relative bg-gray-200">
+                    <div className="h-64 relative" style={{ background: '#222' }}>
                         {(booking.service?.images?.[0] || booking.serviceImage) ? (
                             <img
-                                src={(booking.service?.images?.[0] || booking.serviceImage || '').startsWith('http') ? (booking.service?.images?.[0] || booking.serviceImage) : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service?.images?.[0] || booking.serviceImage}`}
+                                src={(booking.service?.images?.[0] || booking.serviceImage || '').startsWith('http')
+                                    ? (booking.service?.images?.[0] || booking.serviceImage)
+                                    : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${booking.service?.images?.[0] || booking.serviceImage}`}
                                 alt={booking.service?.name || booking.serviceName}
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <div className="w-full h-full flex items-center justify-center" style={{ color: '#444' }}>
                                 <ImageIcon size={64} />
                             </div>
                         )}
                         <div className="absolute top-4 left-4">
-                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold border flex items-center space-x-2 shadow-lg ${getStatusStyle(booking.status)} bg-white/95 backdrop-blur-sm`}>
+                            <span
+                                className="px-4 py-1.5 rounded-full text-sm font-bold flex items-center space-x-2"
+                                style={{
+                                    ...getStatusStyle(booking.status),
+                                    backdropFilter: 'blur(8px)',
+                                    background: 'rgba(17,17,17,0.85)',
+                                    color: getStatusStyle(booking.status).color,
+                                    border: getStatusStyle(booking.status).border,
+                                }}
+                            >
                                 {getStatusIcon(booking.status)}
                                 <span>{booking.status}</span>
                             </span>
@@ -94,46 +108,62 @@ export default function BookingDetailsPage() {
                     </div>
 
                     <div className="p-8">
-                        {/* Title Section */}
+                        {/* Title */}
                         <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{booking.serviceName || booking.service?.name || 'Booking Details'}</h1>
-                                <div className="flex items-center text-gray-500">
-                                    <MapPin size={18} className="mr-2 text-gray-400" />
+                                <h1 className="text-3xl font-black mb-2" style={{ color: '#f5ede0' }}>
+                                    {booking.serviceName || booking.service?.name || 'Booking Details'}
+                                </h1>
+                                <div className="flex items-center text-sm" style={{ color: '#888' }}>
+                                    <MapPin size={16} className="mr-2" style={{ color: '#666' }} />
                                     {booking.location || booking.service?.location || 'Location Not Provided'}
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm text-gray-500">Total Booking Amount</p>
-                                <p className="text-3xl font-bold text-blue-600 mb-4">₹{booking.totalPrice}</p>
+                                <p className="text-sm mb-1" style={{ color: '#666' }}>Total Booking Amount</p>
+                                <p className="text-3xl font-black" style={{ color: '#e8d5b0' }}>₹{booking.totalPrice}</p>
                             </div>
                         </div>
 
                         <div className="max-w-2xl">
-                            {/* Booking Details */}
-                            <div className="space-y-6">
-                                <h3 className="text-lg font-bold text-gray-900 border-b pb-2">Booking Information</h3>
+                            <h3
+                                className="text-lg font-bold pb-3 mb-6"
+                                style={{ color: '#f5ede0', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+                            >
+                                Booking Information
+                            </h3>
 
+                            <div className="space-y-6">
                                 <div className="flex items-start">
-                                    <div className="bg-blue-50 p-3 rounded-lg mr-4">
-                                        <Calendar className="text-blue-600" size={24} />
+                                    <div
+                                        className="p-3 rounded-xl mr-4 flex-shrink-0"
+                                        style={{ background: 'rgba(232, 213, 176, 0.08)' }}
+                                    >
+                                        <Calendar size={22} style={{ color: '#e8d5b0' }} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Dates</p>
-                                        <p className="font-semibold text-gray-900">
-                                            {new Date(booking.startDate).toDateString()} - {new Date(booking.endDate).toDateString()}
+                                        <p className="text-sm mb-1" style={{ color: '#666' }}>Dates</p>
+                                        <p className="font-semibold" style={{ color: '#f5ede0' }}>
+                                            {new Date(booking.startDate).toDateString()} — {new Date(booking.endDate).toDateString()}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="flex items-start">
-                                    <div className="bg-purple-50 p-3 rounded-lg mr-4">
-                                        <Clock className="text-purple-600" size={24} />
+                                    <div
+                                        className="p-3 rounded-xl mr-4 flex-shrink-0"
+                                        style={{ background: 'rgba(147, 197, 253, 0.08)' }}
+                                    >
+                                        <Clock size={22} style={{ color: '#93c5fd' }} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Booking Reference</p>
-                                        <p className="font-mono font-semibold text-gray-900 tracking-wider">#{String(booking.id || (booking as any)._id || 'N/A').slice(-8).toUpperCase()}</p>
-                                        <p className="text-xs text-gray-400 mt-1">Booked on {new Date(booking.bookingDate).toLocaleDateString()}</p>
+                                        <p className="text-sm mb-1" style={{ color: '#666' }}>Booking Reference</p>
+                                        <p className="font-mono font-bold tracking-wider" style={{ color: '#f5ede0' }}>
+                                            #{String(booking.id || (booking as any)._id || 'N/A').slice(-8).toUpperCase()}
+                                        </p>
+                                        <p className="text-xs mt-1" style={{ color: '#555' }}>
+                                            Booked on {new Date(booking.bookingDate).toLocaleDateString()}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

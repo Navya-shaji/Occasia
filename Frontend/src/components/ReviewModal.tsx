@@ -34,7 +34,7 @@ export default function ReviewModal({ bookingId, serviceId, serviceName, onClose
                 booking: bookingId,
                 service: serviceId,
                 rating,
-                comment: comment.trim()
+                comment: comment.trim(),
             });
             toast.success('Review submitted successfully!');
             onSuccess();
@@ -46,25 +46,42 @@ export default function ReviewModal({ bookingId, serviceId, serviceName, onClose
         }
     };
 
+    const ratingLabels = ['Terrible', 'Bad', 'Okay', 'Good', 'Exceptional'];
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl shadow-indigo-500/10 overflow-hidden transform transition-all">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+        >
+            <div
+                className="w-full max-w-lg overflow-hidden rounded-2xl"
+                style={{ background: '#1a1a1a', border: '1px solid rgba(232, 213, 176, 0.15)' }}
+            >
                 {/* Header */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6 relative">
+                <div
+                    className="px-8 py-6 relative"
+                    style={{ background: 'rgba(232, 213, 176, 0.06)', borderBottom: '1px solid rgba(232, 213, 176, 0.1)' }}
+                >
                     <button
                         onClick={onClose}
-                        className="absolute right-6 top-6 text-white/70 hover:text-white transition-colors"
+                        className="absolute right-6 top-6 transition-colors"
+                        style={{ color: '#666' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#e8d5b0')}
+                        onMouseLeave={e => (e.currentTarget.style.color = '#666')}
                     >
-                        <X size={24} />
+                        <X size={22} />
                     </button>
-                    <h3 className="text-2xl font-black text-white uppercase tracking-tight">Share Your Experience</h3>
-                    <p className="text-blue-100 text-sm font-medium mt-1">Reviewing: {serviceName}</p>
+                    <h3 className="text-xl font-black tracking-tight" style={{ color: '#f5ede0' }}>Share Your Experience</h3>
+                    <p className="text-sm mt-1" style={{ color: '#888' }}>Reviewing: {serviceName}</p>
                 </div>
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-8">
-                    <div className="flex flex-col items-center mb-10">
-                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Tap to Rate</label>
+                    {/* Star Rating */}
+                    <div className="flex flex-col items-center mb-8">
+                        <label className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#555' }}>
+                            Tap to Rate
+                        </label>
                         <div className="flex space-x-2">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -73,63 +90,86 @@ export default function ReviewModal({ bookingId, serviceId, serviceName, onClose
                                     onClick={() => setRating(star)}
                                     onMouseEnter={() => setHover(star)}
                                     onMouseLeave={() => setHover(0)}
-                                    className="p-1 transition-transform transform hover:scale-125 focus:outline-none"
+                                    className="p-1 transition-transform hover:scale-125 focus:outline-none"
                                 >
                                     <Star
-                                        size={48}
-                                        className={`transition-colors duration-300 ${
-                                            (hover || rating) >= star ? 'text-yellow-400 fill-current' : 'text-gray-200'
-                                        }`}
+                                        size={40}
+                                        style={{
+                                            color: (hover || rating) >= star ? '#e8d5b0' : '#333',
+                                            fill: (hover || rating) >= star ? '#e8d5b0' : 'none',
+                                            transition: 'color 0.2s, fill 0.2s',
+                                        }}
                                     />
                                 </button>
                             ))}
                         </div>
                         {rating > 0 && (
-                            <p className="mt-4 text-yellow-600 font-black text-sm uppercase tracking-tighter">
-                                {['Terrible', 'Bad', 'Okay', 'Good', 'Exceptional'][rating - 1]}
+                            <p className="mt-3 text-sm font-bold uppercase tracking-wide" style={{ color: '#e8d5b0' }}>
+                                {ratingLabels[rating - 1]}
                             </p>
                         )}
                     </div>
 
-                    <div className="mb-8">
-                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Detailed Feedback</label>
+                    {/* Comment */}
+                    <div className="mb-6">
+                        <label className="text-xs font-bold uppercase tracking-widest block mb-2" style={{ color: '#555' }}>
+                            Detailed Feedback
+                        </label>
                         <textarea
-                            className="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-gray-700 focus:outline-none focus:border-blue-500 min-h-[140px] transition-colors text-lg font-medium"
+                            className="w-full px-4 py-3 rounded-xl text-sm min-h-[120px] resize-none outline-none transition-all"
+                            style={{
+                                background: 'rgba(255,255,255,0.04)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                color: '#e8d5b0',
+                            }}
                             placeholder="What did you love about the service? How was the provider?"
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             maxLength={500}
+                            onFocus={e => (e.target.style.borderColor = 'rgba(232, 213, 176, 0.3)')}
+                            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
                         />
-                        <div className="flex justify-between mt-2">
-                            <span className="text-[10px] text-gray-400 font-bold uppercase">{comment.length}/500</span>
+                        <div className="flex justify-between mt-1.5">
+                            <span className="text-xs" style={{ color: '#444' }}>{comment.length}/500</span>
                             {comment.length < 10 && comment.length > 0 && (
-                                <span className="text-[10px] text-red-400 font-bold uppercase">Min 10 chars</span>
+                                <span className="text-xs" style={{ color: '#ff6b6b' }}>Min 10 chars</span>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex space-x-4">
+                    {/* Actions */}
+                    <div className="flex space-x-3">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-6 py-4 border-2 border-slate-100 text-slate-500 rounded-2xl font-black uppercase tracking-tight hover:bg-slate-50 transition-colors"
+                            className="flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all"
+                            style={{
+                                background: 'rgba(255,255,255,0.04)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                color: '#888',
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+                            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="flex-3 bg-blue-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-tight hover:bg-blue-700 disabled:opacity-50 transition-all shadow-lg shadow-blue-200 flex items-center justify-center space-x-2"
+                            className="flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+                            style={{ background: '#e8d5b0', color: '#111111' }}
+                            onMouseEnter={e => !isSubmitting && (e.currentTarget.style.background = '#f0e0c0')}
+                            onMouseLeave={e => (e.currentTarget.style.background = '#e8d5b0')}
                         >
                             {isSubmitting ? (
                                 <>
-                                    <Loader2 className="animate-spin" size={20} />
+                                    <Loader2 className="animate-spin" size={16} />
                                     <span>Posting...</span>
                                 </>
                             ) : (
                                 <>
                                     <span>Post Review</span>
-                                    <Send size={20} />
+                                    <Send size={16} />
                                 </>
                             )}
                         </button>

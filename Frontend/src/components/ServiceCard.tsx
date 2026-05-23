@@ -46,62 +46,108 @@ export default function ServiceCard({ service, isFavorite, onToggleFavorite }: S
     return (
         <Link
             to={APP_ROUTES.SERVICE_DETAILS.replace(':id', serviceId)}
-            className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 relative flex flex-col h-full"
+            className="group overflow-hidden flex flex-col h-full transition-all duration-300"
+            style={{
+                background: '#1a1a1a',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: '20px',
+            }}
+            onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(232, 213, 176, 0.2)';
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.07)';
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
+            }}
         >
-            <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+            {/* Image */}
+            <div className="aspect-[4/3] relative overflow-hidden" style={{ background: '#222' }}>
                 {service.images?.[0] ? (
                     <img
                         src={service.images[0].startsWith('http') ? service.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:1212'}${service.images[0]}`}
                         alt={service.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    <div className="w-full h-full flex items-center justify-center" style={{ color: '#444' }}>
                         <ImageIcon size={40} />
                     </div>
                 )}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-gray-800 shadow-sm">
+
+                {/* Category badge */}
+                <div
+                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold"
+                    style={{
+                        background: 'rgba(17,17,17,0.8)',
+                        backdropFilter: 'blur(8px)',
+                        color: '#e8d5b0',
+                        border: '1px solid rgba(232, 213, 176, 0.2)',
+                    }}
+                >
                     {service.category}
                 </div>
 
+                {/* Wishlist button */}
                 <button
                     onClick={handleHeartClick}
-                    className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-md transition-all duration-300 shadow-md ${
-                        isFavorite 
-                        ? 'bg-red-500 text-white fill-current' 
-                        : 'bg-white/80 text-gray-600 hover:text-red-500 hover:bg-white'
-                    }`}
+                    className="absolute top-3 right-3 p-2 rounded-full transition-all duration-300"
+                    style={{
+                        background: isFavorite ? '#e8d5b0' : 'rgba(17,17,17,0.8)',
+                        backdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        color: isFavorite ? '#111' : '#888',
+                    }}
                 >
-                    <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+                    <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
                 </button>
             </div>
 
-            <div className="p-6 flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+            {/* Content */}
+            <div className="p-5 flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-2">
+                    <h3
+                        className="text-base font-bold line-clamp-1 flex-1 mr-2 transition-colors"
+                        style={{ color: '#f5ede0' }}
+                    >
                         {service.name}
                     </h3>
-                    <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-1 rounded-md text-xs font-black">
-                        <Star size={14} fill="currentColor" className="mr-1 text-yellow-500" />
+                    <div
+                        className="flex items-center px-2 py-1 rounded-lg text-xs font-bold flex-shrink-0"
+                        style={{ background: 'rgba(232, 213, 176, 0.1)', color: '#e8d5b0' }}
+                    >
+                        <Star size={12} fill="currentColor" className="mr-1" />
                         {service.averageRating || '4.8'}
                     </div>
                 </div>
 
-                <div className="flex items-center text-gray-500 text-sm mb-6">
-                    <MapPin size={16} className="mr-1.5 text-blue-500" />
-                    {service.location || 'Location varies'}
+                <div className="flex items-center text-sm mb-4" style={{ color: '#666' }}>
+                    <MapPin size={14} className="mr-1.5 flex-shrink-0" style={{ color: '#888' }} />
+                    <span className="truncate">{service.location || 'Location varies'}</span>
                 </div>
 
-                <div className="mt-auto flex items-end justify-between border-t border-gray-50 pt-4">
+                <div
+                    className="mt-auto flex items-end justify-between pt-4"
+                    style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+                >
                     <div>
-                        <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mb-1">Starting from</p>
-                        <span className="text-2xl font-black text-blue-700">₹{service.pricePerDay || service.price}</span>
-                        <span className="text-sm font-bold text-gray-500 ml-1">/ day</span>
+                        <p className="text-xs mb-0.5" style={{ color: '#555' }}>Starting from</p>
+                        <span className="text-xl font-black" style={{ color: '#e8d5b0' }}>
+                            ₹{service.pricePerDay || service.price}
+                        </span>
+                        <span className="text-xs ml-1" style={{ color: '#666' }}>/ day</span>
                     </div>
-                    <div className="flex items-center space-x-1 text-blue-600 font-bold text-sm bg-blue-50 px-4 py-2 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <div
+                        className="flex items-center space-x-1 text-xs font-semibold px-3 py-2 rounded-full transition-all duration-300"
+                        style={{
+                            background: 'rgba(232, 213, 176, 0.08)',
+                            color: '#e8d5b0',
+                            border: '1px solid rgba(232, 213, 176, 0.15)',
+                        }}
+                    >
                         <span>Details</span>
-                        <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        <svg className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                         </svg>
                     </div>
                 </div>

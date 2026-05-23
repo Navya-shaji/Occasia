@@ -27,7 +27,7 @@ function AppContent() {
     const showNavbar = !hideNavbarRoutes.includes(location.pathname as any);
 
     return (
-        <div className="min-h-screen flex flex-col bg-slate-50">
+        <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
             {showNavbar && <Navbar />}
 
             <main className="flex-1 flex flex-col pt-0">
