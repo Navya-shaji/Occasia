@@ -1,4 +1,4 @@
-# Occasia - Premium Event Booking Platform
+ Occasia - Premium Event Booking Platform
 
 Occasia is a world-class event management platform designed for prestigious events. It connects discerning clients with luxury service providers like exclusive venues, gourmet caterers, and professional event specialists.
 
